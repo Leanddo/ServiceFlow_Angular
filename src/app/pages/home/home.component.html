@@ -1,0 +1,71 @@
+<section class="hero-section">
+  <div class="hero-title-div">
+    <h1>ServiceFlow</h1>
+    <div class="headline-container">
+      <p class="headline" *ngIf="animationState" [@slideInOut]>
+        {{ frases[fraseAtual] }}
+      </p>
+    </div>
+  </div>
+
+  <form class="hero-form-div" action="">
+    <input type="text" placeholder="Pesquise Serviços ou empresas" />
+    <span>|</span>
+    <input type="text" placeholder="local" />
+    <button type="submit">submit</button>
+  </form>
+</section>
+
+<section class="stats-section">
+  <div class="stats-container">
+    <div class="stat">
+      <div>
+        <h2 [countUp]="10000000" [options]="{ enableScrollSpy: true }"></h2>
+        <span>+</span>
+      </div>
+      <p>marcações processadas</p>
+    </div>
+    <div class="stat">
+      <div>
+        <h2 [countUp]="2000000" [options]="{ enableScrollSpy: true }"></h2>
+        <span>+</span>
+      </div>
+      <p>clientes marcaram</p>
+    </div>
+    <div class="stat">
+      <div>
+        <h2 [countUp]="3000" [options]="{ enableScrollSpy: true }"></h2>
+        <span>+</span>
+      </div>
+      <p>negócios em Portugal</p>
+    </div>
+    <div class="stat">
+      <div>
+        <h2 [countUp]="8000" [options]="{ enableScrollSpy: true }"></h2>
+        <span>+</span>
+      </div>
+      <p>profissionais usam</p>
+    </div>
+  </div>
+</section>
+
+<app-como-funciona />
+
+<section class="services-scroll-section">
+  <h2 class="section-title">Uma agenda para todos os negócios.</h2>
+
+  <app-service-scroll [services]="myServices"></app-service-scroll>
+</section>
+
+<section class="registar-negocio-section">
+  <div class="registar-negocio-text">
+    <h1 class="registar-negocio-title">Junte-se ao ServiceFlow</h1>
+    <p class="registar-negocio-description">
+      Receba marcações 24/7 através da sua página de agendamentos
+      personalizada.<br />
+      Envie lembretes automáticos aos seus clientes e reduza as faltas de
+      comparência.
+    </p>
+    <a class="registar-negocio-button" href="#">Registar Negócio</a>
+  </div>
+</section>

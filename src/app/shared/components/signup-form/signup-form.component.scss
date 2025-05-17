@@ -1,0 +1,10 @@
+@import '../../../../styles/form-styles.scss'; // Importando estilos comuns
+
+.form-group.invalid input {
+  border: 1px solid red;
+}
+
+.form-group.valid input {
+  border: 1px solid #00c853; // verde, se quiseres
+
+}

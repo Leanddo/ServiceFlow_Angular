@@ -1,0 +1,33 @@
+<div class="otp-container">
+  <h1>Verification code</h1>
+  <h2>Enter the 6-digit code</h2>
+  <div class="otp-inputs">
+    <input
+      class="otp-input"
+      *ngFor="let input of inputs; let i = index"
+      [formControl]="input"
+      maxlength="1"
+      (input)="onInput(i, $event)"
+      (keydown)="onKeyDown(i, $event)"
+      (paste)="onPaste($event)"
+      id="otp-{{ i }}"
+      type="text"
+      autocomplete="one-time-code"
+    />
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
+  <button [disabled]="otp.includes('')" (click)="submitOTP()">Verify</button>
+
+  <p class="resend-otp">
+    Não recebeste o código?
+    <a href="#" (click)="resendOTP($event)">Reenviar</a>
+  </p>
+</div>

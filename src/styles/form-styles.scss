@@ -1,0 +1,153 @@
+@import 'variables.scss';
+
+// Estilos gerais para o formulário
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+// Estilos para os grupos de campos de input
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 3rem;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: border 0.2s ease;
+
+      &:focus {
+        border-color: $Roxo-Medio;
+        outline: none;
+      }
+    }
+
+    .icon-left,
+    .icon-right {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+    }
+
+    .icon-left {
+      left: 0.9rem;
+      opacity: 0.6;
+    }
+
+    .icon-right {
+      right: 0.9rem;
+    }
+  }
+
+  // Validação do input
+  &.valid input {
+    border-color: $Roxo-Medio;
+  }
+}
+
+// Estilos para o botão de envio
+button[type='submit'] {
+  background: linear-gradient(135deg, $Roxo-Medio, $Roxo-Royal);
+  color: white;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease;
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, $Roxo-Royal, $Roxo-Escuro);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Estilos para o separador "or"
+.or-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  hr {
+    flex-grow: 1;
+    border: 0;
+    border-top: 1px solid #ddd;
+  }
+
+  span {
+    font-size: 14px;
+    color: #666;
+    padding: 0 10px;
+    text-align: center;
+  }
+}
+
+// Estilos para o botão do Google SignUp
+.google-signup {
+  margin-top: 1rem;
+  text-align: center;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      border-color: $Roxo-Medio; // Substitua pela sua variável roxo-medio
+      background-color: #f7f7ff;
+    }
+  }
+}
+
+.error-message{
+  color: red;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  text-align: left;
+  width: 100%;
+}
+
+.success-message{
+  color: green;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  text-align: left;
+  width: 100%;
+}

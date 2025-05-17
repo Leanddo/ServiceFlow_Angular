@@ -1,0 +1,57 @@
+@import "../../../../styles/variables.scss";
+
+footer {
+    width: 100%;
+    background-color: $Roxo-light;
+    padding: 2% 5%;
+}
+
+.footer_wrapper {
+    background-color: white;
+    padding: 1% 2%;
+    border-radius: 40px;
+
+    .firstdivision {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid $Roxo-Pastel;
+        padding: 10px;
+        height: 5.5rem;
+
+
+        .footer_Links a {
+            text-decoration: none;
+            color: $Roxo-Escuro;
+            font-size: 1.1rem;
+            margin-right: 20px;
+            font-weight: 500;
+        }
+
+        .footer_Social a svg {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+    }
+
+    .secondDivision {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        padding-left: 0;
+
+        height: 5.5rem;
+
+        img {
+            height: 60px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: $Roxo-Escuro;
+            font-weight: 500;
+        }
+    }
+}

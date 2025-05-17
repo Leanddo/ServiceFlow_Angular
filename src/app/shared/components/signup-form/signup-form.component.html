@@ -1,0 +1,195 @@
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+  <!-- Username -->
+  <div
+    class="form-group"
+    [ngClass]="{
+      valid:
+        signupForm.get('username')?.valid &&
+        signupForm.get('username')?.touched,
+      invalid:
+        signupForm.get('username')?.invalid &&
+        signupForm.get('username')?.touched
+    }"
+  >
+    <label for="username">Utilizador</label>
+    <div class="input-wrapper">
+      <img class="icon-left" src="assets/icons/mail.svg" alt="Username Icon" />
+      <input
+        id="username"
+        type="text"
+        placeholder="Introduza o seu nome de utilizador"
+        formControlName="username"
+      />
+      <img
+        class="icon-right"
+        src="assets/icons/check.svg"
+        alt="Valid"
+        *ngIf="
+          signupForm.get('username')?.valid &&
+          signupForm.get('username')?.touched
+        "
+      />
+    </div>
+    <div
+      class="error-message"
+      *ngIf="
+        signupForm.get('username')?.touched &&
+        signupForm.get('username')?.invalid
+      "
+    >
+      Nome de utilizador é obrigatório
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div
+    class="form-group"
+    [ngClass]="{
+      valid: signupForm.get('email')?.valid && signupForm.get('email')?.touched,
+      invalid:
+        signupForm.get('email')?.invalid && signupForm.get('email')?.touched
+    }"
+  >
+    <label for="email">Email Address</label>
+    <div class="input-wrapper">
+      <img class="icon-left" src="assets/icons/mail.svg" alt="Email Icon" />
+      <input
+        id="email"
+        type="email"
+        placeholder="Introduza o seu email"
+        formControlName="email"
+      />
+      <img
+        class="icon-right"
+        src="assets/icons/check.svg"
+        alt="Valid"
+        *ngIf="
+          signupForm.get('email')?.valid && signupForm.get('email')?.touched
+        "
+      />
+    </div>
+    <div
+      class="error-message"
+      *ngIf="signupForm.get('email')?.errors?.['email'] && signupForm.get('email')?.touched"
+    >
+      Email inválido
+    </div>
+    <div
+      class="error-message"
+      *ngIf="signupForm.get('email')?.errors?.['required'] && signupForm.get('email')?.touched"
+    >
+      O email é obrigatório
+    </div>
+  </div>
+
+  <!-- Password -->
+  <div
+    class="form-group"
+    [ngClass]="{
+      valid:
+        signupForm.get('password')?.valid &&
+        signupForm.get('password')?.touched,
+      invalid:
+        signupForm.get('password')?.invalid &&
+        signupForm.get('password')?.touched
+    }"
+  >
+    <label for="password">Password</label>
+    <div class="input-wrapper">
+      <img class="icon-left" src="assets/icons/lock.svg" alt="Password Icon" />
+      <input
+        id="password"
+        type="password"
+        placeholder="Introduza a sua password"
+        formControlName="password"
+      />
+      <img
+        class="icon-right"
+        src="assets/icons/check.svg"
+        alt="Valid"
+        *ngIf="
+          signupForm.get('password')?.valid &&
+          signupForm.get('password')?.touched
+        "
+      />
+    </div>
+    <div
+      class="error-message"
+      *ngIf="signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched"
+    >
+      A password é obrigatória
+    </div>
+    <div
+      class="error-message"
+      *ngIf="signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched"
+    >
+      A password deve ter pelo menos 6 caracteres
+    </div>
+  </div>
+
+  <!-- Confirm Password -->
+  <div
+    class="form-group"
+    [ngClass]="{
+      valid:
+        signupForm.get('confirmPassword')?.valid &&
+        signupForm.get('confirmPassword')?.touched &&
+        !passwordsMismatch,
+      invalid:
+        (signupForm.get('confirmPassword')?.invalid &&
+          signupForm.get('confirmPassword')?.touched) ||
+        passwordsMismatch
+    }"
+  >
+    <label for="confirmPassword">Confirmar Password</label>
+    <div class="input-wrapper">
+      <img class="icon-left" src="assets/icons/lock.svg" alt="Confirm Icon" />
+      <input
+        id="confirmPassword"
+        type="password"
+        placeholder="Confirme a sua password"
+        formControlName="confirmPassword"
+      />
+      <img
+        class="icon-right"
+        src="assets/icons/check.svg"
+        alt="Valid"
+        *ngIf="
+          signupForm.get('confirmPassword')?.valid &&
+          signupForm.get('confirmPassword')?.touched &&
+          !passwordsMismatch
+        "
+      />
+    </div>
+    <div
+      class="error-message"
+      *ngIf="signupForm.get('confirmPassword')?.errors?.['required'] && signupForm.get('confirmPassword')?.touched"
+    >
+      A confirmação é obrigatória
+    </div>
+    <div
+      class="error-message"
+      *ngIf="passwordsMismatch && signupForm.get('confirmPassword')?.touched"
+    >
+      As palavras-passe não coincidem
+    </div>
+  </div>
+
+  <div class="or-divider">
+    <hr />
+    <span>ou</span>
+    <hr />
+  </div>
+
+  <!-- Botão Sign Up with Google -->
+  <div class="google-signup">
+    <button type="button">
+      <img src="assets/icons/google.svg" alt="Google Icon" />
+      Login com o Google
+    </button>
+  </div>
+
+  <button type="submit" class="submit-btn" [disabled]="signupForm.invalid">
+    Continuar
+  </button>
+</form>

@@ -1,0 +1,16 @@
+<section class="como-funciona-section">
+  <div
+    class="passo"
+    *ngFor="let passo of passos; let i = index"
+    [ngClass]="{ reverse: i % 2 !== 0 }"
+  >
+    <img [src]="passo.imagem" [alt]="passo.titulo" />
+    <div class="side-Text">
+      <h3>{{ passo.titulo }}</h3>
+      <p>{{ passo.descricao }}</p>
+      <ul>
+        <li *ngFor="let item of passo.funcionalidades">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+</section>

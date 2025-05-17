@@ -1,0 +1,82 @@
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+   <!-- Email -->
+  <div
+    class="form-group"
+    [ngClass]="{
+      valid: loginForm.get('email')?.valid && loginForm.get('email')?.touched
+    }"
+  >
+    <label for="email">Email Address</label>
+    <div class="input-wrapper">
+      <img class="icon-left" src="assets/icons/mail.svg" alt="Email Icon" />
+      <input
+        id="email"
+        type="email"
+        placeholder="Introduza o seu email"
+        formControlName="email"
+      />
+      <img
+        class="icon-right"
+        src="assets/icons/check.svg"
+        alt="Valid"
+        *ngIf="
+          loginForm.get('email')?.valid && loginForm.get('email')?.touched
+        "
+      />
+    </div>
+  </div>
+
+  
+  <!-- Password -->
+  <div
+    class="form-group"
+    [ngClass]="{
+      valid:
+        loginForm.get('password')?.valid && loginForm.get('password')?.touched
+    }"
+  >
+    <label for="password">Password</label>
+    <div class="input-wrapper">
+      <img class="icon-left" src="assets/icons/lock.svg" alt="Password Icon" />
+      <input
+        id="password"
+        type="password"
+        placeholder="Introduza a sua password"
+        formControlName="password"
+      />
+      <img
+        class="icon-right"
+        src="assets/icons/check.svg"
+        alt="Valid"
+        *ngIf="
+          loginForm.get('password')?.valid &&
+          loginForm.get('password')?.touched
+        "
+      />
+    </div>
+  </div>
+  
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <a href="#">Esqueceu-se da password?</a>
+
+  <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">Continuar</button>
+
+  <div class="or-divider">
+    <hr />
+    <span>ou</span>
+    <hr />
+  </div>
+
+  <!-- Botão Sign Up with Google -->
+  <div class="google-signup">
+    <button type="button">
+      <!-- click)="onGoogleSignup()" -->
+      <img src="assets/icons/google.svg" alt="Google Icon" />
+      Login com o Google
+    </button>
+  </div>
+</form>

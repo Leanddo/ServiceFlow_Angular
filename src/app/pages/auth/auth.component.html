@@ -1,0 +1,23 @@
+<div class="auth-page">
+  <div class="auth-left">
+    <div class="auth-logo">Service<span> Flow</span></div>
+
+    <div class="auth-content">
+      <div class="tabs-switch" *ngIf="!router.url.includes('/auth/verify') && !router.url.includes('/auth/forgot-password')">
+        <a
+          routerLink="/auth/login"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Log-In</a
+        >
+        <a routerLink="/auth/signup" routerLinkActive="active">Signup</a>
+      </div>
+
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <div class="auth-right">
+
+  </div>
+</div>

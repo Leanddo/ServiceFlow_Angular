@@ -1,0 +1,201 @@
+@import "../../../styles/variables.scss";
+
+.headline-container {
+    height: 60px;
+    overflow: hidden;
+}
+
+.hero-section {
+    position: relative;
+    height: 90vh;
+    background-image:
+        linear-gradient(to right, $Roxo-Escuro , $Roxo-light),
+        url('../../../../public/hero_Backgrund.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 10%;
+}
+
+.hero-title-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    margin-top: 5%;
+
+    h1 {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 1rem;
+    }
+}
+
+.hero-form-div {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px 20px;
+    gap: 20px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+
+    input {
+        width: 100%;
+        padding: 1rem;
+        border-radius: 5px;
+        border: none;
+        font-size: 1.1rem;
+        border-radius: 40px;
+
+    }
+
+    span {
+        color: $Roxo-Escuro ;
+        font-size: 2.5rem;
+        font-weight: 100;
+    }
+
+    button {
+        background-color: $Roxo-light;
+        color: $Roxo-Escuro;
+        padding: 1rem 2rem;
+        border-radius: 40px;
+        border: none;
+        font-size: 1.1rem;
+        cursor: pointer;
+        width: 25%;
+
+        &:hover {
+            background-color: $Roxo-Escuro;
+            color: white;
+        }
+    }
+}
+
+
+.stats-section {
+    height: 10dvw;
+    display: flex;
+    background-color: $Roxo-light;
+
+    .stats-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        padding: 0 10%;
+    }
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: $Roxo-Escuro;
+
+        div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+
+            span{
+                font-size: 2rem;
+            }
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+.services-scroll-section {
+    background-color: $Roxo-light;
+    padding: 2rem 1rem;
+    text-align: center;
+    overflow: hidden;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: $Roxo-Escuro;
+    margin-bottom: 2rem;
+}
+
+
+.registar-negocio-section {
+    width: 100%;
+    height: 60vh;
+    background-color: $Roxo-Escuro;
+}
+
+.registar-negocio-text {
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+
+    .registar-negocio-description {
+        font-size: 1.2rem;
+    }
+
+    .registar-negocio-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .registar-negocio-button {
+        background-color: white;
+        color: $Roxo-Escuro;
+        padding: 1rem 2rem;
+        border-radius: 40px;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        width: 25%;
+        text-decoration: none;
+        margin-top: 30px;
+
+        &:hover {
+            background-color: $Roxo-Escuro;
+            color: white;
+            border: 1px solid white;
+        }
+    }
+}
+
+
+
+
+
