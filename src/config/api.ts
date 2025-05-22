@@ -18,5 +18,22 @@ export const API_ENDPOINTS = {
     google: {
       login: `${API_BASE_URL}/auth/google`,
     },
+    logout: `${API_BASE_URL}/auth/logout`,
   },
+  user: {
+    profile: `${API_BASE_URL}/user/profile`,
+  },
+  businesses: {
+    getAll: `${API_BASE_URL}/business`,
+    create: `${API_BASE_URL}/business`,
+    update: (id: string) => `${API_BASE_URL}/business/${id}`,
+    getById: (id: string) => `${API_BASE_URL}/business/${id}`,
+    services:{
+      getBusinessService: (id: string) => `${API_BASE_URL}/businesses/${id}/services`
+    }
+  },
+  rating:{
+    getBusinessRating: (id: string) => `${API_BASE_URL}/businesses/${id}/average-rating`,
+  }
+ 
 };

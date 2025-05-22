@@ -8,11 +8,24 @@
     </div>
   </div>
 
-  <form class="hero-form-div" action="">
-    <input type="text" placeholder="Pesquise Serviços ou empresas" />
-    <span>|</span>
-    <input type="text" placeholder="local" />
-    <button type="submit">submit</button>
+  <div class="hero-businesses-types">
+    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Barbershop' }">Barbeiro</a>
+    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Hairdresser' }">Cabeleireiro</a>
+    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Tattoo Studio' }">Tatoador</a>
+    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Nail Salon' }">Salão de unhas</a>
+    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Beauty Salon' }">Salão de beleza</a>
+    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Spa' }">Spa</a>
+    <a [routerLink]="['/services']">Mais...</a>
+  </div>
+
+  <form class="hero-form-div" (submit)="onSearch($event)">
+    <input
+      type="text"
+      placeholder="Pesquise Serviços ou empresas"
+      [(ngModel)]="searchQuery"
+      name="search"
+    />
+    <button type="submit">Pesquisar</button>
   </form>
 </section>
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -71,7 +71,13 @@ export class OtpCheckComponent {
     const otp = this.otp.join('');
     this.authService.verifyOTP({ otp }).subscribe({
       next: (res) => {
-        this.router.navigate(['/dashboard']);
+        const redirect = localStorage.getItem('redirectAfterLogin');
+        if (redirect) {
+          localStorage.removeItem('redirectAfterLogin');
+          this.router.navigate([redirect]);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
       },
       error: (err) => {
         this.errorMessage = 'Codigo inválido ou expirado.';

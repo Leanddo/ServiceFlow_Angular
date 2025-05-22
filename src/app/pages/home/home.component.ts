@@ -6,6 +6,7 @@ import {
   animate,
   state,
 } from '@angular/animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,6 @@ import {
     ]),
   ],
 })
-
 export class HomeComponent {
   frases: string[] = [
     'Organiza. Agiliza. Cresce.',
@@ -40,28 +40,39 @@ export class HomeComponent {
   ];
   fraseAtual = 0;
   animationState = true;
+  searchQuery: string = ''; // Variável para armazenar o valor do campo de entrada
 
-  constructor() {
+  constructor(private router: Router) {
     setInterval(() => {
       this.animationState = false;
       setTimeout(() => {
         this.fraseAtual = (this.fraseAtual + 1) % this.frases.length;
         this.animationState = true;
-      }, 600); 
-    }, 4000); 
+      }, 600);
+    }, 4000);
   }
 
   myServices = [
-    { name: 'Barbearias', image: 'servicesImgs/barber.jpg' },
-    { name: 'Cabeleireiros', image: 'servicesImgs/cabeleireiro.jpg' },
-    { name: 'Nail Artists', image: 'servicesImgs/nails.png' },
-    { name: 'Makeup artists', image: 'servicesImgs/makeup.png' },
-    { name: 'Fitness', image: 'servicesImgs/fitness.png' },
-    { name: 'Nutricionistas', image: 'servicesImgs/nutricionista.png' },
-    { name: 'Tatuadores', image: 'servicesImgs/tattoo.png' },
-    { name: 'Fisioterapeutas', image: 'servicesImgs/fisio.png' },
-    { name: 'Consultas Médicas', image: 'servicesImgs/consulta.png' },
-    { name: 'Terapeutas', image: 'servicesImgs/terapia.png' },
-    { name: 'Depilação', image: 'servicesImgs/depilacao.png' },
+    { name: 'Barbearias', image: 'servicesImgs/barber.jpg', type: 'Barbershop' },
+    { name: 'Cabeleireiros', image: 'servicesImgs/cabeleireiro.jpg', type: 'Hairdresser' },
+    { name: 'Nail Artists', image: 'servicesImgs/nails.png', type: 'Nail Salon' },
+    { name: 'Makeup artists', image: 'servicesImgs/makeup.png', type: 'Beauty Salon' },
+    { name: 'Fitness', image: 'servicesImgs/fitness.png', type: 'Gym' },
+    { name: 'Nutricionistas', image: 'servicesImgs/nutricionista.png', type: 'Clinic' },
+    { name: 'Tatuadores', image: 'servicesImgs/tattoo.png', type: 'Tattoo Studio' },
+    { name: 'Fisioterapeutas', image: 'servicesImgs/fisio.png', type: 'Massage Therapy' },
+    { name: 'Consultas Médicas', image: 'servicesImgs/consulta.png', type: 'Consulting Room' },
+    { name: 'Terapeutas', image: 'servicesImgs/terapia.png', type: 'Massage Therapy' },
+    { name: 'Depilação', image: 'servicesImgs/depilacao.png', type: 'Beauty Salon' },
   ];
+
+  onSearch(event: Event): void {
+    event.preventDefault(); // Evita o comportamento padrão do formulário
+    if (this.searchQuery.trim()) {
+      // Redireciona para a página de serviços com o filtro de nome
+      this.router.navigate(['/services'], {
+        queryParams: { name: this.searchQuery },
+      });
+    }
+  }
 }

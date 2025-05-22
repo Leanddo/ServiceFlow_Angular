@@ -1,7 +1,7 @@
 @import "../../../../styles/variables.scss";
 
 nav {
-  background-color: #ffffff;
+  background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,9 +9,9 @@ nav {
   margin: 0 10%;
   border-radius: 50px;
   position: fixed;
-  top: 30px; 
+  top: 30px;
   z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // opcional para destaque
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: calc(100% - 20%);
 
   img {
@@ -25,7 +25,6 @@ nav {
 
     ul {
       display: flex;
-      justify-content: center;
       align-items: center;
       gap: 20px;
       list-style: none;
@@ -40,7 +39,6 @@ nav {
 
   .left-nav {
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: 20px;
 
@@ -48,6 +46,7 @@ nav {
       padding: 15px 25px;
       border-radius: 40px;
       border: none;
+      cursor: pointer;
     }
 
     .Entrar {
@@ -58,6 +57,139 @@ nav {
     .SignUp {
       background-color: $Roxo-Escuro;
       color: white;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+
+    span {
+      font-size: 1.1rem;
+      z-index: 1002;
+
+    }
+
+    .profile-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+      z-index: 1002;
+
+    }
+
+    .foto-Placeholder {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: $Roxo-light;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      color: #3b82f6;
+      cursor: pointer;
+      z-index: 1002;
+
+
+      svg {
+        width: 30px;
+        height: 30px;
+        color: $Roxo-Escuro;
+      }
+    }
+
+    .dropdown-menu {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: calc(100% + -25px);
+      right: -30px;
+      background-color: #fff;
+      border-radius: 0 0 30px 30px;
+      min-width: 250px;
+      z-index: 1001;
+      padding-top: 45px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+      transition: all 0.3s ease;
+
+      li {
+        padding: 12px 20px;
+        list-style: none;
+
+        button {
+          width: 100%;
+          background-color: rgb(255, 62, 62);
+          color: white;
+        }
+
+        a {
+          text-decoration: none;
+          color: black;
+          display: block;
+          width: 100%;
+        }
+      }
+
+      &.open {
+        max-height: 500px; // valor suficientemente grande para o conteúdo
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+    }
+
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 15px 20px;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    top: 0;
+
+    .right-nav {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    .left-nav {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .user-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      .dropdown-menu {
+        right: auto;
+        left: 0;
+      }
     }
   }
 }

@@ -1,0 +1,39 @@
+export interface Photo {
+  photo_id: number;
+  business_id: number;
+  photo_url: string;
+  description: string;
+  created_at: string;
+}
+
+export interface Service {
+  service_id?: number;
+  service_name: string;
+  description: string;
+  service_fotoUrl?: string | null;
+  price: number;
+  duration: number; // em minutos
+  category?: string;
+  isActive?: boolean;
+  business_id?: number;
+}
+
+export interface Business {
+  business_id: number;
+  business_name: string;
+  business_address?: string;
+  business_phone?: string;
+  business_email?: string;
+  main_photo_url: string | null;
+  description?: string;
+  business_type?: string;
+  isActive?: boolean;
+  opening_hour?: string; // "09:00:00"
+  closing_hour?: string; // "18:00:00"
+  photos?: Photo[];
+}
+
+export interface Rating {
+  average_rating: number;
+  total_reviews: number;
+}

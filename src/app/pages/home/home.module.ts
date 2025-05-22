@@ -5,10 +5,11 @@ import { ComoFuncionaModule } from '../../shared/components/home/como-funciona/c
 import { HomeRoutingModule } from './home-routing.module';
 import { SharedModule } from "../../shared/components/home/service-scroll/service-scroll.module";
 import { CountUpModule } from 'ngx-countup';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [HomeComponent],
-  imports: [ComoFuncionaModule, CommonModule, HomeRoutingModule, SharedModule, CountUpModule],
+  imports: [ComoFuncionaModule, CommonModule ,FormsModule ,HomeRoutingModule, SharedModule, CountUpModule],
 })
 export class HomeModule {
  

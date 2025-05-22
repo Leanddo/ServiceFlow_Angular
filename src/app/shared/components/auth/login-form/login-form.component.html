@@ -61,7 +61,7 @@
     {{ errorMessage }}
   </div>
 
-  <a href="#">Esqueceu-se da password?</a>
+  <a routerLink="/auth/forgot-password">Esqueceu-se da password?</a>
 
   <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">Continuar</button>
 
@@ -73,10 +73,11 @@
 
   <!-- Botão Sign Up with Google -->
   <div class="google-signup">
-    <button type="button">
-      <!-- click)="onGoogleSignup()" -->
+    <button type="button" (click)="onGoogleSignup()"
+    >
       <img src="assets/icons/google.svg" alt="Google Icon" />
       Login com o Google
     </button>
   </div>
+
 </form>

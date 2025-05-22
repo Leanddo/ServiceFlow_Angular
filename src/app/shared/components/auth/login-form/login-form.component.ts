@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { API_ENDPOINTS } from '../../../../../config/api';
 
 @Component({
   selector: 'app-login-form',
@@ -39,7 +40,14 @@ export class LoginFormComponent implements OnInit {
     try {
       await firstValueFrom(this.authService.login({ email, password }));
 
-      await this.router.navigate(['/dashboard']);
+      const redirect = localStorage.getItem('redirectAfterLogin');
+      if (redirect) {
+        localStorage.removeItem('redirectAfterLogin');
+        await this.router.navigate([redirect]);
+      } else {
+        await this.router.navigate(['/dashboard']);
+      }
+      
     } catch (err: any) {
       if (
         err.status === 403 &&
@@ -55,5 +63,9 @@ export class LoginFormComponent implements OnInit {
         this.errorMessage = 'Email ou password incorretos.';
       }
     }
+  }
+
+  onGoogleSignup(): void {
+    window.location.href = API_ENDPOINTS.auth.google.login;
   }
 }

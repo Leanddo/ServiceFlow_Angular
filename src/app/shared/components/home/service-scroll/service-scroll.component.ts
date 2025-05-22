@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './service-scroll.component.scss',
 })
 export class ServiceScrollComponent {
-  @Input() services: { image: string; name: string }[] = [];
+  @Input() services: { image: string; name: string, type: string }[] = [];
 }

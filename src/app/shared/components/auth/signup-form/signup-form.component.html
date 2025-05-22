@@ -13,7 +13,7 @@
   >
     <label for="username">Utilizador</label>
     <div class="input-wrapper">
-      <img class="icon-left" src="assets/icons/mail.svg" alt="Username Icon" />
+      <img class="icon-left" src="assets/icons/profile.svg" alt="Username Icon" />
       <input
         id="username"
         type="text"
@@ -175,6 +175,10 @@
     </div>
   </div>
 
+  <button type="submit" class="submit-btn" [disabled]="signupForm.invalid">
+    Continuar
+  </button>
+
   <div class="or-divider">
     <hr />
     <span>ou</span>
@@ -183,13 +187,10 @@
 
   <!-- Botão Sign Up with Google -->
   <div class="google-signup">
-    <button type="button">
+    <button type="button" (click)="onGoogleSignup()">
       <img src="assets/icons/google.svg" alt="Google Icon" />
       Login com o Google
     </button>
   </div>
 
-  <button type="submit" class="submit-btn" [disabled]="signupForm.invalid">
-    Continuar
-  </button>
 </form>
