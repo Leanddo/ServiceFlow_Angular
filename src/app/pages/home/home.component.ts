@@ -70,7 +70,7 @@ export class HomeComponent {
     event.preventDefault(); // Evita o comportamento padrão do formulário
     if (this.searchQuery.trim()) {
       // Redireciona para a página de serviços com o filtro de nome
-      this.router.navigate(['/services'], {
+      this.router.navigate(['/businesses'], {
         queryParams: { name: this.searchQuery },
       });
     }

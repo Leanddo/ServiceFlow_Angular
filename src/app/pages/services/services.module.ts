@@ -10,4 +10,4 @@ import { ServicesComponent } from './services.component';
   declarations: [ServicesComponent],
   imports: [CommonModule, ServicesRoutingModule, ReactiveFormsModule, RouterModule],
 })
-export class ServicesModule {}
+export class bussinessesModule {}

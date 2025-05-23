@@ -1,3 +1,5 @@
+import { UserProfile } from './user-profile.model'; // Ajuste o caminho conforme necessário
+
 export interface Photo {
   photo_id: number;
   business_id: number;
@@ -36,4 +38,18 @@ export interface Business {
 export interface Rating {
   average_rating: number;
   total_reviews: number;
+}
+
+export interface Professionals{
+  professional_id?: number;
+  email?: string;
+  availability: string[] | "Full-time"; 
+  role: "Owner" | "Employee" | "Assistant" | "Other"; 
+  isActive?: boolean;
+  business_id?: number;
+  user_id?: number;
+  Business?: {
+    business_name: string;
+  };
+  User: UserProfile;
 }

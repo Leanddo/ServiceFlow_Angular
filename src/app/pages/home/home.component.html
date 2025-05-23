@@ -9,13 +9,13 @@
   </div>
 
   <div class="hero-businesses-types">
-    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Barbershop' }">Barbeiro</a>
-    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Hairdresser' }">Cabeleireiro</a>
-    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Tattoo Studio' }">Tatoador</a>
-    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Nail Salon' }">Salão de unhas</a>
-    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Beauty Salon' }">Salão de beleza</a>
-    <a [routerLink]="['/services']" [queryParams]="{ business_type: 'Spa' }">Spa</a>
-    <a [routerLink]="['/services']">Mais...</a>
+    <a [routerLink]="['/businesses']" [queryParams]="{ business_type: 'Barbershop' }">Barbeiro</a>
+    <a [routerLink]="['/businesses']" [queryParams]="{ business_type: 'Hairdresser' }">Cabeleireiro</a>
+    <a [routerLink]="['/businesses']" [queryParams]="{ business_type: 'Tattoo Studio' }">Tatoador</a>
+    <a [routerLink]="['/businesses']" [queryParams]="{ business_type: 'Nail Salon' }">Salão de unhas</a>
+    <a [routerLink]="['/businesses']" [queryParams]="{ business_type: 'Beauty Salon' }">Salão de beleza</a>
+    <a [routerLink]="['/businesses']" [queryParams]="{ business_type: 'Spa' }">Spa</a>
+    <a [routerLink]="['/businesses']">Mais...</a>
   </div>
 
   <form class="hero-form-div" (submit)="onSearch($event)">

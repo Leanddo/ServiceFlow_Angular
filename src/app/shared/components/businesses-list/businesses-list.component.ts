@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'; // Importa ActivatedRoute
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import {
   BusinessService,
   BusinessWithExtras,
-} from '../../../../services/business.service';
+} from '../../../services/business.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ServiceCardComponent } from '../service-card/service-card.component';
 
 @Component({
-  selector: 'app-service-card',
+  selector: 'app-businesses-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './service-card.component.html',
-  styleUrls: ['./service-card.component.scss'],
+  imports: [CommonModule, FormsModule, RouterModule, ServiceCardComponent],
+  templateUrl: './businesses-list.component.html',
+  styleUrl: './businesses-list.component.scss',
 })
-export class ServiceCardComponent {
+export class BusinessesListComponent {
   businessCards: BusinessWithExtras[] = [];
   loading = true;
 
@@ -31,7 +32,7 @@ export class ServiceCardComponent {
 
   constructor(
     private businessService: BusinessService,
-    private route: ActivatedRoute 
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -89,6 +90,13 @@ export class ServiceCardComponent {
       this.businessCards.sort((a, b) => {
         const ratingA = a.rating?.average_rating ?? -1; // Define -1 para negócios sem avaliação
         const ratingB = b.rating?.average_rating ?? -1;
+
+        if (ratingB === ratingA) {
+          const reviewsA = a.rating?.total_reviews ?? 0; // Define 0 para negócios sem avaliações
+          const reviewsB = b.rating?.total_reviews ?? 0;
+          return reviewsB - reviewsA; // Ordena do maior para o menor número de avaliações
+        }
+
         return ratingB - ratingA; // Ordena do maior para o menor
       });
     } else if (this.selectedFilter === 'lowestRating') {
@@ -120,13 +128,17 @@ export class ServiceCardComponent {
   }
 
   nextPage(): void {
-    if (this.currentPage < Math.ceil(this.businessCards.length / this.itemsPerPage)) {
+    if (
+      this.currentPage <
+      Math.ceil(this.businessCards.length / this.itemsPerPage)
+    ) {
       this.currentPage++;
+      window.scrollTo({ top: 0, behavior: 'smooth' }); 
     }
   }
+
   goToPage(page: number): void {
     this.currentPage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  
 }

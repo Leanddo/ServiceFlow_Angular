@@ -26,14 +26,25 @@ export const API_ENDPOINTS = {
   businesses: {
     getAll: `${API_BASE_URL}/business`,
     create: `${API_BASE_URL}/business`,
-    update: (id: string) => `${API_BASE_URL}/business/${id}`,
-    getById: (id: string) => `${API_BASE_URL}/business/${id}`,
-    services:{
-      getBusinessService: (id: string) => `${API_BASE_URL}/businesses/${id}/services`
-    }
+    update: (id: number) => `${API_BASE_URL}/business/${id}`,
+    getById: (id: number) => `${API_BASE_URL}/business/${id}`,
+    services: {
+      getBusinessService: (id: number) =>
+        `${API_BASE_URL}/businesses/${id}/services`,
+    },
+    photos: {
+      getBusinessPhotos: (id: number) =>
+        `${API_BASE_URL}/business/${id}/photos`,
+    },
+    professionals: {
+      getPublicBusinessProfessionalsById: (id: number) =>
+        `${API_BASE_URL}/business/${id}/professionals/public`,
+      getPrivateBusinessProfessionalsById: (id: number) =>
+        `${API_BASE_URL}/business/${id}/professionals/private`,
+    },
   },
-  rating:{
-    getBusinessRating: (id: string) => `${API_BASE_URL}/businesses/${id}/average-rating`,
-  }
- 
+  rating: {
+    getBusinessRating: (id: number) =>
+      `${API_BASE_URL}/businesses/${id}/average-rating`,
+  },
 };

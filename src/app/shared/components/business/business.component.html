@@ -1,0 +1,114 @@
+<div class="business-container" *ngIf="business; else loadingTemplate">
+  <div class="bussiness-left">
+    <!-- Image Carousel -->
+    <div class="business-slider">
+      <!-- <owl-carousel-o [options]="carouselOptions">
+        <ng-template carouselSlide *ngFor="let photo of businessPhotos">
+          <img
+            [src]="photo.photo_url"
+            [alt]="photo.description || 'Business Photo'"
+          />
+        </ng-template>
+      </owl-carousel-o> -->
+      <img src="https://placehold.co/600x400/000000/FFF" alt="template image" />
+    </div>
+
+    <!-- Business Details -->
+    <div class="business-details">
+
+      <div class="business-info-wrapper">
+        <img [src]="business.main_photo_url" alt="">
+        <div class="business-info">
+          <h1>{{ business.business_name }}</h1>
+          <p>{{ business.business_address }} <img src="assets/icons/locationPin.svg" alt=""></p>
+          <p>{{ business.business_type }}</p>
+        </div>
+      </div>
+
+      <div class="business-rating">
+        <div class="stars">
+          <ng-container *ngFor="let star of [0, 1, 2, 3, 4]; let index = index">
+            <div
+              class="star"
+              [ngStyle]="getStarStyle(rating.average_rating, index)"
+            ></div>
+          </ng-container>
+        </div>
+        <span class="reviews">({{ rating.total_reviews || 0 }} )</span>
+      </div>
+    </div>
+
+    <!-- List of Services -->
+    <div class="business-services">
+      <div class="business-services-header">
+        <h2>Services</h2>
+        <div class="input-wrapper">
+          <input type="text" placeholder="Search for service" />
+          <img src="assets/icons/search.svg" alt="Search Icon" class="search-icon" />
+        </div>
+      </div>
+      <hr>
+
+      <div class="service" *ngFor="let service of services">
+        <app-service-card [service]="service"></app-service-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="bussiness-right">
+    <!-- Location Map -->
+    <div class="business-location">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.9264901240203!2d-25.707047909456563!3d37.76832179975774!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xb432b0c31089f65%3A0xd16f133b09b7b0b5!2sEPROSEC%20-%20Arrifes!5e0!3m2!1spt-PT!2spt!4v1748001597363!5m2!1spt-PT!2spt"
+        width="600"
+        height="450"
+        style="border: 0"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+
+    <div class="bussiness-info-right">
+      <div class="business-aboutus">
+        <h2>Sobre nos</h2>
+        <div class="professional">
+          <p>{{ business.description }}</p>
+        </div>
+      </div>
+      <!-- List of Professionals -->
+      <div class="business-professionals">
+        <h2>Our Professionals</h2>
+        <div class="professional" *ngFor="let professional of professionals">
+          <img
+            [src]="professional?.User?.fotoUrl"
+            [alt]="professional?.User?.username || 'Professional'"
+          />
+          <p>{{ professional?.User?.username }}</p>
+        </div>
+      </div>
+      <div class="business-aboutus">
+        <h2>Horarios</h2>
+        <div class="professional">
+          <p>Abre: {{ business.opening_hour }}</p>
+          <p>Fecha: {{ business.closing_hour }}</p>
+        </div>
+      </div>
+      <!-- Business Contacts -->
+      <div class="business-contact">
+        <h2>Contact Us</h2>
+        <p *ngIf="business?.business_email">
+          <strong>Email:</strong> {{ business.business_email }}
+        </p>
+        <p *ngIf="business?.business_phone">
+          <strong>Phone:</strong> {{ business.business_phone }}
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <p>Loading...</p>
+</ng-template>

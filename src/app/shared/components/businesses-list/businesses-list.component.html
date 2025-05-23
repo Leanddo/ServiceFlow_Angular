@@ -29,7 +29,11 @@
 </ng-template>
 
 <ng-template #showCards>
-  <div *ngFor="let item of getPaginatedBusinesses()" class="Business-card">
+  <div
+    *ngFor="let item of getPaginatedBusinesses()"
+    class="Business-card"
+    [routerLink]="['/businesses', item.business.business_id]"
+  >
     <div class="business-card-right">
       <img
         [src]="
@@ -79,40 +83,10 @@
         class="business-card-services"
         *ngIf="item.services && item.services.length > 0; else noServices"
       >
-        <div
+        <app-service-card
           *ngFor="let service of item.services | slice : 0 : 3"
-          class="business-card-service"
-        >
-          <div class="business-service-header">
-            <h2>{{ service.service_name }}</h2>
-            <p>{{ service.description }}</p>
-          </div>
-
-          <div class="business-service-price-hours-button">
-            <div class="business-service-price-hours-container">
-              <div>
-                <img
-                  src="assets/icons/clock.svg"
-                  alt="Ícone de relógio"
-                  class="business-card-service-icon"
-                />
-                <span class="business-card-service-text"
-                  >{{ service.duration }} min</span
-                >
-              </div>
-              <span class="business-card-service-text"
-                >{{ service.price | number : "1.2-2" }} €</span
-              >
-            </div>
-
-            <button
-              type="button"
-              [attr.aria-label]="'Marcar serviço ' + service.service_name"
-            >
-              Marcar
-            </button>
-          </div>
-        </div>
+          [service]="service"
+        ></app-service-card>
       </div>
 
       <ng-template #noServices>
@@ -133,7 +107,9 @@
   </a>
   <a
     (click)="nextPage()"
-    [class.disabled]="currentPage === Math.ceil(businessCards.length / itemsPerPage)"
+    [class.disabled]="
+      currentPage === Math.ceil(businessCards.length / itemsPerPage)
+    "
     class="pagination-link"
   >
     →
