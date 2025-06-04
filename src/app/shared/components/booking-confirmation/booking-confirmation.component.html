@@ -1,0 +1,90 @@
+<div class="confirmation-modal-wrapper" *ngIf="details">
+  <!-- Changed class name, added *ngIf -->
+  <div class="confirmation-modal-content">
+    <!-- Changed class name -->
+    <div class="header">
+      <button
+        class="back-arrow"
+        (click)="onGoBack()"
+        [disabled]="isBooking"
+        aria-label="Voltar"
+      >
+        ←
+      </button>
+      <h1>Avaliação e Confirmação</h1>
+      <button
+        class="close-button-modal"
+        (click)="onCloseModal()"
+        [disabled]="isBooking"
+        aria-label="Fechar"
+      >
+        ×
+      </button>
+    </div>
+
+    <!-- Only show details if no feedback message is active OR if feedback is an error (allowing retry) -->
+    <ng-container *ngIf="!feedbackMessage || feedbackMessage.type === 'error'">
+      <div class="booking-summary-header">
+        <h2>{{ details.displayDate }}</h2>
+        <p class="time-range">{{ details.displayTimeRange }}</p>
+      </div>
+
+      <div class="service-details-summary">
+        <div class="service-item">
+          <div>
+            <p class="item-name">{{ details.serviceName }}</p>
+            <p class="item-staff">Funcionário: {{ details.serviceStaff }}</p>
+          </div>
+          <div class="item-price-details">
+            <p>
+              {{ details.servicePrice | currency : "EUR" : "symbol" : "1.2-2" }}
+            </p>
+            <p class="item-time-display" *ngIf="details.displayTimeRange">
+              {{ details.displayTimeRange.split("(")[0].trim() }}
+            </p>
+          </div>
+        </div>
+        <div class="total-line">
+          <span>Total:</span>
+          <span>{{
+            details.servicePrice | currency : "EUR" : "symbol" : "1.2-2"
+          }}</span>
+        </div>
+      </div>
+    </ng-container>
+
+    <div
+      *ngIf="feedbackMessage"
+      class="feedback-message"
+      [class.success]="feedbackMessage.type === 'success'"
+      [class.error]="feedbackMessage.type === 'error'"
+    >
+      <!-- CHANGED -->
+      <p>{{ feedbackMessage.text }}</p>
+    </div>
+
+    <!-- Hide footer if success message is shown (as it will auto-close) -->
+    <div
+      class="footer-confirmation"
+      *ngIf="!(feedbackMessage && feedbackMessage.type === 'success')"
+    >
+      <div class="final-total">
+        <span>Total a pagar</span>
+        <strong class="price">{{
+          details.servicePrice | currency : "EUR" : "symbol" : "1.2-2"
+        }}</strong>
+      </div>
+
+      <button
+        class="confirm-reserve-button"
+        (click)="confirmAndBook()"
+        [disabled]="
+          isBooking || (feedbackMessage && feedbackMessage.type === 'error')
+        "
+      >
+        <span *ngIf="!isBooking">Confirmar e reservar</span>
+        <span *ngIf="isBooking">A reservar...</span>
+      </button>
+    </div>
+  </div>
+</div>

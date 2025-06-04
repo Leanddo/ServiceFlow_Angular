@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
 
@@ -11,26 +11,37 @@ export class NavBarComponent {
   user: any = null;
   dropdownOpen = false;
 
-  constructor(private userService: UserService, private authService: AuthService) {}
+  constructor(
+    private userService: UserService,
+    private eRef: ElementRef,
+    private authService: AuthService
+  ) {}
 
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.dropdown')) {
+  clickOutside(event: MouseEvent): void {
+    if (!this.eRef.nativeElement.contains(event.target)) {
       this.dropdownOpen = false;
     }
   }
 
-  
+  @HostListener('document:keydown.escape')
+  closeDropdownOnEscape(): void {
+    this.dropdownOpen = false;
+  }
+
   ngOnInit(): void {
     this.userService.getProfile().subscribe({
       next: (res) => {
-                this.user = res.profile;
+        this.user = res.profile;
       },
       error: () => {
         this.user = null;
       },
     });
+  }
+  
+  toggleDropdown(): void {
+    this.dropdownOpen = !this.dropdownOpen;
   }
 
   logout(): void {

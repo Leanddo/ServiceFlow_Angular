@@ -1,57 +1,129 @@
 @import "../../../../styles/variables.scss";
 
 footer {
-    width: 100%;
-    background-color: $Roxo-light;
-    padding: 2% 5%;
+  width: 100%;
+  background-color: $Roxo-light; // Mantém o fundo roxo claro para a área do footer
+  padding: 2.5rem 5%; // Aumentei um pouco o padding vertical para dar mais respiro
+  box-sizing: border-box;
 }
 
 .footer_wrapper {
-    background-color: white;
-    padding: 1% 2%;
-    border-radius: 40px;
+  background-color: white; // Mantido branco por enquanto, mas poderia ser $Roxo-Muito-Claro ou com alfa
+  padding: 1.5rem 2rem;   // Padding interno mais generoso e consistente (ajuste conforme necessário)
+  border-radius: 16px;   // Raio de borda mais sutil e moderno
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); // Sombra suave opcional para destacar o wrapper
+
+  .firstdivision {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $Roxo-Pastel;
+    padding-bottom: 1rem; // Espaçamento abaixo dos links/sociais antes da borda
+    margin-bottom: 1rem;  // Espaçamento abaixo da borda antes da segunda divisão
+    // Removida a altura fixa
+  }
+
+  .footer_Links {
+    a {
+      text-decoration: none;
+      color: $Roxo-Escuro;
+      font-size: 0.9rem; // Fonte ligeiramente menor para o rodapé
+      margin-right: 25px;
+      font-weight: 500;
+      transition: color 0.2s ease-in-out;
+
+      &:hover {
+        color: $Roxo-Royal; // Cor de hover para feedback
+      }
+
+      &:last-child {
+        margin-right: 0; // Remove margem do último link
+      }
+    }
+  }
+
+  .footer_Social {
+    display: flex; // Para alinhar os ícones
+    align-items: center;
+    a {
+      display: inline-block; // Para que o hover funcione bem
+      margin-left: 12px; // Espaçamento entre ícones sociais
+
+      svg {
+        width: 28px;  // Ícones sociais menores e mais discretos
+        height: 28px;
+        fill: $Roxo-Escuro; // Cor padrão, ajuste se necessário
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      &:hover svg {
+        opacity: 0.7; // Efeito de hover sutil
+      }
+
+      // Se precisar de cores específicas para cada ícone, pode manter como estava
+      // Exemplo para manter a cor do Facebook:
+      &[href*="facebook.com"] svg {
+         fill: #1a5fb4; // Cor original do Facebook
+      }
+      // Para o Instagram, o fill é complexo (gradiente).
+      // O hover com opacity é uma boa alternativa genérica.
+    }
+  }
+
+  .secondDivision {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // Removida a altura fixa e padding-left: 0
+    // O padding geral do .footer_wrapper já cuida disso
+
+    img {
+      height: 40px; // Logo um pouco menor no rodapé
+      opacity: 0.8; // Pode deixar o logo um pouco mais sutil
+    }
+
+    p {
+      font-size: 0.9rem; // Fonte do copyright alinhada com os links
+      color: mix($Roxo-Escuro, $Roxo-Pastel, 70%); // Cor um pouco mais suave para o copyright
+      font-weight: 400; // Peso normal para o copyright
+    }
+  }
+}
+
+// Para telas menores, você pode querer que as divisões fiquem empilhadas
+@media (max-width: 768px) {
+  .footer_wrapper {
+    .firstdivision, .secondDivision {
+      flex-direction: column;
+      align-items: center; // Centraliza os itens quando empilhados
+      text-align: center;
+
+      > div, > img, > p { // Seleciona os filhos diretos
+        margin-bottom: 1rem;
+      }
+      &:last-child > *:last-child {
+        margin-bottom: 0; // Remove margem do último item da última divisão
+      }
+    }
 
     .firstdivision {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid $Roxo-Pastel;
-        padding: 10px;
-        height: 5.5rem;
-
-
-        .footer_Links a {
-            text-decoration: none;
-            color: $Roxo-Escuro;
-            font-size: 1.1rem;
-            margin-right: 20px;
-            font-weight: 500;
+      .footer_Links {
+        margin-bottom: 1rem; // Espaço entre links e sociais quando empilhados
+        a {
+          display: block; // Links em bloco para melhor toque em mobile
+          margin-right: 0;
+          margin-bottom: 0.5rem;
+          &:last-child {
+            margin-bottom: 0;
+          }
         }
-
-        .footer_Social a svg {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
+      }
     }
 
     .secondDivision {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-        padding-left: 0;
-
-        height: 5.5rem;
-
-        img {
-            height: 60px;
-        }
-
-        p {
-            font-size: 1.1rem;
-            color: $Roxo-Escuro;
-            font-weight: 500;
-        }
+      img {
+        margin-bottom: 0.5rem; // Espaço abaixo do logo
+      }
     }
+  }
 }

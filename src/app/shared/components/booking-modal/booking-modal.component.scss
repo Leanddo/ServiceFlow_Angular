@@ -1,0 +1,364 @@
+@import '../../../../styles/variables.scss'; // Certifique-se que o caminho está correto para suas variáveis
+
+// Cores derivadas para consistência, usando suas variáveis base
+$text-color-main: darken($Roxo-Escuro, 5%);
+$text-color-light: lighten($Roxo-Escuro, 40%); // Ajustado para melhor contraste
+$background-main: #fff;
+$border-main-color: $Roxo-Pastel;
+$disabled-bg-color: #f4f4f5; // Um cinza bem claro
+$disabled-text-color: #b0b0b0; // Um cinza mais escuro para texto desabilitado
+$availability-indicator-color: #4CAF50;
+
+// --- Mixins ---
+@mixin flex-center($justify: center, $align: center, $direction: row) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+}
+
+// --- Estilos Base do Modal ---
+.booking-modal-wrapper {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  @include flex-center;
+  z-index: 1050;
+  font-family: $font-primary;
+  overflow-y: auto;
+  padding: 16px; // Reduzido um pouco
+}
+
+.booking-modal-content {
+  background-color: $background-main;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); // Sombra mais suave
+  padding: 20px 24px; // Ajustado
+  width: 100%;
+  max-width: 560px; // Ligeiramente menor para telas menores
+  display: flex;
+  flex-direction: column;
+  gap: 16px; // Espaçamento entre as seções principais
+  color: $text-color-main;
+  max-height: calc(100vh - 40px); // Garante que não ultrapasse a altura da tela
+  overflow-y: auto; // Scroll interno se o conteúdo for muito grande
+}
+
+// --- Header do Modal ---
+.modal-header {
+  @include flex-center(space-between, center);
+  padding-bottom: 12px;
+  border-bottom: 1px solid $Roxo-light;
+
+  .modal-title {
+    font-size: 1.6rem; // Ligeiramente menor
+    font-weight: 600;
+    color: $Roxo-Escuro;
+    margin: 0;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: $text-color-light;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s ease;
+    &:hover {
+      color: $Roxo-Medio;
+    }
+  }
+}
+
+// --- Carrossel (Estrutura geral para data e tempo) ---
+.selector-carousel {
+  @include flex-center(space-between, center, row);
+  gap: 8px; // Espaço entre setas e items
+  width: 100%;
+  box-sizing: border-box;
+
+  .nav-arrow {
+    background-color: $background-main;
+    border: 1px solid $border-main-color;
+    color: $Roxo-Medio;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    @include flex-center;
+    cursor: pointer;
+    font-size: 1.4rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+
+    &:hover:not(:disabled) {
+      background-color: $Roxo-light;
+      border-color: $Roxo-Medio;
+      color: $Roxo-Royal;
+    }
+    &:disabled {
+      color: $disabled-text-color;
+      cursor: not-allowed;
+      background-color: $disabled-bg-color;
+      border-color: $disabled-text-color;
+    }
+  }
+
+  .carousel-items {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row; // <<<< GARANTE ITENS EM LINHA (PARA DATAS E HORAS)
+    gap: 8px;
+    overflow: hidden; // Padrão para o seletor de data
+    padding: 4px 0;
+    min-width: 0; // Para comportamento correto em flexbox
+  }
+
+  // Especificidades para o seletor de HORÁRIO
+  &.time-selector {
+     // Como não há setas no HTML do time-selector, o .carousel-items deve ocupar todo o espaço
+     // e as setas não são renderizadas (se estivessem, poderíamos usar justify-content: center aqui).
+     // Se você quisesse centralizar o .carousel-items caso ele seja menor,
+     // poderia adicionar justify-content: center ao .time-selector.
+     // No entanto, com scroll, geralmente é melhor começar da esquerda.
+
+    .carousel-items {
+      overflow-x: auto;   // <<<< PERMITE SCROLL HORIZONTAL PARA HORÁRIOS
+      justify-content: flex-start; // Itens começam da esquerda
+      padding-bottom: 10px; // Espaço para a barra de rolagem
+      margin-bottom: -6px;
+
+      scrollbar-width: thin;
+      scrollbar-color: $Roxo-Medio rgba($Roxo-Pastel, 0.2);
+
+      &::-webkit-scrollbar { height: 6px; }
+      &::-webkit-scrollbar-track { background: rgba($Roxo-Pastel, 0.2); border-radius: 3px; }
+      &::-webkit-scrollbar-thumb { background-color: $Roxo-Medio; border-radius: 3px;
+        &:hover { background-color: $Roxo-Royal; }
+      }
+    }
+  }
+}
+
+// --- Itens individuais do carrossel ---
+.item {
+  flex: 0 0 auto;
+  padding: 8px 10px; // Ajustado
+  border: 1px solid $border-main-color;
+  border-radius: 6px; // Ligeiramente menos arredondado
+  background-color: $background-main;
+  color: $text-color-main;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.1s ease-out;
+  font-weight: 500;
+  line-height: 1.2; // Ajustado
+
+  &.selected {
+    background-color: $Roxo-Medio;
+    color: $background-main;
+    border-color: $Roxo-Medio;
+    font-weight: 600; // Um pouco menos bold
+    transform: translateY(-1px); // Efeito de clique mais sutil
+    box-shadow: 0 2px 5px rgba($Roxo-Medio, 0.25);
+  }
+
+  &.unavailable,
+  &:disabled {
+    background-color: $disabled-bg-color;
+    color: $disabled-text-color;
+    cursor: not-allowed;
+    border-color: $disabled-bg-color; // Borda da mesma cor do fundo desabilitado
+    transform: none;
+    box-shadow: none;
+  }
+  &:not(.selected):not(.unavailable):not(:disabled):hover {
+    border-color: $Roxo-Medio;
+    background-color: lighten($Roxo-light, 5%); // Fundo sutil no hover
+  }
+}
+
+.date-item {
+  @include flex-center(center, center, column);
+  gap: 2px; // Menor gap
+  padding: 6px 8px;
+  min-width: 56px; // Ajustado
+
+  .day-name {
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-transform: capitalize;
+    color: $text-color-light;
+  }
+  &.selected .day-name {
+    color: rgba($background-main, 0.9);
+  }
+  .day-number {
+    font-size: 1.1rem; // Ajustado
+    font-weight: 600;
+  }
+  .availability-indicator {
+    width: 50%;
+    max-width: 20px;
+    height: 3px;
+    background-color: $availability-indicator-color;
+    border-radius: 1.5px;
+    margin-top: 3px;
+  }
+  &.selected .availability-indicator { background-color: $background-main; }
+  &.unavailable .availability-indicator { display: none; }
+}
+
+.time-slot-item {
+  font-size: 0.95rem; // Ajustado
+  padding: 8px 12px;
+  min-width: 65px; // Ajustado
+}
+
+.loading-message, .no-items-message {
+  color: $text-color-light;
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+  padding: 16px 0;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.time-period-selector {
+  display: flex;
+  gap: 6px;
+  background-color: $Roxo-light;
+  padding: 5px;
+  border-radius: 8px;
+  margin: 12px 0; // Ajustado
+  width: 100%;
+  box-sizing: border-box;
+
+  .period-button {
+    flex-grow: 1;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    color: $text-color-light;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+    text-align: center;
+    font-weight: 500;
+
+    &.selected {
+      background-color: $background-main;
+      color: $Roxo-Royal;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba($Roxo-Escuro, 0.1);
+    }
+    &:not(.selected):hover {
+      background-color: rgba($background-main, 0.5);
+      color: $Roxo-Medio;
+    }
+  }
+}
+
+.service-details-card {
+  background-color: $Roxo-light;
+  padding: 16px 20px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 16px;
+  align-items: center;
+  border: 1px solid transparentize($Roxo-Pastel, 0.5); // Borda mais sutil
+  margin-top: 8px;
+
+  .service-info {
+    .service-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: $Roxo-Escuro;
+      margin: 0 0 4px 0;
+    }
+    .service-staff {
+      font-size: 0.85rem;
+      color: $text-color-light;
+      margin: 0;
+      font-weight: 400;
+    }
+  }
+
+  .service-meta {
+    text-align: right;
+    .service-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: $Roxo-Royal;
+      display: block;
+    }
+    .service-time-range {
+      font-size: 0.8rem;
+      color: $text-color-light;
+      display: block;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+  }
+}
+
+.modal-footer {
+  @include flex-center(space-between, center);
+  padding-top: 16px;
+  margin-top: 8px;
+  border-top: 1px solid $Roxo-light;
+
+  .total-summary {
+    @include flex-center(flex-start, baseline);
+    gap: 8px;
+    .total-label {
+      font-size: 0.9rem;
+      color: $text-color-light;
+      font-weight: 400;
+    }
+    .total-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: $Roxo-Royal;
+    }
+    .total-duration {
+      font-size: 0.8rem;
+      color: $text-color-main;
+      background-color: transparentize($Roxo-light, 0.5); // Mais sutil
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-left: 4px;
+      font-weight: 500;
+    }
+  }
+
+  .continue-button {
+    background-color: $Roxo-Medio;
+    color: $background-main;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s ease-out;
+    box-shadow: 0 2px 6px rgba($Roxo-Medio, 0.2);
+
+    &:hover:not(:disabled) {
+      background-color: $Roxo-Royal;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba($Roxo-Royal, 0.3);
+    }
+    &:disabled {
+      background-color: $disabled-text-color;
+      color: darken($disabled-text-color, 40%);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+  }
+}

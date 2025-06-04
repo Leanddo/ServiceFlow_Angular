@@ -12,18 +12,40 @@
           alt="Ícone de relógio"
           class="business-card-service-icon"
         />
-        <span class="business-card-service-text">{{ service.duration }} min</span>
+        <span class="business-card-service-text"
+          >{{ service.duration }} min</span
+        >
       </div>
       <span class="business-card-service-text">
-        {{ service.price | number : '1.2-2' }} €
+        {{ service.price | number : "1.2-2" }} €
       </span>
     </div>
 
     <button
       type="button"
       [attr.aria-label]="'Marcar serviço ' + service.service_name"
+      (click)="openBookingModal(service)"
     >
       Marcar
     </button>
   </div>
 </div>
+
+<app-booking-modal
+  *ngIf="isBookingModalOpen"
+  [serviceId]="selectedServiceId"
+  [serviceNameDisplay]="modalServiceName" 
+  [servicePrice]="modalServicePrice"     
+  [serviceDurationMinutes]="modalServiceDuration" 
+  [isOpen]="isBookingModalOpen" 
+  (closeModal)="closeBookingModal()"
+  (proceedToConfirmation)="handleProceedToConfirmation($event)"
+></app-booking-modal>
+
+
+<app-booking-confirmation
+  *ngIf="isConfirmationScreenOpen && currentBookingConfirmationDetails"
+  [details]="currentBookingConfirmationDetails!"
+  (goBack)="handleGoBackFromConfirmation()"
+  (bookingFinalized)="handleBookingFinalized($event)"
+></app-booking-confirmation>

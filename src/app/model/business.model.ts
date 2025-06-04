@@ -9,7 +9,7 @@ export interface Photo {
 }
 
 export interface Service {
-  service_id?: number;
+  service_id: number;
   service_name: string;
   description: string;
   service_fotoUrl?: string | null;
@@ -38,6 +38,29 @@ export interface Business {
 export interface Rating {
   average_rating: number;
   total_reviews: number;
+}
+
+export interface Review {
+  review_id: number;
+  review_title: string;
+  review_body: string;
+  review_rating: number;
+  user_id: number;
+  createdAt: string;
+  Service: {
+    service_id: number;
+    service_name: string;
+  };
+  User: {
+    username: string;
+    fotoUrl: string | null;
+  };
+}
+
+export interface BusinessReviewsResponse {
+  business_name: string;
+  total_reviews: number;
+  reviews: Review[];
 }
 
 export interface Professionals{

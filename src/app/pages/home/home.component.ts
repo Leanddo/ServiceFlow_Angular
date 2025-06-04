@@ -9,27 +9,32 @@ import {
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-home', // Seletor do componente
+  templateUrl: './home.component.html', // Template associado ao componente
+  styleUrls: ['./home.component.scss'], // Estilos associados ao componente
   animations: [
+    // Define as animações usadas no componente
     trigger('slideInOut', [
+      // Animação para entrada e saída de elementos
       transition(':enter', [
-        style({ transform: 'translateX(100%)', opacity: 0 }),
+        // Animação ao entrar
+        style({ transform: 'translateX(100%)', opacity: 0 }), // Começa fora da tela à direita
         animate(
           '600ms ease-out',
-          style({ transform: 'translateX(0)', opacity: 1 })
+          style({ transform: 'translateX(0)', opacity: 1 }) // Move para a posição inicial com opacidade total
         ),
       ]),
       transition(':leave', [
+        // Animação ao sair
         animate(
           '600ms ease-in',
-          style({ transform: 'translateX(-100%)', opacity: 0 })
+          style({ transform: 'translateX(-100%)', opacity: 0 }) // Sai para a esquerda com opacidade zero
         ),
       ]),
     ]),
   ],
 })
+
 export class HomeComponent {
   frases: string[] = [
     'Organiza. Agiliza. Cresce.',
@@ -43,13 +48,14 @@ export class HomeComponent {
   searchQuery: string = ''; // Variável para armazenar o valor do campo de entrada
 
   constructor(private router: Router) {
+    // Configura um intervalo para alternar entre as frases
     setInterval(() => {
-      this.animationState = false;
+      this.animationState = false; // Desativa a animação
       setTimeout(() => {
-        this.fraseAtual = (this.fraseAtual + 1) % this.frases.length;
-        this.animationState = true;
-      }, 600);
-    }, 4000);
+        this.fraseAtual = (this.fraseAtual + 1) % this.frases.length; // Alterna para a próxima frase
+        this.animationState = true; // Reativa a animação
+      }, 600); // Tempo para a animação de saída
+    }, 4000); // Intervalo entre as trocas de frases
   }
 
   myServices = [

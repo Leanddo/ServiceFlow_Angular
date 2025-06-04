@@ -1,0 +1,152 @@
+@import '../../../../styles/variables.scss';
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  background-color: $Roxo-transparent;
+  border-right: 1px solid rgba(0, 0, 0, 0.24);
+  display: flex;
+  flex-direction: column;
+  font-family: $font-primary;
+  color: $Roxo-Escuro;
+  box-sizing: border-box;
+
+  .user-info {
+    padding: 25px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.24);
+
+    .avatar-container {
+      position: relative;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      margin: 0 auto 15px auto;
+      overflow: visible;
+
+      > img,
+      > .foto-Placeholder {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease, transform 0.3s ease;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        &:hover,
+        &:focus-visible {
+          border-color: $Roxo-Royal;
+          transform: scale(1.05);
+        }
+      }
+
+      > img {
+        object-fit: cover;
+      }
+
+      > .foto-Placeholder {
+        background-color: $Roxo-light;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+          width: 60%;
+          height: 60%;
+          color: white;
+        }
+      }
+
+      .avatar-edit-icon-container {
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        background-color: #f0f0f0;
+        border-radius: 50%;
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #dcdcdc;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+
+        &:hover {
+          background-color: #e5e5e5;
+        }
+
+        .icon-camera-placeholder {
+          font-size: 14px;
+          color: $Roxo-Escuro;
+        }
+      }
+    }
+
+    .user-name {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: $Roxo-Escuro;
+      margin-bottom: 5px;
+    }
+
+    .user-phone {
+      font-size: 0.875rem;
+      color: $Roxo-Pastel;
+    }
+  }
+
+  .navigation {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        a {
+          display: block;
+          padding: 13px 20px 13px 25px;
+          text-decoration: none;
+          color: $Roxo-Escuro;
+          font-size: 0.9rem;
+          font-weight: 500;
+          border-left: 4px solid transparent;
+          transition: all 0.2s ease-in-out;
+
+          &:hover,
+          &.active {
+            background-color: $Roxo-transparent;
+            color: $Roxo-Royal;
+            font-weight: 600;
+            border-left-color: $Roxo-Royal;
+          }
+        }
+      }
+    }
+  }
+
+  .logout-button {
+    padding: 15px 20px 15px 29px;
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    border-top: 1px solid rgba(75, 0, 130, 0.2);
+    width: 100%;
+    font-family: $font-primary;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $Roxo-Escuro;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: $Roxo-transparent;
+      color: $Roxo-Royal;
+    }
+  }
+}

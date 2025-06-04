@@ -1,0 +1,20 @@
+<!-- user-account-page.component.html -->
+<div class="user-account-layout">
+  <app-account-sidebar
+    *ngIf="!isLoadingUserProfile"
+    [userName]="userData?.username || null"
+    [userAvatarUrl]="userData?.fotoUrl || null"
+    (logout)="handleLogout()"
+  >
+  </app-account-sidebar>
+  <div *ngIf="isLoadingUserProfile" class="loading-sidebar-placeholder"></div>
+
+  <main class="content-area">
+    <div class="content-header">
+      <h1>{{ currentTitle }}</h1>
+    </div>
+    <div class="content-wrapper">
+      <router-outlet (activate)="onOutletActivated($event)"></router-outlet>
+    </div>
+  </main>
+</div>

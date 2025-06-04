@@ -1,0 +1,98 @@
+<div class="booking-modal-wrapper" *ngIf="isOpen">
+  <div class="booking-modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">{{ currentMonthYearLabel }}</h2>
+      <button class="close-button" (click)="onClose()" aria-label="Fechar modal">×</button>
+    </div>
+
+    <!-- Date Selector -->
+    <div class="selector-carousel date-selector">
+      <button class="nav-arrow prev-date-carousel"
+              (click)="navigateDayCarousel('prev')"
+              [disabled]="!canNavigateDayPrev"
+              aria-label="Semana anterior"><</button>
+      <div class="carousel-items">
+        <button
+          *ngFor="let day of displayDays"
+          class="item date-item"
+          [class.selected]="selectedDate === day.value"
+          [class.unavailable]="!day.isAvailable"
+          (click)="selectDate(day.value)"
+          [disabled]="!day.isAvailable"
+          [attr.aria-pressed]="selectedDate === day.value">
+          <span class="day-name">{{ day.dayNameShort }}</span>
+          <span class="day-number">{{ day.dayNumber }}</span>
+          <span *ngIf="day.isAvailable" class="availability-indicator"></span>
+        </button>
+      </div>
+      <button class="nav-arrow next-date-carousel"
+              (click)="navigateDayCarousel('next')"
+              [disabled]="!canNavigateDayNext"
+              aria-label="Próxima semana">></button>
+    </div>
+
+    <!-- Time Period Selector -->
+    <div class="time-period-selector">
+      <button
+        *ngFor="let period of timePeriods"
+        class="period-button"
+        [class.selected]="selectedPeriod === period"
+        (click)="selectPeriod(period)"
+        [attr.aria-pressed]="selectedPeriod === period">
+        {{ period }}
+      </button>
+    </div>
+
+    <!-- Time Slot Selector -->
+    <div class="selector-carousel time-selector">
+      <!-- As setas não estão presentes aqui no seu HTML original, então o .carousel-items terá scroll -->
+      <div class="carousel-items">
+        <ng-container *ngIf="isLoadingTimes">
+            <p class="loading-message">A carregar horários...</p>
+        </ng-container>
+        <ng-container *ngIf="!isLoadingTimes && filteredTimesForPeriod.length > 0">
+          <button
+            *ngFor="let timeIso of filteredTimesForPeriod"
+            class="item time-slot-item"
+            [class.selected]="selectedTime === timeIso"
+            (click)="selectTime(timeIso)"
+            [attr.aria-pressed]="selectedTime === timeIso">
+            {{ formatTimeToDisplay(timeIso) }}
+          </button>
+        </ng-container>
+        <ng-container *ngIf="!isLoadingTimes && filteredTimesForPeriod.length === 0 && selectedDate">
+          <p class="no-items-message">Sem horários para {{ selectedPeriod | lowercase }}.</p>
+        </ng-container>
+         <ng-container *ngIf="!isLoadingTimes && filteredTimesForPeriod.length === 0 && !selectedDate">
+            <p class="no-items-message">Selecione um dia.</p>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Selected Service Details Card -->
+    <div class="service-details-card" *ngIf="serviceNameDisplay"> <!-- Adicionado *ngIf para só mostrar se houver nome -->
+      <div class="service-info">
+        <h3 class="service-name">{{ serviceNameDisplay }}</h3>
+        <p class="service-staff">Funcionário: {{ serviceStaff }}</p>
+      </div>
+      <div class="service-meta">
+        <span class="service-price">{{ servicePrice | currency:'EUR':'symbol':'1.2-2' }}</span>
+        <span class="service-time-range" *ngIf="selectedTime && selectedServiceEndTime">
+          {{ formatTimeToDisplay(selectedTime) }} - {{ selectedServiceEndTime }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Footer Summary & Action -->
+    <div class="modal-footer">
+      <div class="total-summary">
+        <span class="total-label">Total:</span>
+        <span class="total-price">{{ servicePrice | currency:'EUR':'symbol':'1.2-2' }}</span>
+        <span class="total-duration">{{ serviceDurationMinutes }}min</span>
+      </div>
+      <button class="continue-button" (click)="confirmAndProceed()" [disabled]="!selectedTime || !selectedDate">
+        Continuar
+      </button>
+    </div>
+  </div>
+</div>
