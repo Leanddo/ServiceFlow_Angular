@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AccountSidebarComponent } from "../../shared/components/account-sidebar/account-sidebar.component";
 import { filter, map, mergeMap, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
@@ -14,9 +13,15 @@ import { AuthService } from '../../services/auth.service';
 
 export class UserAccountPageComponent implements OnInit, OnDestroy {
   
-  userData: UserProfile | null = null; // <<< CORRIGIDO: Usar UserProfile consistentemente
+  userData: UserProfile | null = null; 
   currentTitle: string = '';
   isLoadingUserProfile: boolean = true;
+
+  sidenavItems = [
+    { label: 'Detalhes do Perfil', route: '/user-account/details', active: false },
+    { label: 'Excluir Conta', route: '/user-account/delete-account', active: false },
+    { label: 'Agendamentos', route: '/user-account/appointments', active: false },
+  ];
 
   private destroy$ = new Subject<void>();
 
@@ -24,7 +29,7 @@ export class UserAccountPageComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService // Certifique-se de que o AuthService está importado corretamente
+    private authService: AuthService 
   ) {}
 
   ngOnInit(): void {
@@ -35,19 +40,18 @@ export class UserAccountPageComponent implements OnInit, OnDestroy {
   fetchUserProfile(): void {
     this.isLoadingUserProfile = true;
     this.userService.getProfile().pipe(
-      map((response: UserProfileResponse) => response.profile),
       takeUntil(this.destroy$)
     ).subscribe({
-      next: (profile: UserProfile) => { 
+      next: (profile) => { 
+        console.log('Perfil do usuário carregado:', profile); // Debug: Log the loaded user profile
         this.userData = profile;
         this.isLoadingUserProfile = false;
-        this.updateWelcomeTitleIfNeeded(); 
       },
       error: (err) => {
         console.error('Erro ao buscar perfil do usuário:', err);
+        this.router.navigate(['/']);
         this.userData = { username: 'Usuário', email: '', fotoUrl: null, role: '' };
         this.isLoadingUserProfile = false;
-        this.updateWelcomeTitleIfNeeded(); 
       },
     });
   }
@@ -67,36 +71,29 @@ export class UserAccountPageComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe((data: Data | undefined) => {
       this.currentTitle = data?.['title'] || 'Minha Conta'; 
-      this.updateWelcomeTitleIfNeeded(); 
     });
 
     if (this.activatedRoute.firstChild) {
       this.activatedRoute.firstChild.data.pipe(takeUntil(this.destroy$)).subscribe(data => {
          if (data?.['title'] && (this.currentTitle === 'Minha Conta' || !this.currentTitle) ) {
             this.currentTitle = data['title'];
-            this.updateWelcomeTitleIfNeeded();
          }
       });
     }
   }
 
-  updateWelcomeTitleIfNeeded(): void {
-    const currentUrl = this.router.url; 
-    const isProfileDetailsRoute = currentUrl.endsWith('/details') || currentUrl.endsWith('/user-account'); // Ajuste conforme suas rotas
-
-    if (this.userData && isProfileDetailsRoute) {
-      this.currentTitle = `Bem-vindo, ${this.userData.username || 'Usuário'}!`;
-    }
-  }
-
-  onOutletActivated(component: any) {
-  }
-
   handleLogout(): void {
-    console.log('Logout solicitado pelo usuário.');
     this.authService.logout();
-    alert('Funcionalidade de logout a ser implementada!');
     this.router.navigate(['/login']);
+  }
+
+  navigateTo(route: string): void {
+    this.sidenavItems.forEach((item) => (item.active = item.route === route));
+    this.router.navigate([route]);
+  }
+
+  onOutletActivated(event: any): void {
+    console.log('Router outlet activated with component:', event); 
   }
 
   ngOnDestroy(): void {

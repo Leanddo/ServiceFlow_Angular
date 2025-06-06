@@ -1,0 +1,143 @@
+<div class="form-title-section">
+  <h2>Convidar Novo Profissional</h2>
+  <p class="form-description">
+    Preencha os dados abaixo para enviar um convite. O profissional poderá
+    aceitar e completar o seu perfil.
+  </p>
+</div>
+
+<form [formGroup]="inviteForm" (ngSubmit)="onSubmit()" novalidate>
+  <!-- Global Messages -->
+  <div *ngIf="errorMessage" class="form-feedback-message error">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="successMessage" class="form-feedback-message success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Email e Cargo -->
+  <div class="form-row">
+    <!-- Email -->
+    <div
+      class="form-group"
+      [class.invalid-field]="email?.invalid && email?.touched"
+    >
+      <label for="email"
+        >Email do Profissional<span class="required-asterisk">*</span></label
+      >
+      <div class="input-wrapper">
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="ex: profissional@email.com"
+        />
+      </div>
+      <div *ngIf="email?.invalid && email?.touched" class="field-error-message">
+        <span *ngIf="email?.errors?.['required']">Email é obrigatório.</span>
+        <span *ngIf="email?.errors?.['email']"
+          >Por favor, insira um email válido.</span
+        >
+      </div>
+    </div>
+
+    <!-- Cargo -->
+    <div
+      class="form-group"
+      [class.invalid-field]="role?.invalid && role?.touched"
+    >
+      <label for="role">Cargo<span class="required-asterisk">*</span></label>
+      <div class="input-wrapper">
+        <select id="role" formControlName="role">
+          <option value="" disabled>Selecione um cargo...</option>
+          <option *ngFor="let r of roles" [value]="r.value">
+            {{ r.display }}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="role?.invalid && role?.touched" class="field-error-message">
+        <span *ngIf="role?.errors?.['required']">O cargo é obrigatório.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disponibilidade -->
+  <div class="availability-section">
+    <h3>Horários de Trabalho</h3>
+    <div formArrayName="availability">
+      <div
+        *ngFor="let availabilityGroup of availability.controls; let i = index"
+        [formGroupName]="i"
+        class="availability-row"
+      >
+        <!-- Dia da Semana -->
+        <div class="form-group">
+          <label [for]="'day' + i">Dia</label>
+          <div class="input-wrapper">
+            <select [id]="'day' + i" formControlName="day">
+              <option value="" disabled>Dia</option>
+              <option *ngFor="let day of daysOfWeek" [value]="day">
+                {{ day }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Horário de Início -->
+        <div class="form-group">
+          <label [for]="'start' + i">Início</label>
+          <div class="input-wrapper">
+            <input type="time" [id]="'start' + i" formControlName="start" />
+          </div>
+        </div>
+
+        <!-- Horário de Fim -->
+        <div class="form-group">
+          <label [for]="'end' + i">Fim</label>
+          <div class="input-wrapper">
+            <input type="time" [id]="'end' + i" formControlName="end" />
+          </div>
+        </div>
+
+        <!-- Botão de Remover -->
+        <button
+          type="button"
+          class="remove-availability-btn"
+          (click)="removeAvailability(i)"
+          [disabled]="availability.length <= 1"
+        >
+          ×
+          <!-- Um "X" simples para remover -->
+        </button>
+      </div>
+      <div
+        *ngIf="availability?.errors?.['timeRangeInvalid'] && availability.touched"
+        class="field-error-message"
+      >
+        O horário de início deve ser anterior ao horário de fim.
+      </div>
+    </div>
+
+    <button
+      type="button"
+      (click)="addAvailability()"
+      class="add-availability-btn"
+    >
+      + Adicionar outro horário
+    </button>
+  </div>
+
+  <!-- Botão de Submissão -->
+  <button
+    type="submit"
+    class="submit-btn"
+    [disabled]="isLoading || inviteForm.invalid"
+  >
+    <span *ngIf="isLoading">Enviando...</span>
+    <span *ngIf="!isLoading">Enviar Convite</span>
+  </button>
+
+  <button type="button" class="skip-btn" (click)="proceedToDashboard()">
+    Pular e ir para o Painel
+  </button>
+</form>

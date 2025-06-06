@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,6 +18,8 @@ export class NavBarComponent {
     private authService: AuthService
   ) {}
 
+  private destroy$ = new Subject<void>();
+
   @HostListener('document:click', ['$event'])
   clickOutside(event: MouseEvent): void {
     if (!this.eRef.nativeElement.contains(event.target)) {
@@ -31,15 +34,25 @@ export class NavBarComponent {
 
   ngOnInit(): void {
     this.userService.getProfile().subscribe({
-      next: (res) => {
-        this.user = res.profile;
+      next: (user) => {
+        this.user = user;
       },
       error: () => {
         this.user = null;
       },
     });
+
+    // Subscrição para updates do estado do utilizador após login/logout
+    this.authService.user$.subscribe((user) => {
+      this.user = user;
+    });
   }
-  
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   toggleDropdown(): void {
     this.dropdownOpen = !this.dropdownOpen;
   }

@@ -27,4 +27,13 @@ export class QueueService {
       }
     );
   }
+
+  getUserAppointments(): Observable<any[]> {
+    return this.http.get<any[]>(API_ENDPOINTS.queues.getUserQueues, { withCredentials: true });
+  }
+
+  updateStatus(serviceId: number | string, data: { status: string }): Observable<any> {
+    return this.http.patch(API_ENDPOINTS.queues.queueStatus(serviceId), data, { withCredentials: true });
+  }
+  
 }

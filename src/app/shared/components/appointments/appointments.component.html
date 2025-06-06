@@ -1,0 +1,144 @@
+<div class="appointments-container">
+  <h1>Meus Agendamentos</h1>
+
+  <div *ngIf="errorMessage" class="error-message-banner">
+    <i class="icon-alert-triangle"></i> {{ errorMessage }}
+  </div>
+
+  <div *ngIf="appointments && appointments.length > 0; else noAppointments" class="appointments-grid">
+    <div *ngFor="let appointment of appointments" class="appointment-item" [attr.data-status]="appointment.status">
+      <div class="appointment-header">
+        <h3 class="service-name">{{ appointment.service_name }}</h3>
+        <span class="status" [ngClass]="'status-' + appointment.status?.toLowerCase()">
+          {{ getStatusDisplayName(appointment.status) }}
+        </span>
+      </div>
+
+      <div class="appointment-details-summary">
+        <p class="business-info">
+          <i class="icon-store"></i> {{ appointment.business_name }}
+        </p>
+        <p class="date-time">
+          <i class="icon-calendar"></i> {{ appointment.queue_date | date:'dd/MM/yyyy' }}
+          <span class="separator">|</span>
+          <i class="icon-clock"></i> {{ appointment.queue_date | date:'HH:mm' }}
+        </p>
+      </div>
+
+      <div class="appointment-actions">
+        <button
+          type="button"
+          class="details-button"
+          (click)="toggleDetails(appointment)"
+          aria-expanded="selectedAppointment === appointment"
+          [attr.aria-controls]="'details-modal-' + appointment.queue_id"
+        >
+          <i class="icon-eye"></i> Ver Detalhes
+        </button>
+        <button
+          *ngIf="canCancel(appointment)"
+          type="button"
+          class="cancel-button-quick"
+          (click)="openCancelConfirmation(appointment)"
+        >
+          <i class="icon-cancel-circle"></i> Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noAppointments>
+    <div class="no-appointments-message" *ngIf="!errorMessage"> <!-- Só mostra se não houver erro global -->
+      <i class="icon-calendar-x"></i>
+      <p>Nenhum agendamento encontrado.</p>
+      <p class="sub-message">Parece que você ainda não tem serviços agendados.</p>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Modal de Detalhes / Confirmação de Cancelamento -->
+<div
+  *ngIf="selectedAppointment"
+  class="modal-overlay"
+  (click)="closeModal()"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'modal-title-' + selectedAppointment.queue_id"
+>
+  <div class="modal-content" (click)="$event.stopPropagation()" [id]="'details-modal-' + selectedAppointment.queue_id">
+    <button class="modal-close-button" (click)="closeModal()" aria-label="Fechar modal">
+      <i class="icon-x"></i>
+    </button>
+
+    <h2 class="modal-title" [id]="'modal-title-' + selectedAppointment.queue_id">
+      Detalhes do Agendamento
+    </h2>
+
+    <div class="modal-details-section">
+      <div class="detail-row"><span class="detail-label"><i class="icon-clipboard"></i>Serviço:</span> <span class="detail-value">{{ selectedAppointment.service_name }}</span></div>
+      <div class="detail-row"><span class="detail-label"><i class="icon-store"></i>Estabelecimento:</span> <span class="detail-value">{{ selectedAppointment.business_name }}</span></div>
+      <div class="detail-row"><span class="detail-label"><i class="icon-map-pin"></i>Endereço:</span> <span class="detail-value">{{ selectedAppointment.business_address }}</span></div>
+      <div class="detail-row"><span class="detail-label"><i class="icon-calendar"></i>Data:</span> <span class="detail-value">{{ selectedAppointment.queue_date | date:'fullDate' }}</span></div>
+      <div class="detail-row"><span class="detail-label"><i class="icon-clock"></i>Horário:</span> <span class="detail-value">{{ selectedAppointment.queue_date | date:'HH:mm' }}</span></div>
+      <div class="detail-row" *ngIf="selectedAppointment.queue_position">
+        <span class="detail-label"><i class="icon-users"></i>Posição na Fila:</span> <span class="detail-value">{{ selectedAppointment.queue_position }}</span>
+      </div>
+      <div class="detail-row" *ngIf="formatWaitTime(selectedAppointment.queue_estimate_wait_time)">
+        <span class="detail-label"><i class="icon-hourglass"></i>Espera Estimada:</span> <span class="detail-value">{{ formatWaitTime(selectedAppointment.queue_estimate_wait_time) }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label"><i class="icon-info"></i>Status:</span>
+        <span class="detail-value status modal-status" [ngClass]="'status-' + selectedAppointment.status?.toLowerCase()">
+          {{ getStatusDisplayName(selectedAppointment.status) }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Seção de Erro Específico do Modal (ex: erro ao cancelar) -->
+    <div *ngIf="errorMessage && showCancelConfirmation" class="modal-error-message">
+       {{ errorMessage }}
+    </div>
+
+    <!-- Seção de Confirmação de Cancelamento -->
+    <div *ngIf="showCancelConfirmation && canCancel(selectedAppointment) && selectedAppointment.status !== 'cancelled'" class="cancel-confirmation-section">
+      <p class="confirmation-text">
+        Tem certeza que deseja cancelar o agendamento para <strong>{{ selectedAppointment.service_name }}</strong>?
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="button-secondary" (click)="closeCancelConfirmation()" [disabled]="isProcessingCancellation">
+          Manter Agendamento
+        </button>
+        <button type="button" class="button-danger" (click)="confirmCancellation(selectedAppointment.queue_id)" [disabled]="isProcessingCancellation">
+          <i *ngIf="!isProcessingCancellation" class="icon-trash-2"></i>
+          <i *ngIf="isProcessingCancellation" class="icon-loader spin"></i>
+          {{ isProcessingCancellation ? 'Cancelando...' : 'Sim, Cancelar' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Ações do Modal Padrão (se não estiver mostrando confirmação de cancelamento) -->
+    <div *ngIf="!showCancelConfirmation" class="modal-actions">
+      <button type="button" class="button-secondary" (click)="closeModal()">
+        Fechar
+      </button>
+      <button
+        *ngIf="canCancel(selectedAppointment) && selectedAppointment.status !== 'cancelled'"
+        type="button"
+        class="button-danger"
+        (click)="openCancelConfirmation(selectedAppointment)"
+      >
+        <i class="icon-cancel-circle"></i> Cancelar Agendamento
+      </button>
+    </div>
+
+     <!-- Mensagem se já estiver cancelado -->
+    <div *ngIf="selectedAppointment.status === 'cancelled' && !showCancelConfirmation" class="modal-info-message already-cancelled">
+        <p><i class="icon-check-circle"></i> Este agendamento já foi cancelado.</p>
+    </div>
+     <!-- Mensagem se não puder ser cancelado por outras razões (ex: já passou) -->
+    <div *ngIf="!canCancel(selectedAppointment) && selectedAppointment.status !== 'cancelled' && !showCancelConfirmation" class="modal-info-message cannot-cancel">
+        <p><i class="icon-alert-circle"></i> Este agendamento não pode mais ser cancelado.</p>
+    </div>
+
+  </div>
+</div>

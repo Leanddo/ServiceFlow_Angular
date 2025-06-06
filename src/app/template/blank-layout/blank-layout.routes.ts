@@ -8,6 +8,7 @@ const routes: Routes = [
     component: BlankLayoutComponent,
     children: [
       { path: 'auth', loadChildren: () => import('../../pages/auth/auth.module').then((m) => m.AuthModule)},
+      { path: 'create-business', loadChildren: () => import('../../pages/create-business/create-business.module').then((m) => m.CreateBusinessModule)},
     ],
   },
 ];

@@ -1,20 +1,19 @@
 <!-- user-account-page.component.html -->
 <div class="user-account-layout">
-  <app-account-sidebar
-    *ngIf="!isLoadingUserProfile"
-    [userName]="userData?.username || null"
-    [userAvatarUrl]="userData?.fotoUrl || null"
-    (logout)="handleLogout()"
-  >
-  </app-account-sidebar>
-  <div *ngIf="isLoadingUserProfile" class="loading-sidebar-placeholder"></div>
+  <div class="sidebar">
+    <app-account-sidebar
+      *ngIf="!isLoadingUserProfile"
+      [userName]="userData?.username || null"
+      [userAvatarUrl]="userData?.fotoUrl || null"
+      (logout)="handleLogout()"
+    >
+    </app-account-sidebar>
 
-  <main class="content-area">
-    <div class="content-header">
-      <h1>{{ currentTitle }}</h1>
-    </div>
+  </div>
+
+  <div class="content">
     <div class="content-wrapper">
       <router-outlet (activate)="onOutletActivated($event)"></router-outlet>
     </div>
-  </main>
+  </div>
 </div>

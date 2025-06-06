@@ -76,3 +76,14 @@ export interface Professionals{
   };
   User: UserProfile;
 }
+
+export interface ProfessionalInvite {
+  availability: {
+    day: string;
+    start: string;
+    end: string;
+  }[];
+  role: string;
+  email: string;
+  isActive: boolean;
+}

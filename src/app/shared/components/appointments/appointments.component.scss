@@ -1,0 +1,526 @@
+@import '../../../../styles/variables.scss'; // Suas variáveis SCSS
+
+// Placeholders para ícones (adapte para sua biblioteca de ícones ou SVGs)
+// Exemplo com nomes genéricos de classes que você usaria com Font Awesome, Feather Icons, etc.
+%icon-base {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+  font-size: 1.1em; // Tamanho base do ícone
+  line-height: 1;
+}
+
+.icon-store::before {
+  @extend %icon-base;
+  content: '🏪';
+  /* Substitua por seu ícone */
+}
+
+.icon-calendar::before {
+  @extend %icon-base;
+  content: '📅';
+}
+
+.icon-clock::before {
+  @extend %icon-base;
+  content: '🕒';
+}
+
+.icon-eye::before {
+  @extend %icon-base;
+  content: '👁️';
+}
+
+.icon-cancel-circle::before {
+  @extend %icon-base;
+  content: '🚫';
+}
+
+// Ícone de cancelar
+.icon-x::before {
+  @extend %icon-base;
+  margin-right: 0;
+  content: '✕';
+}
+
+// Ícone de fechar (X)
+.icon-clipboard::before {
+  @extend %icon-base;
+  content: '📋';
+}
+
+.icon-map-pin::before {
+  @extend %icon-base;
+  content: '📍';
+}
+
+.icon-users::before {
+  @extend %icon-base;
+  content: '👥';
+}
+
+.icon-hourglass::before {
+  @extend %icon-base;
+  content: '⏳';
+}
+
+.icon-info::before {
+  @extend %icon-base;
+  content: 'ℹ️';
+}
+
+.icon-trash-2::before {
+  @extend %icon-base;
+  content: '🗑️';
+}
+
+// Ícone de lixeira para confirmar cancelamento
+.icon-loader::before {
+  @extend %icon-base;
+  content: '⏳';
+  /* Ícone de carregamento */
+}
+
+.icon-calendar-x::before {
+  @extend %icon-base;
+  font-size: 2.5rem;
+  display: block;
+  margin: 0 auto 15px;
+}
+
+// Ícone para "nenhum agendamento"
+.icon-alert-triangle::before {
+  @extend %icon-base;
+  content: '⚠️';
+}
+
+.icon-check-circle::before {
+  @extend %icon-base;
+  content: '✅';
+}
+
+.icon-alert-circle::before {
+  @extend %icon-base;
+  content: '❕';
+}
+
+
+// Animação de rotação para ícones de loading
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin::before {
+  animation: spin 1s linear infinite;
+}
+
+
+// Estilos Globais do Componente
+.appointments-container {
+  padding: 25px 20px;
+  font-family: $font-primary;
+  max-width: 1200px;
+  margin: 30px auto;
+  background-color: $generic-white; 
+  border-radius: 10px; 
+
+  >h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: $Roxo-Escuro;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+}
+
+.error-message-banner {
+  background-color: lighten(red, 40%);
+  color: darken(red, 10%);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid darken(red, 5%);
+
+  i {
+    color: darken(red, 10%);
+  }
+}
+
+.appointments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.appointment-item {
+  background-color: $Roxo-transparent; // Tom lavanda para os cards
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(75, 0, 130, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(75, 0, 130, 0.12);
+  }
+
+
+  .appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+
+    .service-name {
+      // h3
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: $Roxo-Escuro;
+      margin: 0;
+      flex-grow: 1;
+      padding-right: 10px; // Espaço para o status
+    }
+  }
+
+  .status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    color: $generic-white; // Cor de texto padrão para status
+
+    &.status-waiting {
+      background-color: $Roxo-Medio;
+    }
+
+    &.status-confirmed {
+      background-color: $Roxo-Royal;
+    }
+
+    &.status-completed {
+      background-color: green;
+    }
+
+    &.status-canceled {
+      background-color: red;
+    }
+  }
+
+  .appointment-details-summary {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: darken($Roxo-Escuro, 10%);
+    line-height: 1.6;
+
+    p {
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+
+      i {
+        color: $Roxo-Royal;
+      }
+    }
+
+    .separator {
+      margin: 0 8px;
+      color: $Roxo-Pastel;
+    }
+  }
+
+  .appointment-actions {
+    margin-top: auto; // Empurra os botões para baixo
+    padding-top: 15px;
+    border-top: 1px solid lighten($Roxo-Pastel, 15%);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+
+    button {
+      font-family: $font-primary;
+      padding: 8px 15px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 1em;
+      }
+
+      // Ícones no mesmo tamanho do texto do botão
+
+      &.details-button {
+        background-color: $Roxo-Pastel;
+        color: $Roxo-Escuro;
+
+        &:hover {
+          background-color: darken($Roxo-Pastel, 8%);
+        }
+      }
+
+      &.cancel-button-quick {
+        background-color: transparent;
+        color: $Roxo-Medio;
+        border: 1px solid $Roxo-Medio;
+
+        &:hover {
+          background-color: lighten($Roxo-Medio, 35%);
+          color: darken($Roxo-Medio, 10%);
+        }
+      }
+    }
+  }
+}
+
+// Mensagem de "Nenhum Agendamento"
+.no-appointments-message {
+  text-align: center;
+  padding: 50px 20px;
+  color: $Roxo-Medio;
+
+  i {
+    // Ícone principal
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    display: block;
+    color: $Roxo-Pastel;
+  }
+
+  p {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: $Roxo-Escuro;
+    margin-bottom: 10px;
+  }
+
+  .sub-message {
+    font-size: 1rem;
+    color: $Roxo-Medio;
+  }
+}
+
+
+// Estilos do Modal
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(30, 10, 50, 0.6); // Overlay roxo transparente
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: $generic-white;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  .modal-close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: $Roxo-Medio;
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+
+    &:hover {
+      color: $Roxo-Escuro;
+    }
+
+    i {
+      margin-right: 0;
+    }
+  }
+
+  .modal-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: $Roxo-Escuro;
+    margin-top: 0;
+    margin-bottom: 25px;
+    padding-right: 30px; // Espaço para o botão de fechar
+  }
+
+  .modal-details-section {
+    margin-bottom: 25px;
+
+    .detail-row {
+      display: flex;
+      padding: 8px 0;
+      border-bottom: 1px solid lighten($Roxo-Pastel, 20%);
+      font-size: 0.95rem;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .detail-label {
+        font-weight: 500;
+        color: $Roxo-Royal;
+        flex-basis: 180px; // Largura fixa para os rótulos
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+
+        i {
+          font-size: 1em;
+          color: $Roxo-Pastel;
+        }
+      }
+
+      .detail-value {
+        color: $Roxo-Escuro;
+        flex-grow: 1;
+
+        &.modal-status {
+          // Para o status dentro do modal
+          display: inline-block; // Para o padding funcionar corretamente
+        }
+      }
+    }
+  }
+
+  .cancel-confirmation-section {
+    background-color: lighten($Roxo-Medio, 40%);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid lighten($Roxo-Medio, 30%);
+
+    .confirmation-text {
+      font-size: 1.05rem;
+      color: $Roxo-Escuro;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      text-align: center;
+
+      strong {
+        color: $Roxo-Royal;
+      }
+    }
+  }
+
+  .modal-error-message,
+  .modal-info-message {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    text-align: center;
+
+    &.modal-error-message {
+      background-color: lighten(red, 45%);
+      color: darken(red, 15%);
+      border: 1px solid lighten(red, 30%);
+    }
+
+    &.already-cancelled,
+    &.cannot-cancel {
+      background-color: lighten($Roxo-Pastel, 15%);
+      color: $Roxo-Escuro;
+      border: 1px solid $Roxo-Pastel;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding-top: 15px;
+    margin-top: 10px;
+    // border-top: 1px solid lighten($Roxo-Pastel, 20%); // Opcional: linha divisória
+
+    button {
+      font-family: $font-primary;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: background-color 0.2s ease, opacity 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 1em;
+      }
+
+      &[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &.button-primary {
+        // Usado para "Fechar" quando é a ação principal
+        background-color: $Roxo-Royal;
+        color: $generic-white;
+
+        &:not([disabled]):hover {
+          background-color: darken($Roxo-Royal, 10%);
+        }
+      }
+
+      &.button-secondary {
+        // Usado para "Manter Agendamento" ou "Fechar" secundário
+        background-color: $Roxo-Pastel;
+        color: $Roxo-Escuro;
+        margin-bottom: 10px;
+
+        &:not([disabled]):hover {
+          background-color: darken($Roxo-Pastel, 10%);
+        }
+      }
+
+      &.button-danger {
+        // Usado para "Cancelar Agendamento" ou "Sim, Cancelar"
+        background-color: #E53935; // Um vermelho para perigo (não temos nos seus roxos)
+        color: $generic-white;
+
+        &:not([disabled]):hover {
+          background-color: darken(#E53935, 10%);
+        }
+      }
+    }
+  }
+}

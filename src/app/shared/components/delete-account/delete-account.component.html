@@ -1,0 +1,78 @@
+<!-- delete-account.component.html -->
+<div class="delete-account-container">
+  <h1>Excluir Minha Conta</h1>
+
+  <!-- Mensagens de Feedback Global -->
+  <div *ngIf="successMessage" class="message success-message">
+    <p>{{ successMessage }}</p>
+  </div>
+  <div *ngIf="errorMessage && !showConfirmationDialog && !successMessage" class="message error-message"> <!-- Não mostrar erro geral se o diálogo está aberto e o erro é específico do input -->
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div class="delete-warning-content" *ngIf="!showConfirmationDialog && !successMessage">
+    <div class="warning-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+      </svg>
+    </div>
+    <p class="warning-text">
+      Esta é uma ação <strong>permanente e irreversível</strong>.
+      Ao excluir sua conta, todos os seus dados, incluindo perfil, configurações e
+      qualquer conteúdo associado, serão removidos definitivamente.
+    </p>
+    <p class="warning-text">Por favor, confirme que você compreende as consequências antes de prosseguir.</p>
+
+    <button (click)="askForConfirmation()" class="action-btn delete-btn-main">
+      <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" fill="currentColor"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M16,9V4l1,0V2H7v2l1,0v5l-2,2v1l2,2v5l1,0v2h8v-2l1,0v-5l2-2V11L16,9z M19.17,11l-2,2v6H6.83V13l-2-2L4.58,11.5L6,10V4h12 v6L19.17,11z"/><path d="M10,15h4V9h-4V15z M12,10.5c0.83,0,1.5,0.67,1.5,1.5s-0.67,1.5-1.5,1.5s-1.5-0.67-1.5-1.5S11.17,10.5,12,10.5z"/></g></g></svg>
+      Excluir Minha Conta
+    </button>
+  </div>
+
+  <!-- Diálogo de Confirmação -->
+  <div class="confirmation-dialog" *ngIf="showConfirmationDialog">
+    <h2>Confirmação Necessária</h2>
+    <p>Você tem <strong>absoluta certeza</strong> que deseja excluir sua conta?</p>
+    <p>Lembre-se, esta ação não poderá ser desfeita.</p>
+
+    <div class="confirmation-input-area">
+      <label for="confirmationText">
+        Para confirmar, digite "<strong>{{ requiredConfirmationWord }}</strong>" abaixo:
+      </label>
+      <input
+        type="text"
+        id="confirmationText"
+        [(ngModel)]="confirmationInput"
+        (input)="onConfirmationInputChange()"
+        placeholder="{{ requiredConfirmationWord }}"
+        class="confirmation-text-input"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        [attr.aria-invalid]="errorMessage && confirmationInput.toUpperCase() !== requiredConfirmationWord.toUpperCase()"
+        aria-describedby="confirmationError"
+      />
+      <div *ngIf="errorMessage && confirmationInput.toUpperCase() !== requiredConfirmationWord.toUpperCase()" id="confirmationError" class="input-error-message">
+        {{ errorMessage }}
+      </div>
+    </div>
+
+    <div class="dialog-actions">
+      <button
+        (click)="confirmDeleteAccount()"
+        class="action-btn confirm-delete-btn"
+        [ngClass]="{'uploading': isDeleting}"
+        [disabled]="isConfirmButtonDisabled()">
+        <ng-container *ngIf="!isDeleting">Sim, Excluir Permanentemente</ng-container>
+        <ng-container *ngIf="isDeleting">
+          <span class="spinner"></span>
+          Excluindo...
+        </ng-container>
+      </button>
+      <button (click)="cancelDeletion()" class="action-btn cancel-action-btn" [disabled]="isDeleting">
+        Não, Manter Minha Conta
+      </button>
+    </div>
+  </div>
+</div>

@@ -25,15 +25,8 @@ export class AccountSidebarComponent {
   @Output() logout = new EventEmitter<void>();
 
   sidebarItems: SidebarItem[] = [
-    { label: 'Página inicial do perfil', route: 'details', exactMatch: true },
     { label: 'Agendamentos', route: 'appointments' },
-    {
-      label: 'Configurações da conta',
-      route: 'details',
-    },
     { label: 'Detalhes do Perfil', route: 'details' },
-    { label: 'Foto de Perfil', route: 'image' },
-    { label: 'Alterar Senha', route: 'password' },
     { label: 'Excluir Conta', route: 'delete-account' },
   ];
 
@@ -58,7 +51,6 @@ export class AccountSidebarComponent {
   }
 
   onLogout() {
-    this.logout.emit();
     this.authService.logout();
   }
 }

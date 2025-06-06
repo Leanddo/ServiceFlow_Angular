@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app.routes';
 import { AppComponent } from './app.component';
@@ -8,7 +9,7 @@ import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
+  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, FormsModule],
   providers: [provideHttpClient(), { provide: LOCALE_ID, useValue: 'pt-PT' }],
   bootstrap: [AppComponent],
 })

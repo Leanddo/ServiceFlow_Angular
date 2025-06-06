@@ -1,0 +1,103 @@
+<div class="form-title-section"> <!-- Wrapper for title and description -->
+  <h2>Informações do Negócio</h2>
+  <p class="form-description">Comece por nos dar alguns detalhes básicos sobre o seu negócio.</p>
+</div>
+
+<form [formGroup]="businessForm" (ngSubmit)="onSubmit()">
+  <!-- Business Name -->
+  <div class="form-group"
+       [class.invalid-field]="businessForm.get('business_name')?.invalid && (businessForm.get('business_name')?.dirty || businessForm.get('business_name')?.touched)">
+    <label for="business_name">Nome do Negócio <span class="required-asterisk">*</span></label>
+    <div class="input-wrapper">
+      <input type="text" id="business_name" class="has-icon-left" formControlName="business_name" required placeholder="Digite o nome do negócio">
+      <img class="icon-left" src="assets/icons/mala.svg" alt="Nome Icon" /> <!-- Ensure this icon path is correct -->
+    </div>
+    <div *ngIf="businessForm.get('business_name')?.invalid && (businessForm.get('business_name')?.dirty || businessForm.get('business_name')?.touched)" class="field-error-message">
+      Nome do negócio é obrigatório.
+    </div>
+  </div>
+
+  <!-- Business Type -->
+  <div class="form-group"
+       [class.invalid-field]="businessForm.get('business_type')?.invalid && businessForm.get('business_type')?.touched && businessForm.get('business_type')?.errors?.['required']">
+    <label for="business_type">Tipo de Negócio</label>
+    <div class="input-wrapper">
+      <!-- The <select> element will adopt styling from _forms.scss -->
+      <select id="business_type" formControlName="business_type">
+        <option value="" disabled>Selecione um tipo...</option> <!-- Placeholder option -->
+        <option *ngFor="let type of businessTypes" [value]="type">{{ type }}</option>
+      </select>
+      <!-- Standard select elements have a native dropdown arrow.
+           If you want a custom arrow, it requires more complex CSS. -->
+    </div>
+    <!-- Example error if business_type is made required -->
+    <div *ngIf="businessForm.get('business_type')?.touched && businessForm.get('business_type')?.errors?.['required']" class="field-error-message">
+      Por favor, selecione um tipo de negócio.
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="form-group">
+    <label for="description">Descrição</label>
+    <div class="input-wrapper">
+      <textarea id="description" formControlName="description" rows="3" placeholder="Descreva brevemente seu negócio..."></textarea>
+    </div>
+  </div>
+
+  <!-- Email and Phone Row -->
+  <div class="form-row">
+    <div class="form-group"
+         [class.invalid-field]="businessForm.get('business_email')?.invalid && (businessForm.get('business_email')?.dirty || businessForm.get('business_email')?.touched)">
+      <label for="business_email">Email de Contato</label>
+      <div class="input-wrapper">
+        <input type="email" id="business_email" class="has-icon-left" formControlName="business_email" placeholder="seuemail@exemplo.com">
+        <img class="icon-left" src="assets/icons/mail.svg" alt="Email Icon" /> <!-- Ensure this icon path is correct -->
+      </div>
+      <div *ngIf="businessForm.get('business_email')?.errors?.['email'] && (businessForm.get('business_email')?.dirty || businessForm.get('business_email')?.touched)" class="field-error-message">
+        Formato de email inválido.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="business_phone">Telefone de Contato</label>
+      <div class="input-wrapper">
+        <input type="tel" id="business_phone" class="has-icon-left" formControlName="business_phone" placeholder="(XX) XXXXX-XXXX">
+         <img class="icon-left" src="assets/icons/phone.svg" alt="Telefone Icon" /> <!-- Ensure this icon path is correct -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Address -->
+  <div class="form-group">
+    <label for="business_address">Endereço</label>
+    <div class="input-wrapper">
+      <input type="text" id="business_address" class="has-icon-left" formControlName="business_address" placeholder="Rua, Número, Bairro, Cidade">
+      <img class="icon-left" src="assets/icons/locationPin.svg" alt="Endereço Icon" /> <!-- Ensure this icon path is correct (locationPin or location-pin) -->
+    </div>
+  </div>
+
+  <!-- Opening and Closing Hours Row -->
+  <div class="form-row">
+    <div class="form-group">
+      <label for="opening_hour">Horário de Abertura</label>
+      <div class="input-wrapper">
+        <input type="time" id="opening_hour" formControlName="opening_hour">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="closing_hour">Horário de Fechamento</label>
+      <div class="input-wrapper">
+        <input type="time" id="closing_hour" formControlName="closing_hour">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Form-level Feedback Messages -->
+  <div *ngIf="errorMessage" class="form-feedback-message error">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="form-feedback-message success">{{ successMessage }}</div>
+
+  <!-- Submit Button -->
+  <button type="submit" class="submit-btn" [disabled]="businessForm.invalid || isLoading">
+    {{ isLoading ? 'Salvando...' : 'Salvar e Continuar' }}
+  </button>
+</form>

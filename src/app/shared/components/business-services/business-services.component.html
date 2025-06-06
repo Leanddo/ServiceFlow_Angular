@@ -1,0 +1,86 @@
+<!-- src/app/shared/components/business-services/business-services.component.html -->
+
+<div class="form-panel">
+  <div class="form-title-section">
+    <h2>Registar Serviços</h2>
+    <p class="form-description">Adicione os serviços que o seu negócio oferece. Pode adicionar quantos quiser.</p>
+  </div>
+  
+  <form [formGroup]="addServiceForm" class="add-service-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="service_name">Nome do Serviço <span class="required-asterisk">*</span></label>
+        <!-- CORREÇÃO: Adicionada a div .input-wrapper -->
+        <div class="input-wrapper">
+          <input type="text" id="service_name" formControlName="service_name" placeholder="Digite o nome do serviço">
+        </div>
+        <div *ngIf="service_name?.invalid && (service_name?.dirty || service_name?.touched)" class="field-error-message">
+          <span *ngIf="service_name?.errors?.['required']">O nome é obrigatório.</span>
+        </div>
+      </div>
+       <div class="form-group">
+        <label for="category">Categoria <span class="required-asterisk">*</span></label>
+        <!-- Alterado para input de texto -->
+        <div class="input-wrapper">
+          <input type="text" id="category" formControlName="category" placeholder="Digite a categoria do serviço">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="description">Descrição (Opcional)</label>
+      <!-- CORREÇÃO: Adicionada a div .input-wrapper -->
+      <div class="input-wrapper">
+        <textarea id="description" formControlName="description" rows="2" placeholder="Descreva o serviço (opcional)"></textarea>
+      </div>
+    </div>
+     <div class="form-row">
+        <div class="form-group">
+          <label for="price">Preço (€) <span class="required-asterisk">*</span></label>
+          <!-- CORREÇÃO: Adicionada a div .input-wrapper -->
+          <div class="input-wrapper">
+            <input type="number" id="price" formControlName="price" placeholder="Digite o preço em €">
+          </div>
+           <div *ngIf="price?.invalid && (price?.dirty || price?.touched)" class="field-error-message">
+            <span *ngIf="price?.errors?.['required']">O preço é obrigatório.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="duration">Duração (min) <span class="required-asterisk">*</span></label>
+          <!-- CORREÇÃO: Adicionada a div .input-wrapper -->
+          <div class="input-wrapper">
+            <input type="number" id="duration" formControlName="duration" placeholder="Digite a duração em minutos">
+          </div>
+           <div *ngIf="duration?.invalid && (duration?.dirty || duration?.touched)" class="field-error-message">
+            <span *ngIf="duration?.errors?.['required']">A duração é obrigatória.</span>
+          </div>
+        </div>
+      </div>
+    <button type="button" class="add-btn" (click)="addServiceToList()" [disabled]="addServiceForm.invalid">+ Adicionar Serviço</button>
+  </form>
+
+  <div class="added-services-section" *ngIf="addedServices.length > 0">
+    <h3 class="section-subtitle">Serviços Adicionados</h3>
+    <div class="service-cards-container">
+      <div class="service-card" *ngFor="let service of addedServices; let i = index">
+        <div class="card-header">
+          <h4 class="card-title">{{ service.service_name }}</h4>
+          <button class="remove-btn" (click)="removeServiceFromList(i)" title="Remover serviço">×</button>
+        </div>
+        <p class="card-description" *ngIf="service.description">{{ service.description }}</p>
+        <div class="card-footer">
+          <span class="card-info">{{ service.duration }} min</span>
+          <span class="card-info">{{ service.price | currency:'BRL':'symbol' }}</span>
+          <span class="card-category">{{ service.category }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="navigation-actions">
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    <button type="button" class="submit-btn" (click)="submitAllServices()" [disabled]="isLoading || addedServices.length === 0">
+      <span *ngIf="!isLoading">Salvar e Continuar</span>
+      <span *ngIf="isLoading">A salvar...</span>
+    </button>
+  </div>
+</div>

@@ -2,24 +2,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserAccountPageComponent } from './user-account-page.component';
-import { ProfileDetailsSettingsComponent } from '../../shared/components/profile-details-settings/profile-details-settings.component';
-import { AccountSettingsComponent } from '../../shared/components/account-settings/account-settings.component';
+import { ProfileDetailsComponent } from '../../shared/components/profile-details/profile-details.component';
+import { DeleteAccountComponent } from '../../shared/components/delete-account/delete-account.component';
+import { AppointmentsComponent } from '../../shared/components/appointments/appointments.component';
 
 const routes: Routes = [
   {
     path: '',
     component: UserAccountPageComponent,
     children: [
-      { path: '', redirectTo: 'details', pathMatch: 'full' }, // Rota padrão
       {
-        path: 'profile',
-        component: ProfileDetailsSettingsComponent,
-        data: { title: 'Página inicial do perfil' },
+        path: 'details',
+        component: ProfileDetailsComponent,
+        data: { title: 'Detalhes do Perfil' },
       },
       {
-        path: 'account',
-        component: AccountSettingsComponent,
-        data: { title: 'Alterar Senha' },
+        path: 'delete-account',
+        component: DeleteAccountComponent,
+        data: { title: 'Excluir Conta' },
+      },
+      {
+        path: 'appointments',
+        component: AppointmentsComponent,
+        data: { title: 'Agendamentos' },
       },
     ],
   },

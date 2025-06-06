@@ -1,0 +1,263 @@
+@import '../../../../styles/variables.scss'; // Verifique o caminho para suas variáveis SCSS
+
+.delete-account-container {
+  font-family: $font-primary;
+  background-color: $generic-white;
+  padding: 30px 40px;
+  border-radius: 16px;
+  border: 1px solid $Roxo-transparent;
+  box-shadow: 0 8px 25px rgba($Roxo-Escuro, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 600px;
+  margin: 40px auto;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: red;
+    margin-bottom: 25px;
+  }
+}
+
+.delete-warning-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+
+  .warning-icon {
+    svg {
+      width: 60px;
+      height: 60px;
+      fill: red;
+    }
+  }
+
+  .warning-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: $Roxo-Escuro;
+    max-width: 90%;
+
+    strong {
+      font-weight: 600;
+      color: red;
+    }
+  }
+}
+
+.delete-btn-main {
+  background-color: red;
+  color: $generic-white;
+  margin-top: 15px;
+
+  &:hover:not(:disabled) {
+    background-color: darken(red, 10%);
+  }
+}
+
+.confirmation-dialog {
+  background-color: $Roxo-transparent;
+  border: 1px solid $Roxo-Pastel;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba($Roxo-Escuro, 0.1);
+  width: 100%;
+  max-width: 450px;
+  margin-top: 20px;
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: $Roxo-Escuro;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: $Roxo-Medio;
+    line-height: 1.5;
+    margin-bottom: 15px;
+
+    strong {
+      font-weight: 600;
+      color: red;
+    }
+  }
+
+  .confirmation-input-area {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    label {
+      font-size: 0.9rem;
+      color: $Roxo-Escuro;
+      margin-bottom: 8px;
+      display: block;
+      text-align: left;
+      line-height: 1.4;
+
+      strong {
+        color: $Roxo-Medio;
+      }
+    }
+
+    .confirmation-text-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid $Roxo-Pastel;
+      font-size: 1rem;
+      font-family: $font-primary;
+      color: $Roxo-Escuro;
+      box-sizing: border-box;
+      background-color: $generic-white;
+
+      &:focus {
+        outline: none;
+        border-color: $Roxo-Medio;
+        box-shadow: 0 0 0 2px rgba($Roxo-Medio, 0.2);
+      }
+
+      &::placeholder {
+        color: darken($Roxo-transparent, 30%);
+        font-style: italic;
+      }
+
+      &[aria-invalid="true"] {
+        border-color: red;
+        box-shadow: 0 0 0 2px rgba(red, 0.2);
+      }
+    }
+
+    .input-error-message {
+      font-size: 0.85rem;
+      color: red;
+      margin-top: 6px;
+      text-align: left;
+      width: 100%;
+    }
+  }
+
+  .dialog-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+    align-items: center;
+
+    @media (min-width: 480px) {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+}
+
+.confirm-delete-btn {
+  background-color: red;
+  color: $generic-white;
+  &:hover:not(:disabled) { background-color: darken(red, 10%); }
+
+  &.uploading { // Estilo para feedback visual durante a exclusão
+    background-color: darken(red, 15%) !important;
+    .spinner { // Garante visibilidade do spinner
+      border-top-color: $generic-white;
+      border-left-color: $generic-white;
+      border-bottom-color: $generic-white;
+      border-right-color: transparent;
+    }
+  }
+}
+
+.cancel-action-btn {
+  background-color: $Roxo-Pastel;
+  color: $Roxo-Escuro;
+  &:hover:not(:disabled) { background-color: darken($Roxo-Pastel, 8%); }
+}
+
+// Estilos de Botões Globais (Reutilizados)
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-family: $font-primary;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  min-width: 180px;
+  transition: all 0.25s ease;
+  text-align: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    fill: currentColor;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba($Roxo-Escuro, 0.15);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: $Roxo-light !important;
+    color: darken($Roxo-transparent, 30%) !important;
+    opacity: 0.6;
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+// Mensagens de Feedback (Reutilizadas)
+.message {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid transparent;
+  p { margin: 0; }
+}
+.error-message {
+  background-color: rgba(red, 0.1);
+  color: red;
+  border-color: rgba(red, 0.3);
+}
+.success-message {
+  background-color: rgba(green, 0.1);
+  color: green;
+  border-color: rgba(green, 0.3);
+}
+
+// Spinner (Reutilizado)
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba($generic-white, 0.4);
+  border-radius: 50%;
+  border-top-color: $generic-white;
+  border-left-color: $generic-white;
+  border-bottom-color: $generic-white;
+  border-right-color: transparent;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

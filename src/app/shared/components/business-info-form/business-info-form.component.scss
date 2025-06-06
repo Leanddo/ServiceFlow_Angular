@@ -1,0 +1,315 @@
+// src/app/styles/_forms.scss (or your chosen path and name)
+@import '../../../../styles/variables.scss'; // Ensure this path is correct to your variables.scss
+
+// --- General Form Structure ---
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; // Gap between form groups, consistent with the second file
+}
+
+// --- Form Group & Input Styling ---
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem; // Gap between label and input-wrapper, consistent
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="time"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.8rem 1rem; // Base padding from first file
+      border: 1px solid #ccc;
+      border-radius: 12px; // Rounded corners from second file
+      font-size: 0.95rem; // Font size from first file, adjust if 1rem from second is preferred
+      font-family: $font-primary;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      background-color: $generic-white;
+      color: black;
+      box-sizing: border-box;
+
+      // Class for inputs with a left icon (from first file, made more explicit)
+      &.has-icon-left {
+        padding-left: 2.9rem; // Consistent padding for left icon
+      }
+      // Class for inputs with a right icon (e.g., validation checkmark)
+      &.has-icon-right {
+        padding-right: 2.9rem;
+      }
+
+      
+
+      &::placeholder {
+        color: lighten($Roxo-Pastel, 10%); // Placeholder from first file
+        opacity: 0.8;
+      }
+    }
+    
+    textarea {
+        min-height: 90px;
+        resize: vertical;
+        padding: 0.8rem 1rem; // Ensure consistent padding
+    }
+
+    .icon-left,
+    .icon-right { // Icon styling from both files, consolidated
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px; // Consistent icon size
+      height: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .icon-left {
+      left: 1rem; // Position from second file, slightly adjusted
+      opacity: 0.6; // Opacity from second file
+    }
+    .icon-right { // For validation checkmarks, etc.
+      right: 1rem; // Position from second file
+    }
+  }
+
+  
+  // Styling for invalid state (applied to .form-group)
+  &.invalid-field .input-wrapper {
+    input, select, textarea {
+      border-color: darken(red, 10%); 
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(darken(red, 10%), 0.2);
+      }
+    }
+  }
+}
+
+// --- Field-Specific Error Messages ---
+.field-error-message { // Renamed from older .error-message to be specific
+  color: darken(red, 5%); // Using a strong, dark purple for error text
+  font-size: 0.8rem;
+  margin-top: 3px;
+  padding-left: 0.1rem; // Align with label
+  display: block;
+  font-family: $font-primary;
+}
+
+// --- Form Links (e.g., "Forgot Password") ---
+.form-link {
+  color: $Roxo-Medio;
+  text-decoration: none;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  align-self: flex-start; // Or flex-end, or center, depending on layout
+  font-family: $font-primary;
+  &:hover {
+    text-decoration: underline;
+    color: $Roxo-Royal;
+  }
+}
+
+// --- Submit Button ---
+.submit-btn { // Using class from first file, styling from second file's button[type='submit'] (adapted)
+  background: linear-gradient(135deg, $Roxo-Medio, $Roxo-Royal);
+  color: white;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease;
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, $Roxo-Royal, $Roxo-Escuro);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// --- "Or" Divider ---
+.or-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 1.25rem 0; // Margin from first file
+
+  hr {
+    flex-grow: 1;
+    border: 0;
+    border-top: 1px solid $Roxo-Pastel; // Line color from first file (was #ddd)
+  }
+
+  span {
+    font-size: 0.875rem; // 14px from second file
+    color: $Roxo-Medio; // Text color from first file (was #666)
+    padding: 0 10px;
+    text-align: center;
+    font-family: $font-primary;
+  }
+}
+
+// --- Google Sign Up Button ---
+.google-signup-btn { // Specific class name
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background-color: $generic-white;
+  border: 1px solid $Roxo-Pastel; // Border from first file (was #ccc)
+  padding: 0.8rem 1.5rem; // Padding from first file
+  border-radius: 10px; // Rounded from second file
+  font-size: 0.95rem; // Font size from first file
+  font-weight: 500;
+  font-family: $font-primary;
+  color: $Roxo-Escuro; // Text color from first file (was #333)
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    border-color: $Roxo-Medio;
+    background-color: $Roxo-transparent; // Hover from first file (was #f7f7ff)
+  }
+}
+.google-signup { // Wrapper div from second file for margin consistency if needed
+  // margin-top: 1rem; // This might be redundant due to form's main gap
+  text-align: center;
+}
+
+// --- Form-Level Feedback Messages ---
+// Consolidating .error-message and .success-message from second file
+// with .form-feedback-message from first file.
+.form-feedback-message {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem; // Default margin, can be overridden or rely on form gap
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: $font-primary;
+  text-align: left; // From second file's error/success message
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+
+  &.error { // For errors
+    color: darken($Roxo-Royal, 10%); // Stronger purple error color
+    background-color: rgba($Roxo-Pastel, 0.15);
+    border-color: rgba($Roxo-Medio, 0.25);
+  }
+
+  &.success { // For success
+    color: $Roxo-Royal; // Using a distinct purple for success
+    background-color: rgba($Roxo-Pastel, 0.15);
+    border-color: rgba($Roxo-Royal, 0.25);
+  }
+}
+
+
+// --- Title and Description Section (Above Form) ---
+.form-title-section {
+  margin-bottom: 1.5rem;
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    font-family: $font-primary;
+    margin-bottom: 0.5rem;
+    color: black;
+  }
+  p.form-description {
+    color: #333;
+    font-size: 0.95rem;
+    font-family: $font-primary;
+    line-height: 1.4;
+  }
+}
+
+// --- Helper for Required Asterisk ---
+.required-asterisk {
+  color: $Roxo-Medio;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+// --- Form Row Layout ---
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; // Gap within the row
+
+  > .form-group { // Target form-groups directly inside a form-row
+    flex: 1 1 calc(50% - 0.5rem); // For two items per row, accounting for gap
+    min-width: 200px; // Prevent extreme squishing
+  }
+}
+
+@media (max-width: 768px) { // Responsive stacking for form rows
+  .form-row {
+    gap: 0; // Remove gap when stacking
+    > .form-group {
+      flex-basis: 100%;
+      margin-bottom: 1rem; // Add margin between stacked items
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// --- Tab Switcher (from Auth page example, adapted) ---
+.tabs-switch {
+  display: flex;
+  justify-content: center;
+  background-color: $Roxo-transparent;
+  border-radius: 12px;
+  padding: 4px;
+  width: fit-content;
+  margin: 0 auto 1.6rem auto;
+  box-shadow: inset 0 0 4px rgba($Roxo-Escuro, 0.08);
+
+  a {
+    padding: 0.6rem 1.6rem;
+    border-radius: 10px;
+    text-decoration: none;
+    color: $Roxo-Medio;
+    font-weight: 500;
+    font-size: 1rem;
+    font-family: $font-primary;
+    transition: all 0.25s ease;
+    border: 1px solid transparent;
+  }
+
+  a.active {
+    background-color: $generic-white;
+    color: $Roxo-Royal;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba($Roxo-Escuro, 0.1);
+    border-color: $Roxo-Pastel;
+  }
+}

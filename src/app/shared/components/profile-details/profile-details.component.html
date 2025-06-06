@@ -1,0 +1,93 @@
+<!-- profile-details.component.html -->
+<div class="profile-details-container">
+  <h1>Detalhes do Perfil</h1>
+
+  <!-- Mensagens de Feedback -->
+  <div *ngIf="validationMessage" class="message validation-message">
+    <p>{{ validationMessage }}</p>
+  </div>
+  <div *ngIf="errorMessage && !successMessage" class="message error-message"> <!-- Não mostra erro se sucesso estiver ativo -->
+    <p>{{ errorMessage }}</p>
+  </div>
+  <div *ngIf="successMessage" class="message success-message">
+    <p>{{ successMessage }}</p>
+  </div>
+
+  <!-- Estado de Carregamento Inicial do Perfil -->
+  <div *ngIf="isLoadingProfile && !profileDetails" class="loading-message">
+    <p>Carregando seus dados...</p>
+    <!-- Adicionar um spinner SCSS aqui se desejar -->
+  </div>
+
+  <!-- Conteúdo Principal -->
+  <div *ngIf="!isLoadingProfile || profileDetails" class="profile-content">
+
+    <!-- Coluna de Informações Textuais (ESQUERDA) -->
+    <div class="profile-text-info">
+      <ng-container *ngIf="profileDetails; else noProfileText">
+        <p><strong>Nome de Usuário:</strong> {{ profileDetails.username }}</p>
+        <p><strong>Email:</strong> {{ profileDetails.email }}</p>
+        <!-- Adicione mais detalhes do perfil aqui se necessário -->
+      </ng-container>
+      <ng-template #noProfileText>
+        <p *ngIf="!errorMessage">Não foi possível carregar os detalhes textuais.</p>
+      </ng-template>
+    </div>
+
+    <!-- Coluna da Imagem de Perfil e Upload (DIREITA) -->
+    <div class="profile-image-section">
+      <div class="image-preview-wrapper" (click)="triggerFileInput()" title="Clique para alterar a foto">
+        <img
+          [src]="imageUrlPreview"
+          alt="Foto de Perfil"
+          class="profile-image-display"
+        />
+        <!-- Mostra o ícone apenas se não houver uma nova imagem selecionada para upload E não estiver enviando -->
+        <div class="camera-icon-overlay" *ngIf="!selectedFile && !isUploading">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0-10c-4.42 0-8 3.58-8 8 0 1.04.2 2.02.57 2.92L7.5 7.5l4.5 4.5 3.5-3.51L19.43 13.08c.37-.9.57-1.88.57-2.92C20 5.58 16.42 2 12 2zm0 16c-3.31 0-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8h-2c0 3.31-2.69 6-6 6zm-7-6c0-1.04.2-2.02.57-2.92L3.08 9.57A7.94 7.94 0 002 12c0 3.31 2.69 6 6 6v-2c-2.21 0-4-1.79-4-4zM12 6c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/><circle cx="12" cy="12" r="3.2"/></svg>
+        </div>
+      </div>
+
+      <input
+        type="file"
+        id="profile-image-upload-input"
+        (change)="onFileSelected($event)"
+        accept="image/png, image/jpeg, image/gif"
+        #fileUploadInput
+        style="display: none;"
+      />
+
+      <div class="image-upload-actions">
+        <!-- Botão para escolher arquivo, visível se nenhuma imagem nova foi selecionada -->
+        <label for="profile-image-upload-input" class="action-btn select-btn" *ngIf="!selectedFile && !isUploading">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+          Alterar Foto
+        </label>
+
+        <!-- Botões de Salvar e Cancelar, visíveis se uma imagem nova foi selecionada -->
+        <ng-container *ngIf="selectedFile">
+          <button
+            (click)="onUploadImage()"
+            [disabled]="isUploading"
+            class="action-btn submit-btn"
+            [class.uploading]="isUploading"
+          >
+            <ng-container *ngIf="!isUploading">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0z" fill="none"/><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+              Salvar Nova Foto
+            </ng-container>
+            <ng-container *ngIf="isUploading">
+              <span class="spinner"></span>
+              Enviando...
+            </ng-container>
+          </button>
+          <button (click)="cancelImageSelection()" [disabled]="isUploading" class="action-btn cancel-btn">
+            Cancelar
+          </button>
+        </ng-container>
+      </div>
+      <!-- Mostra o nome do arquivo selecionado apenas se houver um e não houver mensagem de sucesso ativa -->
+      <span class="file-name-display" *ngIf="selectedFileName && !successMessage">{{ selectedFileName }}</span>
+    </div> <!-- Fim de profile-image-section -->
+  </div> <!-- Fim de profile-content -->
+</div>

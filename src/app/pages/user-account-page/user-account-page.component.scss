@@ -1,6 +1,17 @@
 @import '../../../styles/variables.scss';
 
-.user-account-layout     {
-   padding: 10% 10% 5%;
-   background-color: $Roxo-transparent;
+.user-account-layout{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  padding: 10% 10%;
+  padding-bottom: 0;
+  background-color: $Roxo-transparent;
+;
+}
+
+.content{
+  width: 100%;
+  flex: 1;
+  padding: 20px;
 }

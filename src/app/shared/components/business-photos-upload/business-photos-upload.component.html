@@ -1,0 +1,121 @@
+<div class="form-title-section">
+  <h2>Fotos do Negócio: {{ businessName || 'Carregando Nome...'}}</h2>
+  <p class="form-description">
+    Adicione entre {{minRequiredPhotos}} e {{ maxFiles }} fotos (máx. {{maxFileSizeMB}}MB cada) para mostrar o seu espaço, produtos ou serviços.
+  </p>
+</div>
+
+<div class="photo-upload-container">
+  <div class="file-input-area" 
+       [class.disabled]="isFileInputDisabled">
+    <label for="photoFiles" class="file-input-label" 
+           [ngClass]="{'submit-btn-secondary': true, 'disabled-look': isFileInputDisabled }">
+      <img src="assets/icons/upload-cloud.svg" alt="Upload Icon" class="icon-left">
+      <span>{{ fileInputLabelText }}</span>
+    </label>
+    <input type="file" id="photoFiles" (change)="onFilesSelected($event)" multiple accept="image/*" 
+           [disabled]="isFileInputDisabled">
+    <p class="file-input-hint">Arraste e solte ou clique para selecionar. Formatos: JPG, PNG, GIF.</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="form-feedback-message error" [innerHTML]="errorMessage"></div>
+  <div *ngIf="successMessage" class="form-feedback-message success">{{ successMessage }}</div>
+
+  <div *ngIf="selectedFilePreviews.length > 0" class="selected-previews-section">
+    <h3>Fotos Selecionadas para Envio:</h3>
+    <div class="preview-grid">
+      <div *ngFor="let preview of selectedFilePreviews; let i = index" class="preview-card"
+           [class.uploading]="preview.isUploading"
+           [class.uploaded-success]="preview.isUploaded && !preview.error"
+           [class.upload-error]="preview.error">
+        
+        <div class="preview-image-wrapper">
+            <img *ngIf="preview.previewUrl" [src]="preview.previewUrl" [alt]="preview.file.name" class="preview-image">
+            <div *ngIf="!preview.previewUrl" class="preview-placeholder"><span>Preview</span></div>
+        </div>
+
+        <div class="preview-info">
+          <p class="file-name" [title]="preview.file.name">{{ preview.file.name | slice:0:18 }}{{ preview.file.name.length > 18 ? '...' : '' }}</p>
+          <p class="file-size">{{ (preview.file.size / 1024 / 1024) | number:'1.1-2' }} MB</p>
+          
+          <div *ngIf="preview.isUploading" class="progress-bar-container">
+            <div class="progress-bar" [style.width.%]="preview.progress"></div>
+            <span class="progress-text">{{ preview.progress }}%</span>
+          </div>
+          
+          <div *ngIf="preview.isUploaded && !preview.error" class="upload-status success-text">
+            <img src="assets/icons/check.svg" alt="Enviado" class="status-icon"> Enviado!
+          </div>
+          <div *ngIf="preview.error" class="upload-status error-text">
+             <img src="assets/icons/alert-triangle.svg" alt="Erro" class="status-icon"> 
+             <span [title]="preview.error">{{ preview.error | slice:0:30 }}{{ preview.error && preview.error.length > 30 ? '...' : '' }}</span>
+          </div>
+        </div>
+        <button *ngIf="!preview.isUploading && !preview.isUploaded" 
+                (click)="removeSelectedFile(i)" 
+                class="remove-btn" 
+                title="Remover esta foto da seleção"
+                [disabled]="isUploadingAll">
+          <img src="assets/icons/x-circle.svg" alt="Remover">
+        </button>
+      </div>
+    </div>
+    <button *ngIf="canUploadAnyFiles"
+            (click)="uploadAllSelectedFiles()" 
+            class="submit-btn upload-all-btn enhanced-upload-btn" 
+            [disabled]="isUploadingAll">
+      <span *ngIf="isUploadingAll" class="spinner-inline"></span>
+      <img *ngIf="!isUploadingAll" src="assets/icons/send.svg" alt="Enviar" class="icon-left">
+      {{ uploadButtonText }}
+    </button>
+  </div>
+
+  <div class="or-divider" *ngIf="uploadedPhotos.length > 0 && selectedFilePreviews.length > 0">
+    <hr /><span>Fotos Já Enviadas ({{ uploadedPhotos.length }})</span><hr />
+  </div>
+  
+  <div *ngIf="isLoadingExistingPhotos" class="loading-existing">Carregando fotos existentes... <span class="spinner-inline"></span></div>
+  <div *ngIf="!isLoadingExistingPhotos && uploadedPhotos.length > 0" class="existing-photos-section">
+    <h3>Fotos Atuais do Negócio:</h3>
+    <p class="form-description">Clique em uma foto para defini-la como a imagem principal do seu negócio.</p>
+    
+    <div class="preview-grid existing-grid">
+      <div *ngFor="let photo of uploadedPhotos" 
+           class="preview-card existing-card"
+           [class.is-profile-photo]="isCurrentMainPhoto(photo)">
+        
+        <div class="preview-image-wrapper">
+            <img [src]="photo.photo_url" [alt]="photo.description || 'Foto do negócio'" class="preview-image">
+            
+            <div *ngIf="isCurrentMainPhoto(photo)" class="profile-photo-badge">
+              <img src="assets/icons/star.svg" alt="Ícone de estrela"> Principal
+            </div>
+        </div>
+
+        <div class="card-actions">
+            <button *ngIf="!isCurrentMainPhoto(photo)"
+                    (click)="onSetMainPhoto(photo)"
+                    class="set-profile-btn"
+                    [disabled]="settingMainPhotoId">
+                <span *ngIf="settingMainPhotoId === photo.photo_id" class="spinner-inline-dark"></span>
+                <span *ngIf="settingMainPhotoId !== photo.photo_id">Definir como Principal</span>
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isLoadingExistingPhotos && uploadedPhotos.length === 0 && selectedFilePreviews.length === 0" class="no-photos-message">
+    Adicione pelo menos {{minRequiredPhotos}} fotos para o seu negócio.
+  </div>
+
+  <div class="navigation-actions">
+    <button type="button" 
+            (click)="proceedToNextStep()" 
+            class="submit-btn proceed-btn"
+            [disabled]="!canProceedToNextStep || isUploadingAll"
+            [title]="!canProceedToNextStep ? 'Envie pelo menos ' + minRequiredPhotos + ' fotos e resolva pendências antes de continuar.' : 'Continuar'">
+      Continuar para Profissionais
+      <img src="assets/icons/arrow-right.svg" alt="" class="icon-right">
+    </button>
+  </div>
+</div>

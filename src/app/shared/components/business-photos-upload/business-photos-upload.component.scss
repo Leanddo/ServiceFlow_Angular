@@ -1,0 +1,447 @@
+@import '../../../../styles/variables.scss';
+
+.photo-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.file-input-area {
+  border: 2px dashed $Roxo-Pastel;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  background-color: lighten($Roxo-transparent, 6%);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+
+  &:hover:not(.disabled) {
+    border-color: $Roxo-Medio;
+    background-color: $Roxo-transparent;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    border-color: $Roxo-Pastel;
+    background-color: lighten($Roxo-transparent, 6%);
+  }
+
+  .file-input-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, $Roxo-Medio, $Roxo-Royal);
+    color: white !important;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+
+    &:hover {
+      background: linear-gradient(135deg, $Roxo-Royal, $Roxo-Escuro);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    .icon-left {
+      width: 18px;
+      height: 18px;
+      margin-right: 0.75rem;
+    }
+
+    &:hover:not(.disabled-look) {
+      background-color: darken($Roxo-Medio, 10%);
+    }
+
+    &.disabled-look {
+      background-color: $Roxo-Pastel;
+      color: darken($Roxo-Pastel, 30%);
+      cursor: not-allowed;
+    }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .file-input-hint {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: $Roxo-Escuro;
+    opacity: 0.75;
+    font-family: $font-primary;
+  }
+}
+
+.selected-previews-section,
+.existing-photos-section {
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $Roxo-Escuro;
+    font-family: $font-primary;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid $Roxo-transparent;
+    padding-bottom: 0.6rem;
+  }
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.preview-card {
+  position: relative;
+  border: 1px solid $Roxo-Pastel;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: $generic-white;
+  box-shadow: 0 2px 5px rgba($Roxo-Escuro, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 10px rgba($Roxo-Escuro, 0.12);
+    transform: translateY(-2px);
+  }
+
+  &.uploading {
+    border-color: $Roxo-Medio;
+  }
+  &.uploaded-success {
+    border-color: $Roxo-Royal;
+  }
+  &.upload-error {
+    border-color: darken($Roxo-Medio, 15%);
+  }
+
+  .preview-image-wrapper {
+    width: 100%;
+    padding-top: 75%;
+    position: relative;
+    background-color: $Roxo-transparent;
+    border-bottom: 1px solid $Roxo-Pastel;
+
+    .preview-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .preview-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: $Roxo-Medio;
+      font-family: $font-primary;
+    }
+  }
+
+  .preview-info {
+    padding: 0.6rem;
+    font-size: 0.75rem;
+    color: $Roxo-Escuro;
+    font-family: $font-primary;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .file-name {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      word-break: break-all;
+      line-height: 1.3;
+      color: $Roxo-Escuro;
+    }
+    .file-size {
+      opacity: 0.75;
+      margin-bottom: 0.5rem;
+      color: $Roxo-Medio;
+    }
+  }
+
+  .progress-bar-container {
+    width: calc(100% - 0.4rem);
+    margin: 0.5rem auto 0.3rem auto;
+    background-color: $Roxo-transparent;
+    border-radius: 6px;
+    height: 12px;
+    position: relative;
+    overflow: hidden;
+
+    .progress-bar {
+      height: 100%;
+      background-color: $Roxo-Royal;
+      transition: width 0.3s ease-in-out;
+      border-radius: 6px;
+    }
+    .progress-text {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.65rem;
+      color: $generic-white;
+      font-weight: 500;
+      text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+      font-family: $font-primary;
+    }
+  }
+
+  .upload-status {
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 0.4rem;
+    font-family: $font-primary;
+    .status-icon {
+      width: 15px;
+      height: 15px;
+      margin-right: 0.4rem;
+    }
+    &.success-text {
+      color: $Roxo-Royal;
+    }
+    &.error-text {
+      color: darken($Roxo-Medio, 15%);
+    }
+  }
+
+  .remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba($generic-white, 0.85);
+    border: 1px solid $Roxo-Pastel;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s ease;
+    opacity: 0.9;
+    box-shadow: 0 1px 3px rgba($Roxo-Escuro, 0.15);
+
+    img {
+      width: 15px;
+      height: 15px;
+    }
+    &:hover {
+      background: $generic-white;
+      opacity: 1;
+      transform: scale(1.1);
+      border-color: $Roxo-Medio;
+      box-shadow: 0 2px 5px rgba($Roxo-Escuro, 0.2);
+    }
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      &:hover {
+        transform: none;
+        background: rgba($generic-white, 0.85);
+        box-shadow: 0 1px 3px rgba($Roxo-Escuro, 0.15);
+      }
+    }
+  }
+}
+
+.upload-all-btn {
+  margin-top: 1.5rem;
+  width: auto;
+  padding: 0.9rem 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  .icon-left {
+    width: 18px;
+    height: 18px;
+    margin-right: 0.75rem;
+  }
+}
+
+.loading-existing,
+.no-photos-message {
+  text-align: center;
+  padding: 1.5rem;
+  color: $Roxo-Medio;
+  font-style: italic;
+  font-family: $font-primary;
+  background-color: lighten($Roxo-transparent, 7%);
+  border: 1px dashed $Roxo-Pastel;
+  border-radius: 8px;
+}
+
+.spinner-inline {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 0.75rem;
+  border: 2.5px solid rgba($generic-white, 0.3);
+  border-radius: 50%;
+  border-top-color: $generic-white;
+  animation: spin 0.7s linear infinite;
+}
+.loading-existing .spinner-inline {
+  border-color: rgba($Roxo-Medio, 0.25);
+  border-top-color: $Roxo-Medio;
+  margin-left: 0.6rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.navigation-actions {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid $Roxo-transparent;
+  padding-top: 1.8rem;
+
+  .proceed-btn {
+    background: linear-gradient(135deg, $Roxo-Medio, $Roxo-Royal);
+    color: white !important;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+
+    &:hover {
+      background: linear-gradient(135deg, $Roxo-Royal, $Roxo-Escuro);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+    .icon-right {
+      width: 18px;
+      height: 18px;
+      margin-left: 0.75rem;
+    }
+    &:disabled {
+      background-color: $Roxo-Pastel;
+      color: darken($Roxo-Pastel, 30%);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+}
+
+.preview-card.is-profile-photo {
+  border: 2px solid $Roxo-Royal;
+  box-shadow: 0 4px 15px rgba($Roxo-Royal, 0.35);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.profile-photo-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: linear-gradient(135deg, $Roxo-Medio, $Roxo-Royal);
+  color: $generic-white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 15px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+  pointer-events: none;
+
+  img {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.card-actions {
+  padding: 0.5rem;
+  background-color: #f9f8ff;
+  border-top: 1px solid $Roxo-Pastel;
+  text-align: center;
+}
+
+.set-profile-btn {
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: $font-primary;
+  border-radius: 6px;
+  border: 1px solid $Roxo-Medio;
+  background-color: $generic-white;
+  color: $Roxo-Medio;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    background-color: $Roxo-Medio;
+    color: $generic-white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba($Roxo-Escuro, 0.1);
+  }
+
+  &:disabled {
+    background-color: $Roxo-Pastel;
+    border-color: $Roxo-Pastel;
+    color: darken($Roxo-Pastel, 20%);
+    cursor: not-allowed;
+  }
+}
+
+.spinner-inline-dark {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba($Roxo-Medio, 0.3);
+  border-radius: 50%;
+  border-top-color: $Roxo-Medio;
+  animation: spin 0.7s linear infinite;
+}
+
+.set-profile-btn:hover:not(:disabled) .spinner-inline-dark {
+  border-color: rgba($generic-white, 0.3);
+  border-top-color: $generic-white;
+}
+
+.existing-photos-section .form-description {
+  font-size: 0.9rem;
+  margin-bottom: 1.2rem;
+  text-align: left;
+  color: $Roxo-Medio;
+}

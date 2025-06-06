@@ -1,0 +1,139 @@
+@import '../../../styles/variables.scss'; // Adjust path as needed
+
+.create-business-page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+
+  .create-business-left,
+  .create-business-right {
+    width: 50%;
+    padding: 2rem; // Base padding
+    box-sizing: border-box;
+  }
+
+  .create-business-left {
+    // Image on the left
+    margin: 10px; // Similar to your auth-right
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // Replace with your desired image for business creation
+    background-image: url('../../../../public/ServiceFlow_Services.png'); // Example path, ensure image is in assets
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    color: $generic-white; // If you have text overlay
+
+    // .image-overlay-content {
+    //   background-color: rgba(0,0,0,0.4);
+    //   padding: 20px;
+    //   border-radius: 10px;
+    //   h2 { font-size: 2rem; margin-bottom: 1rem;}
+    //   p { font-size: 1rem; }
+    // }
+  }
+
+  .create-business-right {
+    // Forms on the right
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: $generic-white; // Assuming white background for form area
+    padding: 2rem 8%; // More horizontal padding for form content
+
+    .cb-logo {
+      display: flex;
+      justify-content: center;
+      font-size: 2.5rem; // Slightly smaller than auth
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: black; // Or your primary text color
+      span {
+        font-size: 2.5rem;
+        color: $Roxo-Royal;
+      }
+    }
+
+    .cb-content {
+      width: 100%;
+      // Styles for form elements (buttons, inputs) can be global or defined here/in child components
+      // Example for a common button style within this section:
+      .form-action-btn {
+        width: 100%;
+        padding: 0.85rem;
+        background: $Roxo-Royal; // Your primary action color
+        color: $generic-white;
+        border: none;
+        border-radius: 8px;
+        margin-top: 1.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover:not(:disabled) {
+          background: darken($Roxo-Royal, 10%);
+        }
+        &:disabled {
+          background-color: $Roxo-light;
+          cursor: not-allowed;
+        }
+      }
+
+      // Basic input styling (can be more global)
+      .form-group {
+        margin-bottom: 1rem;
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+          color: $Roxo-Medio;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="time"],
+        textarea,
+        select {
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid $Roxo-Pastel;
+          border-radius: 6px;
+          box-sizing: border-box;
+          font-size: 1rem;
+          &:focus {
+            border-color: $Roxo-Royal;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba($Roxo-Royal, 0.2);
+          }
+        }
+        textarea {
+          min-height: 80px;
+          resize: vertical;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 992px) {
+  .create-business-page {
+    flex-direction: column;
+
+    .create-business-left,
+    .create-business-right {
+      width: 100%;
+    }
+    .create-business-left {
+      min-height: 300px; // Give some height when stacked
+      margin-bottom: 20px;
+    }
+    .create-business-right {
+      padding: 2rem 5%;
+    }
+  }
+}
