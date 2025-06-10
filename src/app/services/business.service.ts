@@ -125,6 +125,13 @@ export class BusinessService {
       );
   }
 
+  getBusinessesByProfessional(): Observable<any[]> {
+    return this.http.get<any[]>(
+      API_ENDPOINTS.businesses.getAllBusinessesByProfessional,
+      { withCredentials: true }
+    );
+  }
+
   // Método para buscar os profissionais públicos de um negócio
   getPublicBusinessProfessionals(
     businessId: number
@@ -141,6 +148,13 @@ export class BusinessService {
   getBusinessPhotos(businessId: number): Observable<Photo[]> {
     return this.http.get<Photo[]>(
       API_ENDPOINTS.businesses.photos.getBusinessPhotos(businessId),
+      { withCredentials: true }
+    );
+  }
+
+  deleteBusinessPhoto(businessId: number, photoId: number): Observable<void> {
+    return this.http.delete<void>(
+      API_ENDPOINTS.businesses.photos.deleteBusinessPhotos(businessId, photoId),
       { withCredentials: true }
     );
   }
@@ -184,12 +198,75 @@ export class BusinessService {
     );
   }
 
+
+  // Método para buscar os serviços de um negócio
+  getBusinessServicesPrivate(businessId: number): Observable<Service[]> {
+    return this.http.get<Service[]>(
+      API_ENDPOINTS.businesses.services.getBusinessServicePrivate(businessId),
+      { withCredentials: true }
+    );
+  }
+
   createService(businessId: number, services: Service): Observable<any> {
     return this.http.post<Service>(
       API_ENDPOINTS.businesses.services.createBusinessService(businessId),
       services,
       { withCredentials: true }
     );
+  }
+
+  updateService(
+    businessId: number,
+    serviceId: number,
+    serviceData: Partial<Service>
+  ): Observable<Service> {
+    const endpoint = API_ENDPOINTS.businesses.services.updateBusinessServices(
+      businessId,
+      serviceId
+    );
+
+    return this.http.put<Service>(endpoint, serviceData, {
+      withCredentials: true,
+    });
+  }
+
+  patchServiceStatus(
+    businessId: number,
+    serviceId: number,
+    isActive:  boolean
+  ): Observable<Service> {
+    const endpoint = API_ENDPOINTS.businesses.services.patchBusinessServiceStatus(
+      businessId,
+      serviceId
+    );
+    const payload = { isActive };
+    return this.http.patch<Service>(endpoint, payload, {
+      withCredentials: true,
+    });
+  }
+  deleteService(businessId: number, serviceId: number): Observable<void> {
+    const endpoint = API_ENDPOINTS.businesses.services.deleteBusinessServices(
+      businessId,
+      serviceId
+    );
+    return this.http.delete<void>(endpoint, { withCredentials: true });
+  }
+
+
+    updateBusinessServicesPhoto(businessId: number, serviceId: number, photo: File): Observable<Service> {
+    const endpoint = API_ENDPOINTS.businesses.services.updateBusinessServicesPhoto(businessId,serviceId);
+    
+    const formData = new FormData();
+
+    formData.append('foto', photo, photo.name);
+
+    // Para uploads com FormData, o HttpClient define o 'Content-Type' automaticamente.
+    return this.http.put<Service>(endpoint, formData, { withCredentials: true });
+  }
+
+  deleteBusinessServicesPhoto(businessId: number, serviceId: number): Observable<Service> {
+    const endpoint =  API_ENDPOINTS.businesses.services.deleteBusinessServicesPhoto(businessId,serviceId);
+    return this.http.delete<Service>(endpoint, { withCredentials: true });
   }
 
   // Método para buscar a avaliação média de um negócio
@@ -219,7 +296,7 @@ export class BusinessService {
 
   // Método para atualizar um negócio existente
   updateBusiness(id: number, data: any): Observable<any> {
-    return this.http.put(API_ENDPOINTS.businesses.update(id), data, {
+    return this.http.put(API_ENDPOINTS.businesses.updateBusiness(id), data, {
       withCredentials: true,
     });
   }
@@ -243,6 +320,21 @@ export class BusinessService {
     return this.http.post(
       API_ENDPOINTS.businesses.professionals.inviteProfessionals(businessId),
       inviteData,
+      { withCredentials: true }
+    );
+  }
+
+  updateProfessional(
+    id: number,
+    business_id: number,
+    data: Partial<ProfessionalInvite>
+  ): Observable<ProfessionalInvite> {
+    return this.http.put<ProfessionalInvite>(
+      API_ENDPOINTS.businesses.professionals.updateProfessionals(
+        id,
+        business_id
+      ),
+      data,
       { withCredentials: true }
     );
   }

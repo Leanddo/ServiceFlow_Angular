@@ -14,7 +14,7 @@ export interface Service {
   description: string;
   service_fotoUrl?: string | null;
   price: number;
-  duration: number; // em minutos
+  duration: number; 
   category?: string;
   isActive?: boolean;
   business_id?: number;
@@ -33,6 +33,13 @@ export interface Business {
   opening_hour?: string; // "09:00:00"
   closing_hour?: string; // "18:00:00"
   photos?: Photo[];
+}
+
+export interface BusinessSummary {
+  business_id: number;
+  business_name: string;
+  main_photo_url: string | null;
+  role: 'Owner' | 'Manager' | 'Employee' | string;
 }
 
 export interface Rating {
@@ -63,11 +70,11 @@ export interface BusinessReviewsResponse {
   reviews: Review[];
 }
 
-export interface Professionals{
+export interface Professionals {
   professional_id?: number;
   email?: string;
-  availability: string[] | "Full-time"; 
-  role: "Owner" | "Employee" | "Assistant" | "Other"; 
+  availability: AvailabilitySlot[] | 'Full-time';
+  role: "Owner"| "Manager"| "Employee"| "Assistant"| "Other";
   isActive?: boolean;
   business_id?: number;
   user_id?: number;
@@ -77,13 +84,21 @@ export interface Professionals{
   User: UserProfile;
 }
 
+export interface AvailabilitySlot {
+  day: string;
+  start: string;
+  end: string;
+}
+
 export interface ProfessionalInvite {
-  availability: {
-    day: string;
-    start: string;
-    end: string;
-  }[];
+  availability: AvailabilitySlot[] | 'Full-time';
   role: string;
-  email: string;
+  email?: string;
   isActive: boolean;
+}
+
+export interface ProfessionalUpdateData {
+  role?: string;
+  isActive?: boolean;
+  availability?: AvailabilitySlot[];
 }

@@ -1,0 +1,115 @@
+<div class="dashboard-content-wrapper">
+  <!-- CABEÇALHO DA PÁGINA -->
+  <header class="page-header">
+    <div class="form-title-section">
+      <h2>Meus Serviços</h2>
+      <p>Crie, edite e gerencie os serviços oferecidos.</p>
+    </div>
+    <button class="submit-btn" (click)="openCreateModal()">
+      <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
+      Novo Serviço
+    </button>
+  </header>
+
+  <!-- ESTADO DE CARREGAMENTO -->
+  <div *ngIf="isLoading" class="loading-spinner-container">
+    <div class="loading-spinner"></div>
+    <p>A carregar serviços...</p>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div *ngIf="!isLoading">
+    <!-- GRID DE SERVIÇOS -->
+    <div *ngIf="services.length > 0; else emptyState" class="professionals-grid">
+      <!-- CARD DE SERVIÇO INDIVIDUAL -->
+      <div class="professional-card" *ngFor="let service of services">
+        <div class="card-status" [class.active]="service.isActive" [class.inactive]="!service.isActive"></div>
+        
+        <!-- ÁREA DA IMAGEM INTERATIVA -->
+        <div class="service-image-container">
+          <div class="image-overlay">
+            <label class="overlay-btn"> Alterar Foto
+              <input type="file" accept="image/png, image/jpeg" class="file-input-hidden" (change)="onFileSelected($event, service)">
+            </label>
+            <button *ngIf="service.service_fotoUrl" class="overlay-btn delete" (click)="onDeletePhoto(service, $event)"> Remover </button>
+          </div>
+          <img *ngIf="service.service_fotoUrl" [src]="service.service_fotoUrl" alt="Foto do Serviço" class="professional-avatar">
+          <div *ngIf="!service.service_fotoUrl" class="foto-placeholder">
+            <svg class="placeholder-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+          </div>
+        </div>
+
+        <!-- INFORMAÇÕES DO SERVIÇO -->
+        <div class="service-info" (click)="openEditModal(service)">
+          <h3 class="professional-name">{{ service.service_name }}</h3>
+          <p class="professional-email">{{ service.category || 'Sem categoria' }}</p>
+          <div class="professional-role role-owner">
+            <span>{{ service.price | currency:'EUR':'symbol' }}</span>
+            <span class="separator-dot">•</span>
+            <span>{{ service.duration }} min</span>
+          </div>
+        </div>
+
+        <!-- AÇÕES DO CARD -->
+        <div class="card-actions">
+          <div class="toggle-group">
+            <label class="switch">
+              <input type="checkbox" [checked]="service.isActive" (change)="onToggleStatus(service, $event)">
+              <span class="slider round"></span>
+            </label>
+            <span>{{ service.isActive ? 'Ativo' : 'Inativo' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATE PARA ESTADO VAZIO -->
+<ng-template #emptyState>
+  <div class="empty-state-card">
+    <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292Z" /></svg>
+    <h3>Nenhum serviço encontrado</h3>
+    <p>Comece por adicionar o seu primeiro serviço.</p>
+    <button class="submit-btn" (click)="openCreateModal()">Criar Primeiro Serviço</button>
+  </div>
+</ng-template>
+
+<!-- MODAL DE CRIAR/EDITAR SERVIÇO -->
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+  <div class="modal-content large" (click)="$event.stopPropagation()">
+    <h3 class="modal-title">{{ modalMode === 'create' ? 'Criar Novo Serviço' : 'Editar Serviço' }}</h3>
+    <p class="modal-text">Preencha os detalhes para configurar o serviço.</p>
+    <form [formGroup]="serviceForm" (ngSubmit)="handleFormSubmit()" class="modal-form">
+      <div class="form-group">
+        <label for="service_name">Nome do Serviço</label>
+        <input id="service_name" type="text" placeholder="Ex: Corte de Cabelo" formControlName="service_name">
+      </div>
+      <div class="form-group">
+        <label for="description">Descrição</label>
+        <textarea id="description" placeholder="Descreva o serviço..." rows="4" formControlName="description"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group"> <label for="price">Preço (€)</label> <input id="price" type="number" placeholder="25.00" formControlName="price"> </div>
+        <div class="form-group"> <label for="duration">Duração (min)</label> <input id="duration" type="number" placeholder="30" formControlName="duration"> </div>
+      </div>
+      <div class="form-group"> <label for="category">Categoria</label> <input id="category" type="text" placeholder="Ex: Cabelo" formControlName="category"> </div>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn cancel-btn" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="modal-btn confirm-btn" [disabled]="serviceForm.invalid">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO -->
+<div class="modal-overlay" *ngIf="isDeleteModalOpen" (click)="closeDeleteConfirmation()">
+  <div class="modal-content small" (click)="$event.stopPropagation()">
+    <h3 class="modal-title">Confirmar Exclusão</h3>
+    <p class="modal-text">Tem a certeza que deseja excluir o serviço <strong>"{{ selectedService?.service_name }}"</strong>? Esta ação é irreversível.</p>
+    <div class="modal-actions">
+      <button type="button" class="modal-btn cancel-btn" (click)="closeDeleteConfirmation()">Cancelar</button>
+      <button type="button" class="modal-btn confirm-btn delete" (click)="confirmDelete()">Sim, Excluir</button>
+    </div>
+  </div>
+</div>

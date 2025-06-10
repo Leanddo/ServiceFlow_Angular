@@ -1,0 +1,182 @@
+<!-- Wrapper principal que controla o estado de carregamento -->
+<div class="dashboard-content-wrapper">
+    <!-- Spinner de Carregamento Global -->
+    <div *ngIf="!isLoading" class="loading-spinner-container">
+      <div class="loading-spinner"></div>
+      <p>A carregar dados do negócio...</p>
+    </div>
+  
+    <div *ngIf="isLoading">
+      <!-- ================================== -->
+      <!-- SECÇÃO SUPERIOR: FORMULÁRIO E FOTO DE DESTAQUE -->
+      <!-- ================================== -->
+      <div class="top-section">
+        <!-- Coluna do Formulário -->
+        <div class="form-column">
+          <div class="form-title-section">
+            <h2>Gerir Negócio</h2>
+            <p class="form-description">
+              Atualize as informações principais do seu negócio.
+            </p>
+          </div>
+          <form [formGroup]="businessForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="business_name">Nome do Negócio<span class="required-asterisk">*</span></label>
+                <div class="input-wrapper">
+                  <img class="icon-left" src="assets/icons/mala.svg" alt="Ícone">
+                  <input class="has-icon-left" type="text" id="business_name" formControlName="business_name" placeholder="Ex: Barbearia do Zé" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="business_type">Tipo de Negócio <span class="required-asterisk">*</span></label>
+                <div class="input-wrapper">
+                  <img class="icon-left" src="assets/icons/store.svg" alt="Ícone">
+                  <select class="has-icon-left" id="business_type" formControlName="business_type">
+                    <option [ngValue]="null" disabled>Selecione um tipo...</option>
+                    <option *ngFor="let type of businessTypes" [value]="type">{{ type }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="business_phone">Telefone<span class="required-asterisk">*</span></label>
+                    <div class="input-wrapper">
+                        <img class="icon-left" src="assets/icons/phone.svg" alt="Ícone">
+                        <input class="has-icon-left" type="tel" id="business_phone" formControlName="business_phone" placeholder="+351 912 345 678" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="business_email">Email<span class="required-asterisk">*</span></label>
+                    <div class="input-wrapper">
+                        <img class="icon-left" src="assets/icons/mail.svg" alt="Ícone">
+                        <input class="has-icon-left" type="email" id="business_email" formControlName="business_email" placeholder="contacto@negocio.com" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="business_address">Morada<span class="required-asterisk">*</span></label>
+                <div class="input-wrapper">
+                    <img class="icon-left" src="assets/icons/locationPin.svg" alt="Ícone">
+                    <input class="has-icon-left" type="text" id="business_address" formControlName="business_address" placeholder="Rua das Flores, 123, Lisboa" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Descrição</label>
+                <div class="input-wrapper">
+                    <textarea id="description" formControlName="description" placeholder="Descreva o seu negócio..."></textarea>
+                </div>
+            </div>
+    
+            <button type="submit" class="submit-btn" [disabled]="isSubmitting || businessForm.invalid">
+              <span *ngIf="!isSubmitting">Guardar Alterações</span>
+              <span *ngIf="isSubmitting" class="loading-state">
+                <div class="btn-spinner"></div> A Guardar...
+              </span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Coluna da Foto Principal -->
+        <div class="main-photo-column">
+            <div class="form-title-section">
+                <h2>Foto de Destaque</h2>
+                <p class="form-description">A imagem principal.</p>
+            </div>
+
+            <!-- Estado de pré-visualização -->
+            <div *ngIf="mainPhotoToUpload" class="main-photo-preview-state">
+              <div class="main-photo-display">
+                  <img [src]="mainPhotoToUpload.previewUrl" alt="Pré-visualização da nova foto">
+              </div>
+              <div class="preview-actions">
+                  <button class="preview-btn cancel-btn" (click)="cancelMainPhotoUpload()" [disabled]="isMainPhotoUploading">
+                      Cancelar
+                  </button>
+                  <button class="preview-btn save-btn" (click)="confirmMainPhotoUpload()" [disabled]="isMainPhotoUploading">
+                      <span *ngIf="!isMainPhotoUploading">Guardar Foto</span>
+                      <span *ngIf="isMainPhotoUploading" class="loading-state">
+                          <div class="btn-spinner"></div> Guardando...
+                      </span>
+                  </button>
+              </div>
+            </div>
+
+            <!-- Estado Padrão -->
+            <label *ngIf="!mainPhotoToUpload" for="main-photo-upload" class="main-photo-display-wrapper">
+                <div class="main-photo-display" [class.no-photo]="!mainPhotoUrl">
+                    <img *ngIf="mainPhotoUrl" [src]="mainPhotoUrl" alt="Foto principal do negócio">
+                    <div *ngIf="!mainPhotoUrl" class="placeholder-icon">
+                        <img src="assets/icons/image-placeholder.svg" alt="Sem foto principal">
+                        <span>Carregar foto</span>
+                    </div>
+                </div>
+                <div class="change-photo-prompt">
+                    <img src="assets/icons/edit-icon.svg" alt="Editar">
+                    <span>Mudar Foto</span>
+                </div>
+            </label>
+            <input id="main-photo-upload" type="file" (change)="onMainPhotoSelected($event)" accept="image/*" style="display: none">
+        </div>
+      </div>
+
+      <!-- ================================== -->
+      <!-- SECÇÃO INFERIOR: GALERIA E UPLOAD  -->
+      <!-- ================================== -->
+      <div class="gallery-section-card">
+        <div class="form-title-section">
+            <h2>Galeria do Negócio</h2>
+            <p class="form-description">Clique numa foto para a definir como destaque ou adicione novas imagens.</p>
+        </div>
+        <div class="photo-gallery-container">
+            <div class="photo-card" *ngFor="let photo of photos" (click)="setMainPhotoFromGallery(photo.photo_id)" [class.is-main]="photo.photo_url === mainPhotoUrl">
+                <div class="selection-overlay">
+                    <div class="check-icon"></div>
+                </div>
+                <img [src]="photo.photo_url" [alt]="'Foto de ' + businessForm.value.business_name" />
+                <button class="action-btn delete-btn" (click)="$event.stopPropagation(); deletePhoto(photo.photo_id)" title="Apagar Foto"></button>
+            </div>
+            
+            <label for="gallery-upload" class="add-photo-card">
+                <img src="assets/icons/upload-icon.svg" alt="Upload Icon" />
+                <span>Adicionar</span>
+            </label>
+            <input id="gallery-upload" type="file" multiple (change)="onFileSelected($event)" accept="image/*" style="display: none" />
+        </div>
+
+        <div class="file-preview-container" *ngIf="filesToUpload.length > 0">
+            <h4>Prontas para carregar:</h4>
+            <div class="preview-grid">
+                <div class="preview-card" *ngFor="let fileObj of filesToUpload; let i = index">
+                    <img [src]="fileObj.previewUrl" alt="Pré-visualização" />
+                    <button class="remove-preview-btn" (click)="removeFileFromPreview(i)" title="Remover">×</button>
+                </div>
+            </div>
+            <button class="submit-btn" (click)="uploadFiles()" [disabled]="isUploading">
+                <span *ngIf="!isUploading">Carregar {{ filesToUpload.length }} Foto(s)</span>
+                <span *ngIf="isUploading" class="loading-state">
+                    <div class="btn-spinner"></div> A Carregar...
+                </span>
+            </button>
+        </div>
+      </div>
+
+      <!-- Mensagem de Feedback Global -->
+      <div *ngIf="feedbackMessage" class="form-feedback-message" [class.error]="isFeedbackError" [class.success]="!isFeedbackError">
+          {{ feedbackMessage }}
+      </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE APAGAR -->
+    <div *ngIf="isDeleteModalVisible" class="modal-overlay" (click)="closeDeleteModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h3 class="modal-title">Confirmar Exclusão</h3>
+        <p class="modal-text">Tem a certeza que quer apagar esta foto? Esta ação não pode ser desfeita.</p>
+        <div class="modal-actions">
+          <button class="modal-btn cancel-btn" (click)="closeDeleteModal()">Cancelar</button>
+          <button class="modal-btn confirm-btn" (click)="confirmDelete()">Sim, Apagar</button>
+        </div>
+      </div>
+    </div>
+</div>

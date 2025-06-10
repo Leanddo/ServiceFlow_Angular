@@ -1,0 +1,76 @@
+<aside class="sidebar-container">
+
+  <!-- Cabeçalho com Logo -->
+  <header class="sidebar-header">
+    <!-- Certifique-se que o caminho para a sua logo está correto em 'assets' -->
+    <img src="ServiceFlow_Logo.png" alt="Logo da Empresa" class="logo">
+    <h1 class="brand-name">Painel</h1>
+  </header>
+
+  <!-- Seção Principal de Controle -->
+  <section class="main-controls">
+    <!-- Seletor de Negócio -->
+    <div class="business-selector-wrapper">
+      <label for="business-selector" class="selector-label">Negócio Ativo</label>
+      
+      <div class="selector-container" *ngIf="selectedBusiness; else loadingSelector">
+        <img class="business-logo"
+             [src]="selectedBusiness.main_photo_url || 'assets/images/business-placeholder.png'" 
+             [alt]="selectedBusiness.business_name || 'Logo do Negócio'">
+
+        <div class="custom-select">
+          <select id="business-selector" (change)="onBusinessChange($event)" [disabled]="isLoadingBusinesses || businessList.length === 0">
+            <option *ngFor="let business of businessList" 
+                    [value]="business.business_id"
+                    [selected]="business.business_id === selectedBusiness?.business_id">
+              {{ business.business_name }}
+            </option>
+          </select>
+          <div class="select-arrow"></div>
+        </div>
+      </div>
+      
+      <ng-template #loadingSelector>
+         <div class="custom-select">
+           <select disabled><option>Carregando...</option></select>
+         </div>
+      </ng-template>
+    </div>
+
+    <!-- Perfil do Utilizador (MODIFICADO) -->
+    <div class="user-profile" *ngIf="userProfile">
+      <!-- Usa a foto do perfil; se não houver, usa um placeholder -->
+      <img [src]="userProfile.fotoUrl || 'assets/images/user-avatar.png'" alt="Avatar do Utilizador" class="user-avatar">
+      <div class="user-details">
+        <!-- Usa o nome de utilizador do perfil -->
+        <span class="user-name">{{ userProfile.username }}</span>
+        <!-- O papel continua a ser o do negócio selecionado, que é mais contextual -->
+        <span class="user-role" *ngIf="selectedBusiness">{{ selectedBusiness.role }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Navegação Principal (Tabs) -->
+  <nav class="main-nav">
+    <ul *ngIf="selectedBusiness">
+      <li *ngFor="let item of visibleNavItems">
+        <a class="nav-link" 
+           [routerLink]="['/dashboard', item.path, selectedBusiness.business_id]" 
+           routerLinkActive="active" 
+           [title]="item.label">
+          <img [src]="item.icon" [alt]="item.label" class="nav-icon">
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Rodapé com Logout -->
+  <footer class="sidebar-footer">
+    <a class="nav-link logout-btn" title="Sair">
+      <!-- Recomendo um ícone de "logout" ou "sair" aqui -->
+      <img src="assets/icons/arrow-right.svg" alt="Sair" class="nav-icon">
+      <span class="nav-label">Sair</span>
+    </a>
+  </footer>
+</aside>

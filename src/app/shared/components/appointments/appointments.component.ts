@@ -142,8 +142,8 @@ export class AppointmentsComponent implements OnInit, OnDestroy {
     this.isProcessingCancellation = true;
     this.errorMessage = null;
 
-    const statusForApi = 'canceled'; // Status enviado para a API (com um 'l')
-    const localStatusAfterCancel = 'cancelled'; // Status usado localmente e no display (com dois 'l's)
+    const statusForApi = 'cancelled'; // Status enviado para a API (com um 'l')
+    const localStatusAfterCancel: Appointment['status'] = 'cancelled'; // ✅ CORRETO // Status usado localmente e no display (com dois 'l's)
 
     this.cancelSubscription = this.queueService.updateStatus(appointmentId, {status: statusForApi}).subscribe({
       next: (response) => {

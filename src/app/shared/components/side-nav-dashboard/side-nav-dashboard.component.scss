@@ -1,0 +1,227 @@
+// Importa suas variáveis e a fonte Oxanium
+@import '../../../../styles/variables.scss';
+
+// ---- BASE DA SIDEBAR ----
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #1C1B22;
+  font-family: $font-primary;
+  padding: 1.5rem;
+  z-index: 1000;
+  border-right: 1px solid #2f2c3d;
+}
+
+// ---- CABEÇALHO ----
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 0.5rem 1.5rem 0.5rem;
+  flex-shrink: 0;
+
+  .logo {
+    width: 40px;
+  }
+
+  .brand-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: $generic-white;
+    margin: 0;
+  }
+}
+
+// ---- SEÇÃO DE CONTROLES PRINCIPAIS ----
+.main-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #2f2c3d;
+}
+
+.selector-label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: $Roxo-Pastel;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding-left: 0.2rem;
+}
+
+// ---- NOVO LAYOUT PARA O SELETOR ----
+.selector-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; // Espaçamento entre a imagem e o dropdown
+}
+
+.business-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px; // Bordas arredondadas
+  object-fit: cover; // Garante que a imagem não se distorça
+  flex-shrink: 0; // Impede que a imagem seja esmagada
+  background-color: #2A2833; // Cor de fundo enquanto a imagem carrega
+}
+
+// ---- DROPDOWN CUSTOMIZADO ----
+.custom-select {
+  position: relative;
+  flex-grow: 1; // Faz o dropdown ocupar todo o espaço restante
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 0.8rem 2.5rem 0.8rem 1rem;
+    background-color: #2A2833;
+    border: 1px solid rgba($Roxo-Medio, 0.4);
+    border-radius: 10px;
+    color: $generic-white;
+    font-family: $font-primary;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      border-color: $Roxo-Medio;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $Roxo-Medio;
+      box-shadow: 0 0 0 3px rgba($Roxo-Medio, 0.3);
+    }
+  }
+
+  .select-arrow {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid $Roxo-Pastel;
+    pointer-events: none;
+  }
+}
+
+// ---- PERFIL DO USUÁRIO ----
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background-color: $Roxo-light;
+  border-radius: 10px;
+
+  .user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid $Roxo-Medio;
+  }
+
+  .user-details {
+    display: flex;
+    flex-direction: column;
+
+    .user-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: $generic-white;
+    }
+
+    .user-role {
+      font-size: 0.8rem;
+      color: $Roxo-Pastel;
+      text-transform: capitalize;
+    }
+  }
+}
+
+// ---- NAVEGAÇÃO PRINCIPAL (TABS) ----
+.main-nav {
+  flex-grow: 1;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    color: $generic-white;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+
+    .nav-icon {
+      width: 22px;
+      height: 22px;
+      transition: transform 0.2s ease;
+      filter: brightness(0) invert(1);
+    }
+
+    .nav-label {
+      font-size: 1rem;
+    }
+
+    &:hover {
+      background-color: $Roxo-light;
+      color: $generic-white;
+
+      .nav-icon {
+        transform: scale(1.1);
+      }
+    }
+
+    &.active {
+      background-color: $Roxo-Medio;
+      color: $generic-white;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba($Roxo-Medio, 0.2);
+    }
+  }
+}
+
+// ---- RODAPÉ ----
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid #2f2c3d;
+  flex-shrink: 0;
+  color: $generic-white;
+
+  .logout-btn {
+    @extend .nav-link;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-icon {
+    height: 20px;
+  }
+}

@@ -9,7 +9,7 @@
     <div *ngFor="let appointment of appointments" class="appointment-item" [attr.data-status]="appointment.status">
       <div class="appointment-header">
         <h3 class="service-name">{{ appointment.service_name }}</h3>
-        <span class="status" [ngClass]="'status-' + appointment.status?.toLowerCase()">
+        <span class="status" [ngClass]="'status-' + appointment.status.toLowerCase()">
           {{ getStatusDisplayName(appointment.status) }}
         </span>
       </div>
@@ -88,7 +88,7 @@
       </div>
       <div class="detail-row">
         <span class="detail-label"><i class="icon-info"></i>Status:</span>
-        <span class="detail-value status modal-status" [ngClass]="'status-' + selectedAppointment.status?.toLowerCase()">
+        <span class="detail-value status modal-status" [ngClass]="'status-' + selectedAppointment.status.toLowerCase()">
           {{ getStatusDisplayName(selectedAppointment.status) }}
         </span>
       </div>

@@ -1,0 +1,300 @@
+<!-- Ficheiro: src/app/components/dashboard-professionals/dashboard-professionals.component.html -->
+
+<div class="dashboard-content-wrapper">
+  <!-- Cabeçalho da Página -->
+  <header class="page-header">
+    <div class="form-title-section">
+      <h2>Gerir Profissionais</h2>
+      <p class="form-description">
+        Convide, visualize e edite os membros da sua equipa.
+      </p>
+    </div>
+    <button class="submit-btn" (click)="openInviteModal()">
+      <img src="assets/icons/plus-circle-white.svg" alt="" class="btn-icon" />
+      Convidar Profissional
+    </button>
+  </header>
+
+  <!-- Mensagem de Feedback Global -->
+  <div
+    *ngIf="feedbackMessage && !isInviteModalVisible && !isEditModalVisible"
+    class="form-feedback-message"
+    [ngClass]="feedbackMessage.type"
+  >
+    {{ feedbackMessage.text }}
+  </div>
+
+  <!-- Estado de Carregamento -->
+  <div *ngIf="isLoading" class="loading-spinner-container">
+    <div class="loading-spinner"></div>
+    <span>A carregar profissionais...</span>
+  </div>
+
+  <!-- Estado Vazio -->
+  <div
+    *ngIf="!isLoading && professionals.length === 0"
+    class="empty-state-card"
+  >
+    <img
+      src="assets/icons/users-group.svg"
+      alt="Sem profissionais"
+      class="empty-state-icon"
+    />
+    <h3>Nenhum Profissional Encontrado</h3>
+    <p>
+      A sua equipa ainda não tem membros. Comece por convidar o seu primeiro
+      profissional.
+    </p>
+    <button class="submit-btn" (click)="openInviteModal()">
+      Convidar Agora
+    </button>
+  </div>
+
+  <!-- Grelha de Profissionais -->
+  <div
+    *ngIf="!isLoading && professionals.length > 0"
+    class="professionals-grid"
+  >
+    <div
+      class="professional-card"
+      *ngFor="let prof of professionals"
+      [class.pending-invite]="!prof.User"
+    >
+      <ng-container *ngIf="prof.User; else pendingInvite">
+        <div
+          class="card-status"
+          [ngClass]="{
+            active: prof.isActive,
+            inactive: !prof.isActive
+          }"
+          [title]="prof.isActive ? 'Ativo' : 'Inativo'"
+        ></div>
+        <img
+          *ngIf="prof.User.fotoUrl || prof.User === null; else photoPlaceholder"
+          [src]="prof.User.fotoUrl"
+          alt="Foto de {{ prof.User.username }}"
+          class="professional-avatar"
+        />
+
+        <!-- Se prof.User.fotoUrl NÃO EXISTE, mostra o placeholder -->
+        <ng-template #photoPlaceholder>
+          <div class="foto-placeholder">
+            <img
+              src="assets/icons/profile.svg"
+              alt="Ícone de perfil"
+              class="placeholder-svg"
+            />
+          </div>
+        </ng-template>
+
+        <h4 class="professional-name">{{ prof.User.username }}</h4>
+        <p class="professional-email">{{ prof.User.email }}</p>
+        <span
+          class="professional-role"
+          [ngClass]="'role-' + prof.role.toLowerCase()"
+          >{{ prof.role }}</span
+        >
+        <div class="card-actions">
+          <button class="action-btn edit" (click)="openEditModal(prof)">
+            Editar
+          </button>
+        </div>
+      </ng-container>
+
+      <!-- Bloco #2: Renderiza se o profissional AINDA NÃO TEM um utilizador (prof.User é null) -->
+      <ng-template #pendingInvite>
+        <div class="card-status pending" title="Convite Pendente"></div>
+        <div class="foto-placeholder">
+          <img
+            src="assets/icons/profile.svg"
+            alt="Ícone de perfil"
+            class="placeholder-svg"
+          />
+        </div>
+
+        <!-- Mensagem clara como sugerido -->
+        <h4 class="professional-name">Aguardando Verificação</h4>
+        <p class="professional-email">{{ prof.email }}</p>
+        <!-- Mostra o email do convite -->
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- ================================== -->
+<!-- MODAL DE CONVITE -->
+<!-- ================================== -->
+<div class="modal-overlay" *ngIf="isInviteModalVisible" (click)="closeModal()">
+  <div class="modal-content small" (click)="$event.stopPropagation()">
+    <h3 class="modal-title">Convidar Novo Profissional</h3>
+    <p class="modal-text">
+      Insira o email e defina a função. O utilizador receberá um convite para se
+      juntar ao seu negócio.
+    </p>
+
+    <form
+      [formGroup]="inviteForm"
+      (ngSubmit)="onInviteSubmit()"
+      class="modal-form"
+    >
+      <div class="form-group">
+        <label for="email"
+          >Email do Profissional <span class="required-asterisk">*</span></label
+        >
+        <div class="input-wrapper">
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="exemplo@email.com"
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="role"
+          >Função <span class="required-asterisk">*</span></label
+        >
+        <div class="input-wrapper">
+          <select id="role" formControlName="role">
+            <option *ngFor="let role of roles" [value]="role">
+              {{ role }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        *ngIf="feedbackMessage?.type === 'error'"
+        class="form-feedback-message error small"
+      >
+        {{ feedbackMessage?.text }}
+      </div>
+
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="modal-btn cancel-btn"
+          (click)="closeModal()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="modal-btn confirm-btn"
+          [disabled]="inviteForm.invalid || isSubmitting"
+        >
+          <span *ngIf="!isSubmitting">Enviar Convite</span>
+          <span *ngIf="isSubmitting" class="loading-state">
+            <div class="btn-spinner"></div>
+            A Enviar...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================================== -->
+<!-- MODAL DE EDIÇÃO -->
+<!-- ================================== -->
+<div class="modal-overlay" *ngIf="isEditModalVisible" (click)="closeModal()">
+  <div
+    class="modal-content large"
+    (click)="$event.stopPropagation()"
+    *ngIf="selectedProfessional"
+  >
+    <h3 class="modal-title">
+      Editar {{ selectedProfessional.User!.username }}
+    </h3>
+    <p class="modal-text">
+      Ajuste a função, o estado e a disponibilidade deste profissional.
+    </p>
+
+    <form [formGroup]="editForm" (ngSubmit)="onEditSubmit()" class="modal-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="edit-role">Função</label>
+          <div class="input-wrapper">
+            <select id="edit-role" formControlName="role">
+              <option *ngFor="let role of roles" [value]="role">
+                {{ role }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group toggle-group">
+          <label>Estado</label>
+          <label class="switch">
+            <input type="checkbox" formControlName="isActive" />
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Horário de Trabalho</label>
+        <div formArrayName="availability" class="availability-list">
+          <div
+            *ngFor="let dayGroup of availabilityControls; let i = index"
+            [formGroupName]="i"
+            class="availability-row"
+          >
+            <select formControlName="day" class="day-select">
+              <option value="" disabled>Dia</option>
+              <option *ngFor="let day of weekDays" [value]="day">
+                {{ day }}
+              </option>
+            </select>
+            <select formControlName="start" class="time-select">
+              <option *ngFor="let time of timeSlots" [value]="time">
+                {{ time }}
+              </option>
+            </select>
+            <span>-</span>
+            <select formControlName="end" class="time-select">
+              <option *ngFor="let time of timeSlots" [value]="time">
+                {{ time }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="remove-availability-btn"
+              (click)="removeAvailability(i)"
+              title="Remover horário"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="add-availability-btn"
+          (click)="addAvailability()"
+        >
+          Adicionar Horário
+        </button>
+      </div>
+
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="modal-btn cancel-btn"
+          (click)="closeModal()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="modal-btn confirm-btn"
+          [disabled]="editForm.invalid || isSubmitting"
+        >
+          <span *ngIf="!isSubmitting">Guardar Alterações</span>
+          <span *ngIf="isSubmitting" class="loading-state">
+            <div class="btn-spinner"></div>
+            A Guardar...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

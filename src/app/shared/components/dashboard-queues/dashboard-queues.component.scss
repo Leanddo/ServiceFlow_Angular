@@ -1,0 +1,664 @@
+@import "../../../../styles/variables.scss";
+
+// ========================================
+// === NOVO CABEÇALHO DA PÁGINA
+// ========================================
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    background-color: $generic-white;
+    padding: 1.5rem 2.5rem;
+    border-radius: 20px;
+    border: 1px solid #eef2f6;
+
+    .form-title-section {
+        margin: 0;
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: $Roxo-Escuro;
+            margin: 0 0 0.25rem 0;
+        }
+
+        p {
+            color: #6c757d;
+            font-size: 1rem;
+            margin: 0;
+        }
+    }
+
+    .submit-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: linear-gradient(135deg, $Roxo-Medio, $Roxo-Royal);
+        color: $generic-white;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba($Roxo-Royal, 0.3);
+        }
+    }
+}
+
+// ========================================
+// === LAYOUT PRINCIPAL
+// ========================================
+.dashboard-content-wrapper {
+    padding: 2rem;
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+}
+
+.schedule-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+// ========================================
+// === PAINEL ESQUERDO (SIDEBAR)
+// ========================================
+.sidebar-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 0.85rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    &.primary-btn {
+        background-color: $Roxo-transparent;
+        color: $Roxo-Medio;
+        border: 1px solid transparent;
+
+        &:hover {
+            background-color: $Roxo-Pastel;
+            color: $Roxo-Escuro;
+        }
+    }
+}
+
+.mini-calendar {
+    background-color: $generic-white;
+    border-radius: 16px;
+    padding: 1rem;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .month-year {
+        font-weight: 600;
+        font-size: 1rem;
+        color: $Roxo-Escuro;
+    }
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #a0aec0;
+    cursor: pointer;
+
+    &:hover {
+        color: $Roxo-Medio;
+    }
+}
+
+.weekdays-grid,
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+.weekday {
+    font-weight: 500;
+    color: #a0aec0;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.calendar-day {
+    font-weight: 500;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.not-a-day {
+        cursor: default;
+    }
+
+    &:not(.not-a-day):hover {
+        background-color: $Roxo-transparent;
+    }
+
+    &.today span {
+        color: $Roxo-Medio;
+        font-weight: 700;
+    }
+
+    &.selected span {
+        background-color: $Roxo-Medio;
+        color: $generic-white;
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+// ========================================
+// === PAINEL DIREITO (TIMELINE)
+// ========================================
+.timeline-panel {
+    background-color: $generic-white;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline-header {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: $Roxo-Escuro;
+        font-weight: 700;
+    }
+}
+
+.timeline-nav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.timeline-grid-wrapper {
+    flex-grow: 1;
+    overflow: auto;
+    position: relative;
+}
+
+.timeline-grid {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    min-width: 800px;
+}
+
+.time-slots-column {
+    padding-top: 60px;
+
+    .time-slot {
+        height: 60px;
+        text-align: right;
+        padding-right: 1rem;
+        font-size: 0.8rem;
+        color: #a0aec0;
+        position: relative;
+
+        &:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 1px;
+            background: #e2e8f0;
+        }
+    }
+}
+
+.appointments-grid-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.days-header-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    position: sticky;
+    top: 0;
+    background-color: $generic-white;
+    z-index: 10;
+
+    .day-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+        padding: 0.75rem 0.5rem;
+        border-bottom: 1px solid #f0f0f0;
+
+        .weekday-short {
+            font-size: 0.75rem;
+            color: #a0aec0;
+        }
+
+        .day-number {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        &.today .day-number {
+            color: $Roxo-Medio;
+        }
+    }
+}
+
+.appointments-grid {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.day-column {
+    position: relative;
+    border-right: 1px solid #f0f0f0;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px);
+    background-size: 100% 60px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba($Roxo-Medio, 0.05);
+    }
+}
+
+.timeline-item {
+    position: absolute;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    color: $generic-white;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 5;
+    border-left: 4px solid rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+
+    &:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 6;
+    }
+
+    .item-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .item-client {
+        opacity: 0.9;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &.status--waiting {
+        background-color: $status-waiting;
+    }
+
+    &.status--in_progress {
+        background-color: $status-in-progress;
+    }
+
+    &.status--completed {
+        background-color: $feedback-success-color;
+    }
+
+    &.status--canceled {
+        background-color: $feedback-error-color;
+    }
+}
+
+// --- Estados de UI ---
+.loading-spinner-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 20;
+
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid $Roxo-Pastel;
+        border-top-color: $Roxo-Medio;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+}
+
+.empty-state-card {
+    grid-column: 1 / -1;
+    padding: 4rem 2rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    h3 {
+        color: #aaa;
+        font-weight: 500;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// ========================================
+// === MODAL STYLES
+// ========================================
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 25, 47, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: $generic-white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    animation: popIn 0.35s ease-out;
+    position: relative;
+
+    &.large {
+        max-width: 700px;
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: 0;
+    font-size: 2rem;
+    line-height: 1;
+    color: #ccc;
+    cursor: pointer;
+
+    &:hover {
+        color: #999;
+    }
+}
+
+.modal-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $Roxo-Escuro;
+    margin-bottom: 1.5rem;
+}
+
+.details-list p {
+    margin: 0 0 0.75rem;
+    color: #333;
+
+    strong {
+        color: $Roxo-Escuro;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+
+    label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #343a40;
+    }
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+
+    @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 1rem;
+    background-color: #f9fafb;
+    transition: all 0.2s ease;
+
+    &:focus {
+        outline: none;
+        border-color: $Roxo-Medio;
+        background-color: $generic-white;
+        box-shadow: 0 0 0 3px rgba($Roxo-Medio, 0.2);
+    }
+}
+
+// === ESTILO CORRIGIDO PARA O SELECT ===
+.select-wrapper {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+        width: 1em;
+        height: 1em;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%23a0aec0"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>');
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none;
+    }
+
+    select.form-control {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 2.5rem;
+    }
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.modal-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.cancel-btn {
+        background-color: #f1f3f5;
+        color: #495057;
+
+        &:hover {
+            background-color: #e9ecef;
+        }
+    }
+
+    &.confirm-btn {
+        background: $Roxo-Medio;
+        color: $generic-white;
+
+        &:hover {
+            background: $Roxo-Royal;
+        }
+
+        &:disabled {
+            background-color: $Roxo-Pastel;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.modal-static-info {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #e9ecef;
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .info-icon {
+        width: 20px;
+        height: 20px;
+        color: $Roxo-Medio;
+    }
+
+    span {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: $Roxo-Escuro;
+    }
+
+    .time-loader {
+        width: 18px;
+        height: 18px;
+        border: 2px solid $Roxo-Pastel;
+        border-top-color: $Roxo-Medio;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+}
+
+.form-feedback-message {
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border-radius: 12px;
+    font-weight: 500;
+    border-width: 1px;
+    border-style: solid;
+    text-align: center;
+
+    &.success {
+        background-color: rgba($feedback-success-color, 0.1);
+        color: darken($feedback-success-color, 10%);
+        border-color: rgba($feedback-success-color, 0.2);
+    }
+
+    &.error {
+        background-color: rgba($feedback-error-color, 0.1);
+        color: $feedback-error-color;
+        border-color: rgba($feedback-error-color, 0.2);
+    }
+}

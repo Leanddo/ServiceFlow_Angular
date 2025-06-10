@@ -1,14 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BlankLayoutComponent } from './blank-layout.component';
+import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
     path: '',
     component: BlankLayoutComponent,
     children: [
-      { path: 'auth', loadChildren: () => import('../../pages/auth/auth.module').then((m) => m.AuthModule)},
-      { path: 'create-business', loadChildren: () => import('../../pages/create-business/create-business.module').then((m) => m.CreateBusinessModule)},
+      {
+        path: 'auth',
+        loadChildren: () =>
+          import('../../pages/auth/auth.module').then((m) => m.AuthModule),
+      },
+      {
+        path: 'create-business',
+        loadChildren: () =>
+          import('../../pages/create-business/create-business.module').then(
+            (m) => m.CreateBusinessModule
+          ),
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('../../pages/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
+      },
     ],
   },
 ];

@@ -1,0 +1,661 @@
+@import "../../../../styles/variables.scss";
+
+// ========================================
+// === LAYOUT GERAL DA PÁGINA
+// ========================================
+.dashboard-content-wrapper {
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+// ========================================
+// === CABEÇALHO DA PÁGINA
+// ========================================
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  background-color: $generic-white;
+  padding: 1.5rem 2.5rem;
+  border-radius: 20px;
+  border: 1px solid #eef2f6;
+
+  .form-title-section {
+    margin: 0;
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      font-family: $font-primary;
+      color: $Roxo-Escuro;
+      margin: 0 0 0.25rem 0;
+    }
+
+    p {
+      color: #6c757d;
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
+
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, $Roxo-Medio, $Roxo-Royal);
+    color: $generic-white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba($Roxo-Royal, 0.3);
+    }
+  }
+}
+
+// ========================================
+// === CARD DE PROFISSIONAL
+// ========================================
+.professionals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.professional-card {
+  background-color: $generic-white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid #eef2f6;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+  }
+}
+
+// ========================================
+// === AVATAR, PLACEHOLDER E INFO DO CARD
+// ========================================
+.professional-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem auto;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.foto-placeholder {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin: 0 auto 1rem auto;
+  background-color: $Roxo-transparent;
+  border: 2px dashed $Roxo-Pastel;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .placeholder-svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+  }
+}
+
+.professional-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $Roxo-Escuro;
+  margin: 0 0 0.25rem 0;
+}
+
+.professional-email {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+  word-break: break-all;
+}
+
+.professional-role {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  color: $generic-white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 auto 1.5rem auto;
+  display: inline-block;
+
+  &.role-owner {
+    background: linear-gradient(45deg, $Roxo-Royal, $Roxo-Medio);
+    box-shadow: 0 2px 8px rgba($Roxo-Royal, 0.3);
+  }
+
+  &.role-manager {
+    background-color: $Roxo-Medio;
+  }
+  
+  &.role-assistant {
+    background-color: #3b82f6; 
+  }
+
+  &.role-employee {
+    background-color: #7a8aa0; 
+  }
+  
+  &.role-other {
+    background-color: #6b7280; 
+  }
+}
+
+.card-status {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid $generic-white;
+
+  &.active {
+    background-color: $feedback-success-color;
+    box-shadow: 0 0 8px rgba($feedback-success-color, 0.7);
+  }
+
+  &.inactive {
+    background-color: #f59e0b;
+    box-shadow: 0 0 8px rgba(#f59e0b, 0.7);
+  }
+
+  &.pending {
+    background-color: $feedback-error-color;
+    box-shadow: 0 0 8px rgba($feedback-error-color, 0.7);
+  }
+}
+
+.card-actions {
+  margin-top: auto;
+
+  .action-btn {
+    width: 100%;
+    background-color: $Roxo-transparent;
+    color: $Roxo-Medio;
+    border: 1px solid $Roxo-Pastel;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: $Roxo-Medio;
+      color: $generic-white;
+      border-color: $Roxo-Medio;
+    }
+  }
+}
+
+// ========================================
+// === MODAL E SEU CONTEÚDO
+// ========================================
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(10, 25, 47, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background-color: $generic-white;
+  padding: 2rem 2.5rem;
+  border-radius: 20px;
+  width: 90%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  transform: scale(0.95);
+  animation: popIn 0.3s ease forwards;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  &.small {
+    max-width: 500px;
+  }
+
+  &.large {
+    max-width: 700px;
+  }
+}
+
+.modal-title {
+  font-family: $font-primary;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $Roxo-Escuro;
+  margin-bottom: 0.5rem;
+}
+
+.modal-text {
+  font-family: $font-primary;
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eef2f6;
+}
+
+.modal-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &.cancel-btn {
+    background-color: #f1f3f5;
+    color: #495057;
+
+    &:hover {
+      background-color: #e9ecef;
+    }
+  }
+
+  &.confirm-btn {
+    background: linear-gradient(135deg, $Roxo-Medio, $Roxo-Royal);
+    color: $generic-white;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba($Roxo-Royal, 0.3);
+    }
+  }
+}
+
+// ========================================
+// === ELEMENTOS DE FORMULÁRIO (NO MODAL)
+// ========================================
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #343a40;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+
+
+select, input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #f9fafb;
+  color: #111827;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('../../../../../public/assets/icons/chevron-down.svg');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $Roxo-Medio;
+    background-color: $generic-white;
+    box-shadow: 0 0 0 3px rgba($Roxo-Medio, 0.2);
+  }
+}
+
+input{
+  background-image: url('../../../../../public/assets/icons/mail.svg');
+  background-position: left 1rem center;
+  padding-left: 50px;
+}
+
+
+
+
+.toggle-group {
+  label:first-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+
+    &.round {
+      border-radius: 28px;
+    }
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked+.slider {
+    background-color: $Roxo-Medio;
+  }
+
+  input:focus+.slider {
+    box-shadow: 0 0 1px $Roxo-Medio;
+  }
+
+  input:checked+.slider:before {
+    transform: translateX(22px);
+  }
+}
+
+// ========================================
+// === ESTILOS PARA DISPONIBILIDADE (MELHORADOS)
+// ========================================
+.form-group.availability-group {
+  border-top: 1px solid #eef2f6;
+  padding-top: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.availability-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.availability-row {
+  display: grid;
+  grid-template-columns: 2.5fr 1.5fr auto 1.5fr auto;
+  align-items: center;
+  gap: 0.75rem;
+
+  span {
+    color: #9ca3af;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .input-wrapper {
+    &::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      opacity: 0.4;
+      pointer-events: none;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    &.day-selector::before {
+      background-image: url('/assets/icons/calendar.svg');
+    }
+
+    &.time-selector::before {
+      background-image: url('/assets/icons/clock.svg');
+    }
+
+    select {
+      padding-left: 38px;
+    }
+  }
+}
+
+.remove-availability-btn {
+  background-color: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba($feedback-error-color, 0.1);
+    color: $feedback-error-color;
+    transform: rotate(90deg);
+  }
+}
+
+.add-availability-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  border: 2px dashed $Roxo-Pastel;
+  color: $Roxo-Medio;
+  padding: 0.85rem;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.2s ease;
+  width: 100%;
+
+  &::before {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &:hover {
+    background-color: $Roxo-transparent;
+    border-color: $Roxo-Medio;
+    color: $Roxo-Escuro;
+  }
+}
+
+// ========================================
+// === ESTADOS (CARREGANDO, VAZIO, ETC.)
+// ========================================
+.loading-spinner-container,
+.empty-state-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+  gap: 1rem;
+  color: $Roxo-Medio;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid $Roxo-Pastel;
+  border-top-color: $Roxo-Medio;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.empty-state-card {
+  background-color: $generic-white;
+  border-radius: 20px;
+  padding: 4rem 2rem;
+  border: 2px dashed $Roxo-Pastel;
+
+  .empty-state-icon {
+    width: 80px;
+    height: 80px;
+    opacity: 0.3;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    color: $Roxo-Escuro;
+  }
+
+  p {
+    color: #6c757d;
+    max-width: 400px;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.pending-info {
+  background-color: rgba($Roxo-Pastel, 0.3);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+
+  p {
+    color: $Roxo-Medio;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+}
+
+// Animações
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Feedback
+.form-feedback-message {
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  font-weight: 500;
+  border-width: 1px;
+  border-style: solid;
+
+  &.success {
+    background-color: rgba($feedback-success-color, 0.1);
+    color: darken($feedback-success-color, 10%);
+    border-color: rgba($feedback-success-color, 0.2);
+  }
+
+  &.error {
+    background-color: rgba($feedback-error-color, 0.1);
+    color: $feedback-error-color;
+    border-color: rgba($feedback-error-color, 0.2);
+  }
+
+  &.small {
+    margin: 0 0 1.5rem 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+}

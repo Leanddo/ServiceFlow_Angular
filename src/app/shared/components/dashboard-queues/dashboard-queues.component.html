@@ -1,0 +1,300 @@
+<div class="dashboard-content-wrapper">
+  <header class="page-header">
+    <div class="form-title-section">
+      <h2>Agenda de Marcações</h2>
+      <p>Visualize, gira e adicione novas marcações à agenda.</p>
+    </div>
+  </header>
+
+  <main class="schedule-container">
+    <aside class="sidebar-panel">
+      <button (click)="goToToday()" class="action-btn primary-btn">Hoje</button>
+      <div class="mini-calendar">
+        <div class="calendar-header">
+          <button
+            (click)="previousMonth()"
+            class="nav-btn"
+            aria-label="Mês anterior"
+          >
+            ‹
+          </button>
+          <span class="month-year"
+            >{{ monthNames[viewDate.getMonth()] }}
+            {{ viewDate.getFullYear() }}</span
+          >
+          <button
+            (click)="nextMonth()"
+            class="nav-btn"
+            aria-label="Próximo mês"
+          >
+            ›
+          </button>
+        </div>
+        <div class="weekdays-grid">
+          <div
+            *ngFor="let day of ['S', 'T', 'Q', 'Q', 'S', 'S', 'D']"
+            class="weekday"
+          >
+            {{ day }}
+          </div>
+        </div>
+        <div class="calendar-grid">
+          <div
+            *ngFor="let day of miniCalendarDays"
+            class="calendar-day"
+            [ngClass]="{
+              today: isToday(day),
+              selected: isSelected(day),
+              'not-a-day': !day
+            }"
+            (click)="selectDate(day)"
+          >
+            <span *ngIf="day">{{ day | date : "d" }}</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="timeline-panel">
+      <header class="timeline-header">
+        <div class="date-range">
+          <h2>
+            {{ weekDates[0] | date : "d MMM" }} -
+            {{ weekDates[6] | date : "d MMM yyyy" }}
+          </h2>
+        </div>
+        <div class="timeline-nav">
+          <button
+            (click)="previousWeek()"
+            class="nav-btn"
+            aria-label="Semana anterior"
+          >
+            ‹
+          </button>
+          <button
+            (click)="nextWeek()"
+            class="nav-btn"
+            aria-label="Próxima semana"
+          >
+            ›
+          </button>
+        </div>
+      </header>
+      <div class="timeline-grid-wrapper">
+        <div *ngIf="isLoading" class="loading-spinner-container">
+          <div class="loading-spinner"></div>
+        </div>
+        <div class="timeline-grid" *ngIf="!isLoading">
+          <div class="time-slots-column">
+            <div *ngFor="let time of timeSlots" class="time-slot">
+              {{ time }}
+            </div>
+          </div>
+          <div class="appointments-grid-container">
+            <div class="days-header-grid">
+              <div
+                *ngFor="let day of weekDates"
+                class="day-header"
+                [class.today]="isToday(day)"
+              >
+                <span class="weekday-short">{{
+                  weekDayNames[day.getDay() === 0 ? 6 : day.getDay() - 1]
+                }}</span>
+                <span class="day-number">{{ day.getDate() }}</span>
+              </div>
+            </div>
+            <div class="appointments-grid">
+              <div
+                *ngFor="let dayColumn of dailyQueues; let i = index"
+                class="day-column"
+                (click)="onTimeSlotClick($event, i)"
+              >
+                <div
+                  *ngFor="let queue of dayColumn"
+                  class="timeline-item"
+                  [ngClass]="'status--' + queue.status"
+                  [style.top.px]="queue.top"
+                  [style.height.px]="queue.height"
+                  [style.left.%]="queue.left"
+                  [style.width.%]="queue.width"
+                  (click)="openModal(queue); $event.stopPropagation()"
+                >
+                  <strong class="item-title">{{ queue.service_name }}</strong>
+                  <span class="item-client">{{ queue.client_name }}</span>
+                </div>
+              </div>
+              <div
+                *ngIf="dailyQueues.flat().length === 0"
+                class="empty-state-card"
+              >
+                <h3>Nenhuma marcação para esta semana.</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+  <div
+    class="modal-content"
+    [class.large]="modalMode === 'create'"
+    (click)="$event.stopPropagation()"
+  >
+    <button class="close-btn" (click)="closeModal()" aria-label="Fechar modal">
+      ×
+    </button>
+
+    <ng-container *ngIf="modalMode === 'details' && selectedQueueForModal">
+      <h2 class="modal-title">{{ selectedQueueForModal.service_name }}</h2>
+      <div class="details-list">
+        <p><strong>Cliente:</strong> {{ selectedQueueForModal.client_name }}</p>
+        <p><strong>Email:</strong> {{ selectedQueueForModal.client_email }}</p>
+        <p>
+          <strong>Data:</strong>
+          {{ selectedQueueForModal.queue_date | date : "fullDate" }}
+        </p>
+        <p>
+          <strong>Hora:</strong>
+          {{ selectedQueueForModal.queue_date | date : "HH:mm" }}
+        </p>
+      </div>
+      <div class="form-group status-group">
+        <label for="status-select">Alterar Status:</label>
+        <div class="select-wrapper">
+          <select
+            id="status-select"
+            class="form-control"
+            (change)="handleStatusUpdate($event)"
+          >
+            <option
+              *ngFor="let status of statusOptions"
+              [value]="status"
+              [selected]="status === selectedQueueForModal.status"
+            >
+              {{ getStatusText(status) }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="modalMode === 'create'">
+      <h2 class="modal-title">Nova Marcação</h2>
+      <div class="modal-static-info">
+        <div class="info-item">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="info-icon"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c0-.414.336-.75.75-.75h10a.75.75 0 010 1.5h-10a.75.75 0 01-.75-.75z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span>{{ newQueueDate | date : "fullDate" }}</span>
+        </div>
+        <div class="info-item">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="info-icon"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span *ngIf="!isLoadingAvailableTimes">{{
+            newQueueTime || "--:--"
+          }}</span>
+          <div *ngIf="isLoadingAvailableTimes" class="time-loader"></div>
+        </div>
+      </div>
+      <form
+        [formGroup]="createQueueForm"
+        (ngSubmit)="handleCreateQueue()"
+        novalidate
+      >
+        <div class="form-group">
+          <label for="serviceId">Serviço</label>
+          <div class="select-wrapper">
+            <select
+              id="serviceId"
+              formControlName="serviceId"
+              class="form-control"
+              (change)="onServiceSelectionChange()"
+            >
+              <option value="" disabled>
+                Selecione um serviço para ver horários...
+              </option>
+              <option
+                *ngFor="let service of businessServices"
+                [value]="service.service_id"
+              >
+                {{ service.service_name }} ({{ service.duration }} min)
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="client_name">Nome do Cliente</label>
+            <input
+              type="text"
+              id="client_name"
+              formControlName="client_name"
+              class="form-control"
+              placeholder="Ex: João Silva"
+            />
+          </div>
+          <div class="form-group">
+            <label for="client_email">Email do Cliente</label>
+            <input
+              type="email"
+              id="client_email"
+              formControlName="client_email"
+              class="form-control"
+              placeholder="joao.silva@exemplo.com"
+            />
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="modal-btn cancel-btn"
+            (click)="closeModal()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="modal-btn confirm-btn"
+            [disabled]="
+              createQueueForm.invalid ||
+              !newQueueTime ||
+              isLoadingAvailableTimes
+            "
+          >
+            Criar Marcação
+          </button>
+        </div>
+      </form>
+    </ng-container>
+
+    <div
+      *ngIf="feedbackMessage"
+      class="form-feedback-message"
+      [ngClass]="feedbackMessage.type"
+    >
+      {{ feedbackMessage.text }}
+    </div>
+  </div>
+</div>
