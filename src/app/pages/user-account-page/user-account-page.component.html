@@ -1,19 +1,22 @@
-<!-- user-account-page.component.html -->
 <div class="user-account-layout">
-  <div class="sidebar">
-    <app-account-sidebar
-      *ngIf="!isLoadingUserProfile"
-      [userName]="userData?.username || null"
-      [userAvatarUrl]="userData?.fotoUrl || null"
-      (logout)="handleLogout()"
-    >
-    </app-account-sidebar>
+  <button class="hamburger-button" (click)="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
-  </div>
 
-  <div class="content">
-    <div class="content-wrapper">
-      <router-outlet (activate)="onOutletActivated($event)"></router-outlet>
-    </div>
-  </div>
+  <app-account-sidebar
+    *ngIf="!isLoadingUserProfile"
+    [userName]="userData?.username || null"
+    [userAvatarUrl]="userData?.fotoUrl || null"
+    (logout)="handleLogout()"
+    [isOpen]="isSidebarOpen"
+    (closeSidebar)="closeSidebar()"
+  >
+  </app-account-sidebar>
+
+  <main class="content">
+    <router-outlet (activate)="onOutletActivated($event)"></router-outlet>
+  </main>
 </div>

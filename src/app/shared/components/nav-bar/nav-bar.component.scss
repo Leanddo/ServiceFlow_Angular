@@ -1,53 +1,255 @@
-@import "../../../../styles/variables.scss"; // Suas variáveis roxas e outras
-
-// --- Variáveis de Design Consistentes (Sugestão) ---
-$nav-padding-y: 15px;
-$nav-padding-x-desktop: 3%;
-$nav-padding-x-mobile: 20px;
-$nav-top-offset: 20px;
-
-$nav-border-radius: 25px;
-$avatar-size: 48px;
-
-$transition-speed: 0.25s;
-$transition-easing: ease-in-out;
-// ---
+@import "../../../../styles/variables.scss";
 
 nav {
   background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: $nav-padding-y $nav-padding-x-desktop;
+  padding: 0 20px;
+  height: 65px;
   position: fixed;
-  top: $nav-top-offset;
-  left: $nav-padding-x-desktop;
-  right: $nav-padding-x-desktop;
-  width: calc(100% - (2 * #{$nav-padding-x-desktop}));
-  border-radius: $nav-border-radius;
+  top: 0;
+  left: 0;
+  width: 100dvw;
   z-index: 1000;
-  box-shadow: 0 5px 15px rgba(70, 50, 100, 0.08);
-  transition: top $transition-speed $transition-easing,
-    box-shadow $transition-speed $transition-easing,
-    border-radius $transition-speed $transition-easing;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
 
-  .nav-logo {
-    height: 40px;
-    display: block;
-    transition: transform $transition-speed $transition-easing;
+  .desktop-links, .auth-buttons {
+    display: none;
+  }
 
-    &:hover {
-      transform: scale(1.05);
+  .nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .nav-left .nav-logo {
+    height: 35px;
+    display: block; 
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative; 
+
+    span {
+      display: none;
+    }
+
+    .avatar-container {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .profile-img, .foto-Placeholder {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid $Roxo-Pastel;
+    }
+
+    .foto-Placeholder {
+      background-color: $Roxo-light;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img { width: 55%; height: 55%; }
     }
   }
 
-  .right-nav {
+  .hamburger-btn {
+    background: none;
+    border: none;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 35px;
+    justify-content: center;
+    z-index: 1011;
 
-    ul {
+    .hamburger-icon {
+      position: relative;
+      width: 24px;
+      height: 2px;
+      background-color: $Roxo-Escuro;
+      transition: all 0.25s ease-in-out;
+      &::before, &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: $Roxo-Escuro;
+        transition: all 0.25s ease-in-out;
+      }
+      &::before { top: -8px; }
+      &::after { bottom: -8px; }
+    }
+  }
+
+  .mobile-menu-backdrop {
+    display: none; 
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 1008;
+    backdrop-filter: blur(2px);
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0; right: -100%; 
+    width: 85%;
+    max-width: 320px;
+    height: 100vh;
+    background-color: #fff;
+    z-index: 1009;
+    padding: 20px;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    transition: right 0.35s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    .mobile-menu-header {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: $Roxo-Escuro;
+    }
+    .close-btn {
+      font-size: 2.5rem;
+      font-weight: 300;
+      background: none;
+      border: none;
+      color: $Roxo-Escuro;
+      line-height: 1;
+      padding: 0 5px;
+      cursor: pointer;
+    }
+
+    ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    li a {
+      display: block;
+      padding: 12px 15px;
+      text-decoration: none;
+      font-weight: 500;
+      color: $Roxo-Escuro;
+      border-radius: 8px;
+      transition: all 0.2s ease-in-out;
+      &:hover { background-color: $Roxo-light; color: $Roxo-Royal; }
+    }
+    .mobile-auth-actions {
+        margin-top: auto; 
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        button { width: 100%; padding: 12px; font-size: 0.9rem; }
+    }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 3px);
+    right: -47px;
+    background-color: #fff;
+    border-radius: 12px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    min-width: 200px;
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    z-index: 1001;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+
+    &.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    li {
+        a, button {
+            display: block;
+            width: 100%;
+            padding: 10px 18px;
+            text-decoration: none;
+            background: none;
+            border: none;
+            font-size: 0.875rem;
+            color: $Roxo-Escuro;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            box-sizing: border-box;
+
+            &:hover { background-color: $Roxo-light; color: $Roxo-Royal; }
+        }
+        .logout-btn {
+          color: #e74c3c;
+          font-weight: 500;
+          &:hover { background-color: lighten(#e74c3c, 38%); color: darken(#e74c3c, 10%); }
+        }
+    }
+  }
+  
+  &.menu-open {
+    .mobile-menu { right: 0; }
+    .mobile-menu-backdrop { display: block; }
+    // Transforma o hambúrguer em um "X"
+    .hamburger-icon {
+      background-color: transparent;
+      &::before { transform: rotate(45deg); top: 0; }
+      &::after { transform: rotate(-45deg); bottom: 0; }
+    }
+  }
+}
+
+// --- Estilos Desktop ---
+@media (min-width: 769px) {
+  nav {
+    top: 20px;
+    left: 3%;
+    right: 3%;
+    width: 94%;
+    height: auto;
+    border-radius: 16px;
+    padding: 15px 2.5%;
+
+    .hamburger-btn, .mobile-menu, .mobile-menu-backdrop {
+      display: none;
+    }
+
+    .desktop-links, .auth-buttons {
+      display: flex;
+    }
+
+    .nav-left, .nav-right {
+      gap: 30px;
+    }
+
+    .user-info span {
+      display: block;
+      font-weight: 500;
+    }
+    .user-info .avatar-container:hover .profile-img,
+    .user-info .avatar-container:hover .foto-Placeholder {
+        transform: scale(1.05);
+        border-color: $Roxo-Royal;
+    }
+
+    .desktop-links {
       align-items: center;
       gap: 20px;
       list-style: none;
@@ -61,8 +263,8 @@ nav {
         font-size: 0.9rem;
         position: relative;
         padding: 8px 4px;
-        transition: color $transition-speed $transition-easing;
-
+        transition: color 0.25s ease-in-out;
+        // Efeito de sublinhado animado
         &::after {
           content: '';
           position: absolute;
@@ -72,265 +274,48 @@ nav {
           left: 50%;
           transform: translateX(-50%);
           background-color: $Roxo-Royal;
-          transition: width $transition-speed $transition-easing;
+          transition: width 0.25s ease-in-out;
         }
-
-        &:hover,
-        &.router-link-active {
+        &:hover, &.active {
           color: $Roxo-Royal;
-
           &::after {
             width: calc(100% - 8px);
           }
         }
       }
     }
-  }
 
-  .left-nav {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-
-    button {
-      padding: 9px 18px;
-      border-radius: $nav-border-radius;
-      border: 1px solid transparent;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 0.85rem;
-      transition: all $transition-speed $transition-easing;
-
-      &:active {
-        transform: scale(0.97);
-      }
-    }
-
-    .Entrar {
-      background-color: $Roxo-light;
-      color: $Roxo-Escuro;
-      border-color: $Roxo-Pastel;
-
-      &:hover {
-        background-color: darken($Roxo-light, 4%);
-        border-color: darken($Roxo-Pastel, 5%);
-        box-shadow: 0 2px 5px rgba(70, 50, 100, 0.05);
-      }
-    }
-
-    .SignUp {
-      background-color: $Roxo-Escuro;
-      color: white;
-
-      &:hover {
-        background-color: lighten($Roxo-Escuro, 6%);
-        box-shadow: 0 2px 5px rgba(70, 50, 100, 0.1);
-      }
-    }
-  }
-
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-
-    span {
-      font-size: 0.95rem;
-      color: $Roxo-Escuro;
-      font-weight: 500;
-      z-index: 1002;
-    }
-
-    .profile-img,
-    .foto-Placeholder {
-      width: $avatar-size;
-      height: $avatar-size;
-      border-radius: 50%;
-      object-fit: cover;
-      cursor: pointer;
-      z-index: 1002;
-      border: 2px solid transparent;
-      transition: border-color $transition-speed $transition-easing, transform $transition-speed $transition-easing;
-
-      &:hover,
-      &:focus-visible {
-        border-color: $Roxo-Royal;
-        transform: scale(1.05);
-      }
-    }
-
-    .foto-Placeholder {
-      background-color: $Roxo-light;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-color: $Roxo-Pastel;
-
-      img {
-        width: 60%;
-        height: 60%;
-      }
-
-      &:hover,
-      &:focus-visible {
-        border-color: $Roxo-Royal;
-      }
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 99%; 
-      right: -55px; 
-      background-color: #fff; 
-      border-radius: 12px; 
-      border-top-right-radius: 0;
-      min-width: 220px; 
-      padding: 8px 0;
-      padding-top: 20px;
- 
-      list-style: none; 
-      margin: 0;
-      z-index: 1001; 
-
-      // Animação
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-10px) scale(0.98); 
-      transition: max-height 0.25s $transition-easing,
-        opacity 0.25s $transition-easing,
-        transform 0.25s $transition-easing; 
-
-      &.open {
-        max-height: 500px; 
-        opacity: 1;
-        pointer-events: auto;
-        transform: translateY(0) scale(1);
-      }
-
-      li {
-        margin: 0;
-
-        a,
-        button {
-          display: block; 
-          width: 100%;
-          padding: 10px 18px; 
-          text-decoration: none;
-          background: none;
-          border: none; 
-          font-size: 0.875rem;
-          color: $Roxo-Escuro;
-          text-align: left;
-          cursor: pointer;
-          transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
-          box-sizing: border-box;
-
-          &:hover {
-            background-color: $Roxo-light;
-            color: $Roxo-Royal;
-          }
-        }
-
-        .logout-btn {
-          color: #e74c3c;
-          font-weight: 500;
-
-          &:hover {
-            background-color: lighten(#e74c3c, 38%);
-            color: darken(#e74c3c, 10%);
-          }
-        }
-      }
-    }
-  }
-}
-
-// --- Responsividade ---
-@media (max-width: 1024px) {
-  nav {
-    padding: $nav-padding-y $nav-padding-x-mobile;
-    left: $nav-padding-x-mobile;
-    right: $nav-padding-x-mobile;
-    width: calc(100% - (2 * #{$nav-padding-x-mobile}));
-  }
-}
-
-@media (max-width: 768px) {
-  nav {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 15px 20px;
-    width: 100%;
-    margin: 0;
-    border-radius: 0;
-    top: 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
-    .nav-logo {
-      align-self: flex-start;
-      margin-bottom: 15px;
-    }
-
-    .right-nav {
-      flex-direction: column;
-      align-items: flex-start;
+    .auth-buttons {
       gap: 15px;
-      width: 100%;
-
-      ul {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        width: 100%;
-        padding-left: 0;
-      }
-    }
-
-    .left-nav {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 10px;
-      width: 100%;
-      margin-top: 15px;
-
       button {
-        width: 100%;
+        padding: 9px 18px;
+        border-radius: 25px;
+        font-size: 0.85rem;
       }
     }
+  }
+}
 
-    .user-info {
-      align-items: flex-start; // Garante que o conteúdo do user-info alinhe à esquerda
-      width: 100%; // Garante que o user-info ocupe a largura para o dropdown funcionar bem
-      margin-top: 15px;
-      gap: 12px;
-
-      span {
-        align-self: flex-start;
-      }
-
-      .profile-img,
-      .foto-Placeholder {
-        align-self: flex-start;
-      }
-
-      .dropdown-menu {
-        // Ajustes para o dropdown no mobile
-        right: auto;
-        left: 0;
-        width: 100%; // Ocupa a largura do .user-info
-        min-width: auto;
-        top: calc(100% + 5px); // Abaixo do avatar/placeholder
-        border-radius: 0 0 15px 15px;
-        padding-top: 10px;
-        transform: translateY(-10px);
-
-        &.open {
-          transform: translateY(0);
-        }
-      }
-    }
+// --- Estilos de Botões Globais ---
+.Entrar {
+  background-color: $Roxo-light;
+  color: $Roxo-Escuro;
+  border: 1px solid $Roxo-Pastel;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    background-color: darken($Roxo-light, 4%);
+    border-color: darken($Roxo-Pastel, 5%);
+  }
+}
+.SignUp {
+  background-color: $Roxo-Escuro;
+  color: white;
+  border: 1px solid $Roxo-Escuro;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    background-color: lighten($Roxo-Escuro, 6%);
+    border-color: lighten($Roxo-Escuro, 6%);
   }
 }

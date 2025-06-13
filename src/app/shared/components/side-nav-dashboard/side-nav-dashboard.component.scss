@@ -1,7 +1,5 @@
-// Importa suas variáveis e a fonte Oxanium
 @import '../../../../styles/variables.scss';
 
-// ---- BASE DA SIDEBAR ----
 .sidebar-container {
   display: flex;
   flex-direction: column;
@@ -13,11 +11,20 @@
   background-color: #1C1B22;
   font-family: $font-primary;
   padding: 1.5rem;
-  z-index: 1000;
+  z-index: 1002; 
   border-right: 1px solid #2f2c3d;
+  transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-// ---- CABEÇALHO ----
+.brand-name,
+.selector-label,
+.custom-select,
+.user-details,
+.nav-label {
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  white-space: nowrap;
+}
+
 .sidebar-header {
   display: flex;
   align-items: center;
@@ -37,7 +44,6 @@
   }
 }
 
-// ---- SEÇÃO DE CONTROLES PRINCIPAIS ----
 .main-controls {
   display: flex;
   flex-direction: column;
@@ -57,26 +63,24 @@
   padding-left: 0.2rem;
 }
 
-// ---- NOVO LAYOUT PARA O SELETOR ----
 .selector-container {
   display: flex;
   align-items: center;
-  gap: 0.75rem; // Espaçamento entre a imagem e o dropdown
+  gap: 0.75rem;
 }
 
 .business-logo {
   width: 42px;
   height: 42px;
-  border-radius: 10px; // Bordas arredondadas
-  object-fit: cover; // Garante que a imagem não se distorça
-  flex-shrink: 0; // Impede que a imagem seja esmagada
-  background-color: #2A2833; // Cor de fundo enquanto a imagem carrega
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: #2A2833;
 }
 
-// ---- DROPDOWN CUSTOMIZADO ----
 .custom-select {
   position: relative;
-  flex-grow: 1; // Faz o dropdown ocupar todo o espaço restante
+  flex-grow: 1;
 
   select {
     appearance: none;
@@ -118,7 +122,6 @@
   }
 }
 
-// ---- PERFIL DO USUÁRIO ----
 .user-profile {
   display: flex;
   align-items: center;
@@ -153,7 +156,6 @@
   }
 }
 
-// ---- NAVEGAÇÃO PRINCIPAL (TABS) ----
 .main-nav {
   flex-grow: 1;
 
@@ -176,12 +178,12 @@
     transition: all 0.2s ease;
     cursor: pointer;
 
-
     .nav-icon {
       width: 22px;
       height: 22px;
       transition: transform 0.2s ease;
       filter: brightness(0) invert(1);
+      flex-shrink: 0;
     }
 
     .nav-label {
@@ -206,7 +208,6 @@
   }
 }
 
-// ---- RODAPÉ ----
 .sidebar-footer {
   margin-top: auto;
   padding-top: 1.5rem;
@@ -223,5 +224,69 @@
 
   .nav-icon {
     height: 20px;
+  }
+}
+
+
+// ===================================================
+// ---- CÓDIGO ADICIONADO PARA RESPONSIVIDADE ----
+// ===================================================
+
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
+.sidebar-close-button {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1003;
+}
+
+// ---- ESTADO OCULTO (MOBILE: < 768px) ----
+@media (max-width: 1200px) {
+  .sidebar-container {
+    transform: translateX(-100%);
+  }
+
+  .sidebar-container.is-open {
+    transform: translateX(0);
+    width: 280px;
+    box-shadow: 5px 0px 25px rgba(0, 0, 0, 0.2);
+
+    .brand-name,
+    .selector-label,
+    .custom-select,
+    .user-details,
+    .nav-label {
+      opacity: 1;
+      visibility: visible;
+      width: auto;
+      pointer-events: auto;
+    }
+
+    .sidebar-header,
+    .selector-container,
+    .user-profile,
+    .nav-link {
+      justify-content: flex-start;
+    }
+
+    .sidebar-close-button {
+      display: block;
+    }
   }
 }

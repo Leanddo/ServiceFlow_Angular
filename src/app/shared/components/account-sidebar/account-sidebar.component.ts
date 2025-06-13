@@ -19,10 +19,9 @@ interface SidebarItem {
 })
 export class AccountSidebarComponent {
   @Input() userName: string | null = '';
-  @Input() userPhone: string | null = '';
   @Input() userAvatarUrl: string | null = null;
-
-  @Output() logout = new EventEmitter<void>();
+  @Input() isOpen = false; 
+  @Output() closeSidebar = new EventEmitter<void>();
 
   sidebarItems: SidebarItem[] = [
     { label: 'Agendamentos', route: 'appointments' },
@@ -36,12 +35,11 @@ export class AccountSidebarComponent {
 
   ngOnInit(): void {
     if (!this.userAvatarUrl) {
-      this.userAvatarUrl = 'assets/icons/profile.svg';
+      this.userAvatarUrl = 'assets/icons/default-avatar.svg';
     }
 
     const seenRoutes = new Set<string>();
     this.uniqueSidebarItems = this.sidebarItems.filter((item) => {
-      if (item.label === 'Configurações da conta') return false;
       if (seenRoutes.has(item.route)) {
         return false;
       }
@@ -52,5 +50,6 @@ export class AccountSidebarComponent {
 
   onLogout() {
     this.authService.logout();
+    this.closeSidebar.emit(); 
   }
 }

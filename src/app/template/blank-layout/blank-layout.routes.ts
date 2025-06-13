@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BlankLayoutComponent } from './blank-layout.component';
 import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
+import { CreateReviewComponent } from '../../shared/components/create-review/create-review.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
           import('../../pages/dashboard/dashboard.module').then(
             (m) => m.DashboardModule
           ),
+      },
+      {
+        path: 'business/:business_id/review/:service_id',
+        component: CreateReviewComponent
       },
     ],
   },

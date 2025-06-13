@@ -1,27 +1,26 @@
-<div class="business-card-service">
-  <div class="business-service-header">
-    <h2>{{ service.service_name }}</h2>
-    <p>{{ service.description }}</p>
+<!-- O container principal do card de serviço -->
+<div class="service-item-card">
+
+  <!-- Bloco de informações: Título e Descrição -->
+  <div class="service-item-info">
+    <h2 class="service-title">{{ service.service_name }}</h2>
+    <p class="service-description">{{ service.description }}</p>
   </div>
 
-  <div class="business-service-price-hours-button">
-    <div class="business-service-price-hours-container">
-      <div>
-        <img
-          src="assets/icons/clock.svg"
-          alt="Ícone de relógio"
-          class="business-card-service-icon"
-        />
-        <span class="business-card-service-text"
-          >{{ service.duration }} min</span
-        >
-      </div>
-      <span class="business-card-service-text">
-        {{ service.price | number : "1.2-2" }} €
+  <!-- Bloco de ações: Metadados e Botão -->
+  <div class="service-item-actions">
+    <div class="service-item-meta">
+      <span class="meta-item">
+        <i class="icon icon-time"></i>
+        {{ service.duration }} min
+      </span>
+      <span class="meta-item price">
+        {{ service.price | currency:'EUR' }}
       </span>
     </div>
 
     <button
+      class="schedule-button"
       type="button"
       [attr.aria-label]="'Marcar serviço ' + service.service_name"
       (click)="openBookingModal(service)"
@@ -31,6 +30,9 @@
   </div>
 </div>
 
+<!-- ============================================= -->
+<!-- MODAIS (permanecem fora do card, sem estilo) -->
+<!-- ============================================= -->
 <app-booking-modal
   *ngIf="isBookingModalOpen"
   [serviceId]="selectedServiceId"
@@ -41,7 +43,6 @@
   (closeModal)="closeBookingModal()"
   (proceedToConfirmation)="handleProceedToConfirmation($event)"
 ></app-booking-modal>
-
 
 <app-booking-confirmation
   *ngIf="isConfirmationScreenOpen && currentBookingConfirmationDetails"

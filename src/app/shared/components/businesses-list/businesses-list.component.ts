@@ -127,13 +127,23 @@ export class BusinessesListComponent {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
+  previousPage(): void {
+    if (
+      this.currentPage >
+      Math.ceil(this.businessCards.length / this.itemsPerPage)
+    ) {
+      this.currentPage--;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   nextPage(): void {
     if (
       this.currentPage <
       Math.ceil(this.businessCards.length / this.itemsPerPage)
     ) {
       this.currentPage++;
-      window.scrollTo({ top: 0, behavior: 'smooth' }); 
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 

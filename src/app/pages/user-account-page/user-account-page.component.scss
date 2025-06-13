@@ -1,17 +1,55 @@
+// user-account-page.component.scss (CORRIGIDO)
 @import '../../../styles/variables.scss';
 
-.user-account-layout{
-  display: flex;
-  height: 100%;
-  width: 100%;
-  padding: 10% 10%;
-  padding-bottom: 0;
-  background-color: $Roxo-transparent;
-;
+/* --- Layout Principal (Mobile-First) --- */
+.user-account-layout {
+  position: relative;
 }
 
-.content{
-  width: 100%;
-  flex: 1;
-  padding: 20px;
+.content {
+  padding: 2rem 1.5rem;
+  min-height: calc(100vh - 4rem); // Garante que o conteúdo ocupe a altura da tela
+}
+
+.hamburger-button {
+  // Estilos para o botão de menu em mobile
+  position: fixed;
+  top: 90px;
+  left: 20px;
+  z-index: 998; // Fica abaixo do backdrop da sidebar
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 40px;
+  height: 40px;
+  background: $generic-white;
+  border: 1px solid $Roxo-light;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  span {
+    width: 100%;
+    height: 2px;
+    background: $Roxo-Escuro;
+    border-radius: 10px;
+  }
+}
+
+/* --- Media Query para Telas Maiores (Desktop) --- */
+@media (min-width: 992px) {
+  .user-account-layout {
+    display: flex; // Ativa o layout de colunas
+    padding-top: 150px;
+  }
+
+  .hamburger-button {
+    display: none; // Esconde o botão em desktop, pois a sidebar é fixa
+  }
+
+  .content {
+    flex-grow: 1; // Faz o conteúdo ocupar todo o espaço restante
+    padding: 2.5rem;
+  }
 }

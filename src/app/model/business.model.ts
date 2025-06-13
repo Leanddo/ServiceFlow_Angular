@@ -14,7 +14,7 @@ export interface Service {
   description: string;
   service_fotoUrl?: string | null;
   price: number;
-  duration: number; 
+  duration: number;
   category?: string;
   isActive?: boolean;
   business_id?: number;
@@ -64,6 +64,12 @@ export interface Review {
   };
 }
 
+export interface CreateReview {
+  review_title: string;
+  review_body: string;
+  review_rating: number;
+}
+
 export interface BusinessReviewsResponse {
   business_name: string;
   total_reviews: number;
@@ -74,7 +80,7 @@ export interface Professionals {
   professional_id?: number;
   email?: string;
   availability: AvailabilitySlot[] | 'Full-time';
-  role: "Owner"| "Manager"| "Employee"| "Assistant"| "Other";
+  role: 'Owner' | 'Manager' | 'Employee' | 'Assistant' | 'Other';
   isActive?: boolean;
   business_id?: number;
   user_id?: number;

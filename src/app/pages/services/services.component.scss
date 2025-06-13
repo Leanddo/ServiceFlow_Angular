@@ -4,3 +4,10 @@
    background-color: $Roxo-light;
    padding: 10% 10%;
 }
+
+ @media (max-width: 900px) {
+   .services-container {
+         padding: 15% 0 4% ;
+
+   }
+} 

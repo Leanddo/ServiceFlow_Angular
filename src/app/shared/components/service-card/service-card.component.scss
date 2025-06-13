@@ -1,71 +1,120 @@
 @import '../../../../styles/variables.scss';
 
-.business-card-service {
-  background-color: #f9f9f9;
-  border-radius: 15px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
+// --- Ícones em SVG embutidos para performance e simplicidade ---
+.icon {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: -0.15em; // Alinha melhor com o texto
 
-  .business-service-header {
-    h2 {
-      margin: 0;
-      font-size: 1.2rem;
-    }
-
-    p {
-      margin: 0;
-      font-size: 0.95rem;
-      color: #666;
-    }
+  &.icon-time {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A2A7B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpolyline points='12 6 12 12 16 14'%3E%3C/polyline%3E%3C/svg%3E");
   }
 
-  .business-service-price-hours-button {
+}
+
+// --- Card Principal (Mobile First) ---
+.service-item-card {
+  display: flex;
+  flex-direction: column; // Empilhado no mobile
+  gap: 1rem;
+  background-color: #fff;
+  border: 1px solid $Roxo-Pastel;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(74, 42, 123, 0.08);
+  }
+}
+
+// --- Bloco de Informações (Título e Descrição) ---
+.service-item-info {
+  .service-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $Roxo-Escuro;
+    margin: 0 0 0.25rem 0;
+  }
+  .service-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// --- Bloco de Ações (Metadados e Botão) ---
+.service-item-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+// Metadados (Tempo e Preço)
+.service-item-meta {
+  display: flex;
+  flex-direction: column; // Empilhado no mobile para melhor uso do espaço
+  align-items: flex-start;
+  gap: 0.5rem;
+  
+  .meta-item {
     display: flex;
-    gap: 2rem;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $Roxo-Escuro;
 
-    .business-service-price-hours-container {
-      display: flex;
-      flex-direction: column;
-      align-items: end;
-
-      div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.3rem;
-
-
-        span {
-          margin-bottom: 0;
-        }
-      }
+    &.price {
+      font-weight: 700;
     }
+  }
+}
 
-    button {
-      background-color: $Roxo-Royal;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      font-size: 0.9rem;
+// Botão de Agendamento
+.schedule-button {
+  padding: 10px 20px;
+  background: $Roxo-Royal;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.25s ease;
 
-      &:hover {
-        background-color: $Roxo-Escuro;
-      }
-    }
+  &:hover {
+    transform: translateY(-2px);
+    background: lighten($Roxo-Royal, 5%);
+    box-shadow: 0 4px 12px rgba($Roxo-Royal, 0.3);
+  }
+}
 
-    .business-card-service-icon {
-      width: 18px;
-      height: 18px;
-    }
+// --- Media Query para Telas Maiores (Tablet/Desktop) ---
+@media (min-width: 768px) {
+  .service-item-card {
+    flex-direction: row; // Layout horizontal
+    align-items: center;
+    padding: 1.25rem;
+  }
 
-    .business-card-service-text {
-      font-size: 0.95rem;
-      color: #333;
-    }
+  .service-item-info {
+    flex-grow: 1; // Permite que o texto ocupe o espaço disponível
+  }
+  
+  .service-item-actions {
+    flex-shrink: 0; // Impede que o bloco de ações encolha
+  }
+  
+  .service-item-meta {
+    flex-direction: row; // Metadados lado a lado
+    gap: 1.5rem;
+    margin-right: 1.5rem;
   }
 }

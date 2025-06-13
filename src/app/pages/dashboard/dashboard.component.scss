@@ -1,4 +1,5 @@
-$sidebar-width: 260px;
+$sidebar-width-expanded: 260px;
+$sidebar-width-collapsed: 80px;
 
 .dashboard-layout {
   display: flex;
@@ -6,8 +7,45 @@ $sidebar-width: 260px;
 }
 
 .main-content {
-  margin-left: $sidebar-width; 
-  width: calc(100% - #{$sidebar-width}); 
+  transition: margin-left 0.3s ease-in-out;
   min-height: 100vh;
   padding: 2rem;
+
+  // Desktop (> 1200px)
+  margin-left: $sidebar-width-expanded;
+  width: calc(100% - #{$sidebar-width-expanded});
+}
+
+.mobile-menu-toggle {
+  display: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  background-color: #f7f7fa;
+  border: none;
+  border-radius: 8px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  color: #333;
+}
+
+// Tablet (< 1200px)
+@media (max-width: 1200px) {
+  .main-content {
+    margin-left: $sidebar-width-collapsed;
+    width: calc(100% - #{$sidebar-width-collapsed});
+  }
+  
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

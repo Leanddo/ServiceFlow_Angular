@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { BusinessSummary } from '../../../model/business.model';
 import { BusinessService } from '../../../services/business.service';
 import { NavigationEnd, Router, ActivatedRouteSnapshot } from '@angular/router';
@@ -16,22 +23,19 @@ interface NavItem {
 @Component({
   selector: 'app-side-nav-dashboard',
   templateUrl: './side-nav-dashboard.component.html',
-  styleUrl: './side-nav-dashboard.component.scss',
+  styleUrls: ['./side-nav-dashboard.component.scss'], // Corrigido de styleUrl para styleUrls
 })
 export class SideNavDashboardComponent implements OnInit, OnDestroy {
+  @Input() isOpen = false;
+  @Output() closeSidebar = new EventEmitter<void>();
+
   private allNavItems: NavItem[] = [
     { path: 'business', label: 'Negócio', icon: 'assets/icons/mala.svg' },
     { path: 'services', label: 'Serviços', icon: 'assets/icons/tool.svg' },
-    {
-      path: 'professionals',
-      label: 'Profissionais',
-      icon: 'assets/icons/profile.svg',
-    },
+    { path: 'professionals', label: 'Profissionais', icon: 'assets/icons/profile.svg' },
     { path: 'queues', label: 'Filas', icon: 'assets/icons/list.svg' },
   ];
-
   private destroy$ = new Subject<void>();
-
   public visibleNavItems: NavItem[] = [];
   public businessList: BusinessSummary[] = [];
   public selectedBusiness: BusinessSummary | null = null;
@@ -53,7 +57,10 @@ export class SideNavDashboardComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
+  
+  // ... resto das suas funções (loadBusinessesAndSetupRouting, etc.)
+  // O código aqui não precisa ser alterado para a funcionalidade do botão.
+  
   private loadBusinessesAndSetupRouting(): void {
     this.isLoadingBusinesses = true;
     this.businessService
@@ -70,7 +77,6 @@ export class SideNavDashboardComponent implements OnInit, OnDestroy {
 
           this.setupRouteListener();
 
-          // Verifica a rota atual para a seleção inicial (usando o snapshot)
           const businessIdFromUrl = this.findBusinessIdInRouteTree(
             this.router.routerState.snapshot.root
           );
@@ -118,7 +124,6 @@ export class SideNavDashboardComponent implements OnInit, OnDestroy {
     if (!businessToSelect && this.businessList.length > 0) {
       businessToSelect = this.businessList[0];
       if (!businessId) {
-        // Redireciona para uma rota válida, o listener fará o resto.
         this.router.navigate([
           '/dashboard',
           'services',

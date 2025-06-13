@@ -198,12 +198,23 @@ export class BusinessService {
     );
   }
 
-
   // Método para buscar os serviços de um negócio
   getBusinessServicesPrivate(businessId: number): Observable<Service[]> {
     return this.http.get<Service[]>(
       API_ENDPOINTS.businesses.services.getBusinessServicePrivate(businessId),
       { withCredentials: true }
+    );
+  }
+
+  getBusinessServicesById(
+    businessId: number,
+    service_id: number
+  ): Observable<Service> {
+    return this.http.get<Service>(
+      API_ENDPOINTS.businesses.services.getBusinessServicesByID(
+        businessId,
+        service_id
+      ),
     );
   }
 
@@ -233,12 +244,13 @@ export class BusinessService {
   patchServiceStatus(
     businessId: number,
     serviceId: number,
-    isActive:  boolean
+    isActive: boolean
   ): Observable<Service> {
-    const endpoint = API_ENDPOINTS.businesses.services.patchBusinessServiceStatus(
-      businessId,
-      serviceId
-    );
+    const endpoint =
+      API_ENDPOINTS.businesses.services.patchBusinessServiceStatus(
+        businessId,
+        serviceId
+      );
     const payload = { isActive };
     return this.http.patch<Service>(endpoint, payload, {
       withCredentials: true,
@@ -252,20 +264,36 @@ export class BusinessService {
     return this.http.delete<void>(endpoint, { withCredentials: true });
   }
 
+  updateBusinessServicesPhoto(
+    businessId: number,
+    serviceId: number,
+    photo: File
+  ): Observable<Service> {
+    const endpoint =
+      API_ENDPOINTS.businesses.services.updateBusinessServicesPhoto(
+        businessId,
+        serviceId
+      );
 
-    updateBusinessServicesPhoto(businessId: number, serviceId: number, photo: File): Observable<Service> {
-    const endpoint = API_ENDPOINTS.businesses.services.updateBusinessServicesPhoto(businessId,serviceId);
-    
     const formData = new FormData();
 
     formData.append('foto', photo, photo.name);
 
     // Para uploads com FormData, o HttpClient define o 'Content-Type' automaticamente.
-    return this.http.put<Service>(endpoint, formData, { withCredentials: true });
+    return this.http.put<Service>(endpoint, formData, {
+      withCredentials: true,
+    });
   }
 
-  deleteBusinessServicesPhoto(businessId: number, serviceId: number): Observable<Service> {
-    const endpoint =  API_ENDPOINTS.businesses.services.deleteBusinessServicesPhoto(businessId,serviceId);
+  deleteBusinessServicesPhoto(
+    businessId: number,
+    serviceId: number
+  ): Observable<Service> {
+    const endpoint =
+      API_ENDPOINTS.businesses.services.deleteBusinessServicesPhoto(
+        businessId,
+        serviceId
+      );
     return this.http.delete<Service>(endpoint, { withCredentials: true });
   }
 

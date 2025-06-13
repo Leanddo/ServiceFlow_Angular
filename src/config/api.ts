@@ -50,6 +50,8 @@ export const API_ENDPOINTS = {
         `${API_BASE_URL}/businesses/${id}/services`,
       updateBusinessServices: (business_id: number, service_id: number) =>
         `${API_BASE_URL}/businesses/${business_id}/services/${service_id}`,
+      getBusinessServicesByID: (business_id: number, service_id: number) =>
+        `${API_BASE_URL}/businesses/${business_id}/services/${service_id}`,
       deleteBusinessServices: (business_id: number, service_id: number) =>
         `${API_BASE_URL}/businesses/${business_id}/services/${service_id}`,
       patchBusinessServiceStatus: (business_id: number, service_id: number) =>
@@ -87,6 +89,7 @@ export const API_ENDPOINTS = {
       `${API_BASE_URL}/business/${id}/average-rating`,
     getBusinessReviews: (id: number) =>
       `${API_BASE_URL}/business/${id}/reviews`,
+    createReview: (id: number) => `${API_BASE_URL}/services/${id}/reviews`,
   },
 
   queues: {

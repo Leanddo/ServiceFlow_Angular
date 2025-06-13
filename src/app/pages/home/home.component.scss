@@ -1,229 +1,374 @@
+// Import your variables as you did before.
 @import "../../../styles/variables.scss";
 
-.headline-container {
-    height: 60px;
-    overflow: hidden;
-}
-
+// ===================================================================
+// HERO SECTION
+// ===================================================================
 .hero-section {
-    position: relative;
-    height: 95vh;
+  position: relative;
+  min-height: 95vh; 
+  color: $generic-white;
+  padding: 5rem 3% 0; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+    // EFEITO DE IMAGEM + GRADIENTE
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
     background-image:
-        linear-gradient(to right, $Roxo-Escuro , $Roxo-light),
-        url('../../../../public/hero_Backgrund.png');
+      linear-gradient(135deg, rgba($Roxo-Escuro, 0.85), rgba($Roxo-light, 0.2)),
+      linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+      url('../../../../public/hero_Backgrund.png');
     background-size: cover;
     background-position: center;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 0 10%;
+  }
+  
+  > * {
+    position: relative;
+    z-index: 2;
+  }
 }
 
 .hero-title-div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100%;
-    margin-top: 5%;
+  text-align: left;
+  max-width: 1200px; 
+  margin: 0 50px;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-    h1 {
-        font-size: 4rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
+  h1 {
+    font-size: 4.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  }
 
-    p {
-        font-size: 1.5rem;
-        font-weight: 400;
-        margin-bottom: 1rem;
+  .headline-container {
+    height: 60px; // As per original styles.
+    overflow: hidden;
+
+    p.headline {
+      font-size: 1.75rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
     }
+  }
 }
 
 .hero-businesses-types {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; // IMPROVEMENT: Allows links to wrap on smaller screens.
+  gap: 3rem;
+  margin-bottom: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 
-    a {
-        text-decoration: none;
-        color: #fff;
-        font-size: 1.2rem;
-        position: relative;
+  a {
+    text-decoration: none;
+    color: $generic-white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding-bottom: 0.5rem;
+    position: relative;
+    transition: color 0.3s ease;
 
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #fff;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-
-        &:hover::after {
-            transform: scaleX(1);
-        }
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: $generic-white;
+      transform: scaleX(0);
+      transform-origin: center; // IMPROVEMENT: Animation originates from the center.
+      transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
     }
+
+    &:hover {
+      color: $generic-white;
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+  }
 }
 
 .hero-form-div {
-    width: 100%;
+  width: 100%;
+  background-color: $generic-white;
+  padding: 1.25rem;
+  border-top-left-radius: 25px; // A slightly more subtle radius.
+  border-top-right-radius: 25px;
+  display: flex;
+  gap: 1rem;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+
+  input[type="text"] {
+    flex-grow: 1;
+    padding: 1rem 1.5rem;
+    border: 2px solid $Roxo-transparent;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-family: $font-primary;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &:focus {
+      outline: none;
+      border-color: $Roxo-Medio;
+      box-shadow: 0 0 0 4px $Roxo-light;
+    }
+  }
+
+  button {
+    background-color: $Roxo-Medio;
+    color: $generic-white;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: $Roxo-Royal;
+      transform: scale(1.05);
+    }
+    &:active:not(:disabled) {
+      transform: scale(1);
+    }
+  }
+}
+
+
+// ===================================================================
+// STATS SECTION
+// ===================================================================
+.stats-section {
+  padding: 4rem 5%;
+  background-color: $Roxo-light;
+
+  .stats-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    padding: 20px 20px;
-    gap: 20px;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
+    flex-wrap: wrap; 
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-    input {
-        width: 100%;
-        padding: 1rem;
-        border-radius: 5px;
-        border: none;
-        font-size: 1.1rem;
-        border-radius: 40px;
+  .stat {
+    text-align: center;
+    color: $Roxo-Escuro;
 
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 0.25rem;
+    }
+
+    h2 {
+      font-size: 2.5rem; 
+      font-weight: 700;
     }
 
     span {
-        color: $Roxo-Escuro ;
-        font-size: 2.5rem;
-        font-weight: 100;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: $Roxo-Medio;
     }
 
-    button {
-        background-color: $Roxo-light;
-        color: $Roxo-Escuro;
-        padding: 1rem 2rem;
-        border-radius: 40px;
-        border: none;
-        font-size: 1.1rem;
-        cursor: pointer;
-        width: 25%;
-
-        &:hover {
-            background-color: $Roxo-Escuro;
-            color: white;
-        }
+    p {
+      font-size: 1rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: lighten($Roxo-Escuro, 20%);
     }
+  }
 }
 
 
-.stats-section {
-    height: 10dvw;
-    display: flex;
-    background-color: $Roxo-light;
-
-    .stats-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        width: 100%;
-        padding: 0 10%;
-    }
-
-    .stat {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: $Roxo-Escuro;
-
-        div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-
-            span {
-                font-size: 2rem;
-            }
-        }
-
-        h2 {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        p {
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 1rem;
-        }
-    }
-}
-
+// ===================================================================
+// SERVICES SCROLL SECTION
+// ===================================================================
 .services-scroll-section {
-    background-color: $Roxo-light;
-    padding: 2rem 1rem;
-    text-align: center;
-    overflow: hidden;
-}
+  background-color: $generic-white; 
+  padding: 5rem 1rem;
+  text-align: center;
+  overflow: hidden;
 
-.section-title {
-    font-size: 1.8rem;
-    font-weight: bold;
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
     color: $Roxo-Escuro;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    display: inline-block;
+
+    // IMPROVEMENT: A decorative underline to make the title stand out.
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background-color: $Roxo-Medio;
+      border-radius: 2px;
+    }
+  }
 }
 
 
+// ===================================================================
+// REGISTAR NEGOCIO SECTION (Call to Action)
+// ===================================================================
 .registar-negocio-section {
-    width: 100%;
-    height: 60vh;
-    background-color: $Roxo-Escuro;
+  width: 100%;
+  padding: 6rem 5%; // Use padding for flexible height.
+  background-color: $Roxo-Escuro;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .registar-negocio-text {
-    color: white;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  color: $generic-white;
+  text-align: center;
+  max-width: 800px;
+
+  .registar-negocio-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .registar-negocio-description {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    opacity: 0.9;
+    margin-bottom: 2.5rem;
+  }
+
+  .registar-negocio-button {
+    background-color: $generic-white;
+    color: $Roxo-Escuro;
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    border: 2px solid $generic-white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+
+    // IMPROVEMENT: Modern "ghost button" hover effect.
+    &:hover {
+      background-color: transparent;
+      color: $generic-white;
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ===================================================================
+// RESPONSIVE STYLES
+// ===================================================================
+
+// --- Tablet (up to 992px) ---
+@media (max-width: 992px) {
+  .hero-title-div h1 {
+    font-size: 3.5rem;
+  }
+  .hero-title-div p.headline {
+    font-size: 1.5rem;
+  }
+  .stats-section .stat h2 {
+    font-size: 2.5rem;
+  }
+}
+
+// --- Mobile (up to 768px) ---
+@media (max-width: 768px) {
+  .hero-section {
+    padding-top: 2rem;
+  }
+  .hero-title-div {
+    text-align: center; 
+    margin: 0;
+    h1 { font-size: 2.8rem; }
+    p.headline { font-size: 1.2rem; }
+  }
+  .hero-businesses-types {
+    gap: 0.5rem 1rem; // Smaller gap on mobile.
+    margin-bottom: 1.5rem;
+    a { font-size: 1rem; }
+  }
+  .hero-form-div {
+    flex-direction: column; // Stack form elements.
+    border-radius: 15px; // Regular radius when stacked.
+    input, button { width: 100%; }
+  }
+
+  .stats-container {
+    flex-direction: column; // Stack stats vertically.
+    gap: 2.5rem;
+  }
+  .stat h2 { font-size: 2.2rem; }
+
+  .services-scroll-section {
+    padding: 4rem 1rem;
+    .section-title { font-size: 2rem; }
+  }
+
+  .registar-negocio-section {
+    padding: 4rem 5%;
+  }
+  .registar-negocio-title { font-size: 2.5rem; }
+  .registar-negocio-description { font-size: 1.1rem; }
+  .registar-negocio-button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-title-div h1 { font-size: 3.5rem; }
+  .stats-section .stat h2 { font-size: 2.5rem; }
+}
+
+@media (max-width: 768px) {
+  .hero-section { text-align: center; }
+  .hero-title-div h1 { font-size: 2.8rem; }
+  .hero-title-div .headline p.headline { font-size: 1.2rem; }
+  .hero-businesses-types { gap: 0.5rem 1rem; }
+  .hero-form-div {
     flex-direction: column;
+    input, button { width: 100%; }
+  }
 
-    .registar-negocio-description {
-        font-size: 1.2rem;
-    }
+  .stats-container { flex-direction: column; gap: 2.5rem; }
+  .services-scroll-section .section-title { font-size: 2rem; }
 
-    .registar-negocio-title {
-        font-size: 4rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-
-    .registar-negocio-button {
-        background-color: white;
-        color: $Roxo-Escuro;
-        padding: 1rem 2rem;
-        border-radius: 40px;
-        border: none;
-        font-size: 1.2rem;
-        cursor: pointer;
-        width: 25%;
-        text-decoration: none;
-        margin-top: 30px;
-
-        &:hover {
-            background-color: $Roxo-Escuro;
-            color: white;
-            border: 1px solid white;
-        }
-    }
+  .registar-negocio-section { padding: 4rem 5%; }
+  .registar-negocio-title { font-size: 2.5rem; }
 }

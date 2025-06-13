@@ -1,197 +1,285 @@
+// Importa as variáveis de cores e fontes do seu projeto
 @import '../../../../styles/variables.scss';
 
+// --- Contêiner Principal da Página ---
+.businesses-page-container {
+  padding: 1.5rem 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// --- Controles Superiores (Contador e Filtros) ---
+.top-controls {
+  display: flex;
+  flex-direction: column; // Empilhado no mobile
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
 .businesses-counter {
-  font-size: 2rem;
-  margin-bottom: 30px;
+  font-size: 1.8rem;
+  font-family: "Oxanium", sans-serif;
+  color: $Roxo-Escuro;
+  margin: 0;
+  text-align: center;
 }
 
 .filters {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 0.75rem;
+  justify-content: center;
 
   label {
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $Roxo-Royal;
   }
 
   select {
-    padding: 0.5rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
+    padding: 0.6rem 2.5rem 0.6rem 1rem;
+    border-radius: 8px;
+    border: 1px solid $Roxo-Pastel;
+    background-color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $Roxo-Escuro;
+    cursor: pointer;
+    appearance: none; // Remove a seta padrão do navegador
+    // Adiciona uma seta customizada em SVG
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234A2A7B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      border-color: $Roxo-Royal;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $Roxo-Royal;
+      box-shadow: 0 0 0 3px rgba($Roxo-Royal, 0.2);
+    }
   }
 }
 
-
-.Business-card {
+// --- Container da Lista e Mensagens de Status ---
+.business-list-container {
   display: flex;
-  justify-content: center;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.status-message {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #777;
+  font-size: 1.1rem;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+}
+
+// --- Card de Negócio (Mobile First) ---
+.business-card {
+  display: flex;
+  flex-direction: column; // Layout vertical para mobile
   background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  gap: 2rem;
-  padding: 2rem;
-  max-height: 450px;
-  margin-top: 10px;
   cursor: pointer;
+  border: 1px solid #f0f0f0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 
-  .business-card-right {
-    flex: 1;
-    min-width: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    img.business-card-image {
-      width: 100%;
-      height: 100%;
-
-      border-radius: 20px;
-      object-fit: cover;
-    }
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(74, 42, 123, 0.08);
   }
+}
 
-  .business-card-left {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+.business-card-image-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 10; 
+  flex-shrink: 0;
 
-    .business-card-header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-
-      .business-card-title-separation {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .business-card-title {
-        font-size: 2rem;
-        font-weight: bold;
-        margin: 0;
-      }
-
-      .business-card-rating {
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-
-
-        .business-card-rating-value img {
-          width: 20px;
-          height: 20px;
-        }
-
-        .business-card-rating-count {
-          font-size: 1rem;
-          color: #777;
-        }
-      }
-
-      .business-card-description {
-        p {
-          font-size: 1rem;
-          color: #555;
-          margin: 0;
-        }
-      }
-    }
-
-    .business-card-services {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
+  .business-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
+}
+
+.business-card-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; // Garante que o conteúdo ocupe o espaço vertical
+}
+
+.business-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.business-card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $Roxo-Escuro;
+  margin: 0;
+}
+
+.business-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .stars {
   display: flex;
-  gap: 4px;
+  gap: 3px;
 }
 
 .star {
-  width: 24px;
-  height: 24px;
-  background-color: #ccc;
-  /* Cor de fundo para estrelas vazias */
-  mask-image: url('../../../../../public/assets/icons/star.svg');
+  width: 18px;
+  height: 18px;
+  background-color: #e0e0e0;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
   mask-size: cover;
-  -webkit-mask-image: url('../../../../../public/assets/icons/star.svg');
   -webkit-mask-size: cover;
   position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #ffd700, #ffc400);
+    width: var(--fill, 0%);
+    mask-image: inherit;
+    -webkit-mask-image: inherit;
+    mask-size: inherit;
+    -webkit-mask-size: inherit;
+  }
 }
 
-.star::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-color: gold;
-  /* Cor para estrelas preenchidas */
-  width: var(--fill, 0%);
-  mask-image: url('../../../../../public/assets/icons/star.svg');
-  mask-size: cover;
-  -webkit-mask-image: url('../../../../../public/assets/icons/star.svg');
-  -webkit-mask-size: cover;
+.business-card-rating-count {
+  font-size: 0.9rem;
+  color: #888;
+  padding-top: 2px;
 }
 
+.business-card-description {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.business-card-services {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.status-message--services {
+  margin-top: auto;
+  color: #999;
+  font-style: italic;
+}
+
+// --- Paginação ---
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-top: 4rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 3rem;
 
   .pagination-link {
     text-decoration: none;
-    color: $Roxo-Escuro;
-    font-size: 1.3rem;
-    position: relative;
+    color: $Roxo-Royal;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    min-width: 36px;
+    text-align: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
 
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: $Roxo-Escuro;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-    }
-
-    &:hover::after {
-      transform: scaleX(1);
+    &:hover {
+      background-color: $Roxo-light;
+      color: $Roxo-Escuro;
     }
 
     &.active {
-      font-weight: bold;
-      color: $Roxo-Royal;
-
-      &::after {
-        transform: scaleX(1);
-        background-color: $Roxo-Escuro;
-      }
+      background-color: $Roxo-Escuro;
+      color: white;
+      pointer-events: none;
     }
 
     &.disabled {
       color: #ccc;
       cursor: not-allowed;
 
-      &::after {
-        background-color: #ccc;
+      &:hover {
+        background-color: transparent;
       }
     }
+  }
+}
+
+// --- Media Query para Tablet e Desktop ---
+@media (min-width: 768px) {
+  .businesses-page-container {
+    padding: 2rem;
+  }
+
+  .top-controls {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .businesses-counter {
+    font-size: 2.2rem;
+    text-align: left;
+  }
+
+  .business-card {
+    flex-direction: row; // Layout horizontal
+    max-height: 420px;
+  }
+
+  .business-card-image-wrapper {
+    flex: 0 0 48%;
+    aspect-ratio: auto;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .business-card-content {
+    padding: 1.5rem 2rem;
+  }
+
+  .business-card-title {
+    font-size: 1.7rem;
+  }
+
+  .star {
+    width: 22px;
+    height: 22px;
+  }
+
+  .pagination {
+    gap: 0.75rem;
   }
 }

@@ -1,46 +1,55 @@
-<nav>
-  <div class="right-nav">
+<nav [class.menu-open]="isMenuOpen">
+  <div class="mobile-menu-backdrop" (click)="toggleMenu()"></div>
+
+  <div class="nav-left">
     <img routerLink="/" src="ServiceFlow_Logo.png" alt="ServiceFlow Logo" class="nav-logo" />
-    <ul>
-      <li><a routerLink="/agenda">Agenda</a></li>
-      <li><a routerLink="/businesses">Serviços</a></li>
+    <ul class="desktop-links">
+      <li><a routerLink="/businesses" routerLinkActive="active">Serviços</a></li>
     </ul>
   </div>
 
-  <div class="left-nav" *ngIf="!user">
-    <button class="Entrar" routerLink="/auth">Entrar</button>
-    <button class="SignUp" routerLink="/business/create">Registar Negócio</button>
-  </div>
+  <div class="nav-right">
 
-  <div class="left-nav user-info" *ngIf="user">
-    <span>Olá, {{ user.username }}</span>
+    <div class="auth-buttons" *ngIf="!user">
+      <button class="Entrar" routerLink="/auth">Entrar</button>
+      <button class="SignUp" routerLink="/business/create">Registar Negócio</button>
+    </div>
 
-    <ng-container *ngIf="user?.fotoUrl; else defaultIcon">
-      <img
-        [src]="user.fotoUrl"
-        alt="Foto de perfil"
-        class="profile-img"
-        tabindex="0"
-        (click)="toggleDropdown()"
-        (keydown.enter)="toggleDropdown()"
-      />
-    </ng-container>
-
-    <ng-template #defaultIcon>
-      <div
-        class="foto-Placeholder"
-        tabindex="0"
-        (click)="toggleDropdown()"
-        (keydown.enter)="toggleDropdown()"
-      >
-        <img src="assets/icons/profile.svg" alt="profile SVG">
+    <div class="user-info" *ngIf="user" #userInfo>
+      <span>Olá, {{ user.username }}</span>
+      <div class="avatar-container" (click)="toggleDropdown()" (keydown.enter)="toggleDropdown()" tabindex="0">
+        <ng-container *ngIf="user?.fotoUrl; else defaultIcon">
+          <img [src]="user.fotoUrl" alt="Foto de perfil" class="profile-img" />
+        </ng-container>
+        <ng-template #defaultIcon>
+          <div class="foto-Placeholder">
+            <img src="assets/icons/profile.svg" alt="profile SVG" />
+          </div>
+        </ng-template>
       </div>
-    </ng-template>
+      <ul class="dropdown-menu" [class.open]="dropdownOpen">
+        <li><a routerLink="/user/account" (click)="closeMenus()">Perfil</a></li>
+        <li><a routerLink="/dashboard" (click)="closeMenus()">Dashboard</a></li>
+        <li><button (click)="logout()" class="logout-btn">Logout</button></li>
+      </ul>
+    </div>
+    
+    <button class="hamburger-btn" (click)="toggleMenu()" aria-label="Abrir menu">
+      <div class="hamburger-icon"></div>
+    </button>
+  </div>
 
-    <ul class="dropdown-menu" [class.open]="dropdownOpen">
-      <li><a routerLink="/user/account" (click)="dropdownOpen = false">Perfil</a></li>
-      <li><a routerLink="/dashboard" (click)="dropdownOpen = false">Dashboard</a></li>
-      <li><button (click)="logout(); dropdownOpen = false" class="logout-btn">Logout</button></li>
+  <div class="mobile-menu">
+    <div class="mobile-menu-header">
+        <h3>Menu</h3>
+    </div>
+    <ul class="mobile-nav-links">
+        <li><a routerLink="/agenda" (click)="toggleMenu()">Agenda</a></li>
+        <li><a routerLink="/businesses" (click)="toggleMenu()">Serviços</a></li>
     </ul>
+    <div class="mobile-auth-actions" *ngIf="!user">
+        <button class="Entrar" routerLink="/auth" (click)="toggleMenu()">Entrar</button>
+        <button class="SignUp" routerLink="/business/create" (click)="toggleMenu()">Registar Negócio</button>
+    </div>
   </div>
 </nav>

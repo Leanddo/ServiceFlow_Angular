@@ -1,0 +1,97 @@
+<div class="create-review-page">
+
+  <!-- Coluna de showcase dinâmica -->
+  <div class="review-page-showcase" [style.background-image]="getBackgroundImage()">
+    <div class="showcase-overlay">
+      
+      <!-- Estado de Carregamento -->
+      <div *ngIf="isLoading && !serviceToReview" class="showcase-feedback">
+        <p>A carregar detalhes do serviço...</p>
+      </div>
+
+      <!-- Estado de Erro ao Carregar -->
+      <div *ngIf="!isLoading && errorMessage && !serviceToReview" class="showcase-feedback error">
+        <h2>Ups! Algo correu mal</h2>
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <!-- Detalhes do Serviço (Sucesso) -->
+      <div *ngIf="serviceToReview" class="service-details">
+          <p class="intro-text">Está a avaliar o serviço:</p>
+          <h2 class="service-name">{{ serviceToReview.service_name }}</h2>
+          <p *ngIf="serviceToReview.description" class="service-description">
+            {{ serviceToReview.description }}
+          </p>
+          <div *ngIf="serviceToReview.category" class="service-category">
+            {{ serviceToReview.category }}
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coluna do formulário -->
+  <div class="review-page-content">
+    <div class="page-logo">Service<span>Flow</span></div>
+    <div class="form-wrapper">
+      
+      <!-- Título do Formulário (só aparece antes da submissão) -->
+      <div class="form-title-section" *ngIf="!submissionSuccess">
+        <h2 *ngIf="serviceToReview">Deixe a sua Avaliação para {{ serviceToReview.service_name }}</h2>
+        <h2 *ngIf="!serviceToReview && !isLoading && !errorMessage">Deixe a sua Avaliação</h2>
+        <p class="form-description">
+          Como foi a sua experiência? O seu feedback é fundamental para todos.
+        </p>
+      </div>
+
+      <!-- Alerta de Erro na Submissão -->
+      <div *ngIf="errorMessage && !isLoading" class="form-error-alert">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Formulário de Avaliação (só aparece antes da submissão) -->
+      <form class="rating-form" *ngIf="!submissionSuccess && serviceToReview" [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+        <!-- Título da Avaliação -->
+        <div class="form-group">
+          <label for="reviewTitle">Título da Avaliação <span class="required-asterisk">*</span></label>
+          <div class="input-wrapper">
+            <input id="reviewTitle" type="text" formControlName="review_title" placeholder="Ex: Atendimento excecional!">
+          </div>
+        </div>
+
+        <!-- Classificação por Estrelas -->
+        <div class="form-group">
+            <label>A sua Classificação <span class="required-asterisk">*</span></label>
+            <div class="star-rating-container" (mouseleave)="resetHoverRating()">
+              <span *ngFor="let star of stars" 
+                    class="star"
+                    [ngClass]="{'selected': star <= finalRating, 'hovered': star <= hoveredRating}"
+                    (mouseenter)="setHoverRating(star)" 
+                    (click)="setRating(star)">★</span>
+            </div>
+        </div>
+        
+        <!-- Descrição -->
+        <div class="form-group">
+          <label for="reviewBody">A sua Experiência <span class="required-asterisk">*</span></label>
+          <div class="input-wrapper">
+            <textarea id="reviewBody" formControlName="review_body" placeholder="Descreva em detalhe como foi o serviço..."></textarea>
+          </div>
+        </div>
+        
+        <!-- Botão de Ação -->
+        <button type="submit" class="submit-btn" [disabled]="reviewForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Publicar Avaliação</span>
+          <span *ngIf="isLoading">A Publicar...</span>
+        </button>
+      </form>
+
+      <!-- Mensagem de Sucesso (só aparece após submissão bem-sucedida) -->
+      <div *ngIf="submissionSuccess" class="success-message">
+          <svg class="success-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+          <h2>Obrigado!</h2>
+          <p>A sua avaliação foi publicada com sucesso. Será redirecionado em breve...</p>
+      </div>
+      
+    </div>
+  </div>
+</div>

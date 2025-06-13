@@ -1,0 +1,297 @@
+@import '../../../../styles/variables.scss';
+
+// --- 1. LAYOUT GERAL DA PÁGINA ---
+.create-review-page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+// --- 2. COLUNA DA ESQUERDA (VISUAL/SHOWCASE) ---
+.review-page-showcase {
+  width: 50%;
+  margin: 10px;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.showcase-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  color: $generic-white;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+}
+
+.service-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 450px;
+
+  .intro-text {
+    font-size: 1.1rem;
+    opacity: 0.8;
+  }
+
+  .service-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .service-description {
+    font-size: 1rem;
+    opacity: 0.9;
+    line-height: 1.6;
+    margin-top: 0.5rem;
+  }
+
+  .service-category {
+    margin-top: 1rem;
+    background-color: rgba($generic-white, 0.15);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid rgba($generic-white, 0.3);
+  }
+}
+
+.showcase-feedback {
+  p {
+    font-size: 1.2rem;
+  }
+
+  &.error {
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    p {
+      color: #ffdddd;
+    }
+  }
+}
+
+// --- 3. COLUNA DA DIREITA (FORMULÁRIO) ---
+.review-page-content {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  box-sizing: border-box;
+}
+
+.page-logo {
+  display: flex;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: black;
+
+  span {
+    font-size: 2.5rem;
+    color: $Roxo-Royal;
+  }
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 550px;
+}
+
+// --- 4. CABEÇALHO E ALERTAS DO FORMULÁRIO ---
+.form-title-section {
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  p.form-description {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+.form-error-alert {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border: 1px solid #ffcdd2;
+  font-size: 0.95rem;
+}
+
+// --- 5. ESTILOS DO FORMULÁRIO DE RATING ---
+.rating-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.input-wrapper {
+  position: relative;
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: $font-primary;
+    background-color: $generic-white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &::placeholder {
+      color: #b0b0b0;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $Roxo-Royal;
+      box-shadow: 0 0 0 4px $Roxo-light;
+    }
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+}
+
+.required-asterisk {
+  color: $Roxo-Royal;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+// --- 6. ESTRELAS COM DESTAQUE MÁXIMO ---
+.star-rating-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+
+  .star {
+    color: #e0e0e0;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    $star-gold: #FFC107;
+    font-size: 5rem;
+
+    &.hovered {
+      color: lighten($star-gold, 15%);
+      transform: scale(1.25);
+    }
+
+    &.selected {
+      color: $star-gold;
+    }
+  }
+}
+
+// --- 7. BOTÃO DE AÇÃO ---
+.submit-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: $Roxo-Royal;
+  color: $generic-white;
+  border: none;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background: darken($Roxo-Royal, 10%);
+  }
+
+  &:disabled {
+    background-color: $Roxo-light;
+    cursor: not-allowed;
+  }
+}
+
+// --- 8. MENSAGEM DE SUCESSO ---
+.success-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  color: #166534;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+.success-icon {
+  width: 60px;
+  height: 60px;
+  fill: #22c55e;
+  margin-bottom: 1rem;
+}
+
+// --- 9. RESPONSIVIDADE ---
+@media (max-width: 992px) {
+  .create-review-page {
+    flex-direction: column;
+  }
+
+  .review-page-showcase {
+    display: none;
+  }
+
+  .review-page-content {
+    width: 100%;
+    padding: 2rem 1.5rem;
+  }
+}

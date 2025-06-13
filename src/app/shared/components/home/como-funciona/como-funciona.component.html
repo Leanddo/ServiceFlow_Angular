@@ -1,16 +1,27 @@
 <section class="como-funciona-section">
-  <div
-    class="passo"
-    *ngFor="let passo of passos; let i = index"
-    [ngClass]="{ reverse: i % 2 !== 0 }"
-  >
-    <img [src]="passo.imagem" [alt]="passo.titulo" />
-    <div class="side-Text">
-      <h3>{{ passo.titulo }}</h3>
-      <p>{{ passo.descricao }}</p>
-      <ul>
-        <li *ngFor="let item of passo.funcionalidades">{{ item }}</li>
-      </ul>
+  <div class="section-header">
+    <h2 class="section-title">Como Funciona?</h2>
+    <p class="section-subtitle">
+      Seu próximo agendamento em apenas 3 passos simples e intuitivos.
+    </p>
+  </div>
+
+  <div class="passos-container">
+    <div
+      class="passo"
+      *ngFor="let passo of passos; let i = index"
+      [ngClass]="{ reverse: i % 2 !== 0 }"
+    >
+      <div class="passo-imagem">
+        <img [src]="passo.imagem" [alt]="passo.titulo" />
+      </div>
+      <div class="passo-texto">
+        <h3>{{ passo.titulo }}</h3>
+        <p>{{ passo.descricao }}</p>
+        <ul>
+          <li *ngFor="let item of passo.funcionalidades">{{ item }}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>

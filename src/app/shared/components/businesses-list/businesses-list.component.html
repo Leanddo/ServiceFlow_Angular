@@ -1,117 +1,158 @@
-<div class="filters">
-  <label for="filter-select">Ordenar por:</label>
-  <select
-    id="filter-select"
-    [(ngModel)]="selectedFilter"
-    (change)="applyFilter()"
-  >
-    <option value="highestRating">Maior Avaliação</option>
-    <option value="lowestRating">Menor Avaliação</option>
-    <option value="mostServices">Mais Serviços</option>
-    <option value="leastServices">Menos Serviços</option>
-  </select>
-</div>
-
-<h1 class="businesses-counter">
-  {{ filterBusinessType ? filterBusinessType : "Services" }} ({{
-    getTotalBusinesses()
-  }})
-</h1>
-
-<ng-container *ngIf="loading; else loadedContent">
-  <div>A carregar...</div>
-</ng-container>
-
-<ng-template #loadedContent>
-  <div *ngIf="!businessCards?.length; else showCards">
-    Nenhum negócio encontrado.
-  </div>
-</ng-template>
-
-<ng-template #showCards>
-  <div
-    *ngFor="let item of getPaginatedBusinesses()"
-    class="Business-card"
-    [routerLink]="['/businesses', item.business.business_id]"
-  >
-    <div class="business-card-right">
-      <img
-        [src]="
-          item.business.main_photo_url ??
-          'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
-        "
-        alt="Imagem do negócio {{
-          item.business.business_name || 'Nome não disponível'
-        }}"
-        class="business-card-image"
-        loading="lazy"
-      />
+<div class="businesses-page-container">
+  <!-- =================================== -->
+  <!--    SEÇÃO DE CONTROLES SUPERIORES    -->
+  <!-- =================================== -->
+  <div class="top-controls">
+    <h1 class="businesses-counter">
+      {{ filterBusinessType ? filterBusinessType : "Serviços" }} ({{
+        getTotalBusinesses()
+      }})
+    </h1>
+    <div class="filters">
+      <label for="filter-select">Ordenar por:</label>
+      <select
+        id="filter-select"
+        [(ngModel)]="selectedFilter"
+        (change)="applyFilter()"
+      >
+        <option value="highestRating">Maior Avaliação</option>
+        <option value="lowestRating">Menor Avaliação</option>
+        <option value="mostServices">Mais Serviços</option>
+        <option value="leastServices">Menos Serviços</option>
+      </select>
     </div>
+  </div>
 
-    <div class="business-card-left">
-      <div class="business-card-header">
-        <div class="business-card-title-separation">
-          <h2 class="business-card-title">
-            {{ item.business.business_name || "Nome não disponível" }}
-          </h2>
+  <!-- =================================== -->
+  <!--   CONTAINER DA LISTA DE NEGÓCIOS   -->
+  <!-- =================================== -->
+  <div class="business-list-container">
+    <!-- Estado de Carregamento -->
+    <ng-container *ngIf="loading; else loadedContent">
+      <div class="status-message">A carregar...</div>
+    </ng-container>
 
-          <div class="business-card-rating" aria-label="Avaliação do negócio">
-            <span class="business-card-rating-value">
-              <div class="stars">
-                <ng-container
-                  *ngFor="let star of [0, 1, 2, 3, 4]; let index = index"
+    <!-- Conteúdo Carregado -->
+    <ng-template #loadedContent>
+      <!-- Estado de Lista Vazia -->
+      <div
+        *ngIf="!businessCards?.length; else showCards"
+        class="status-message"
+      >
+        Nenhum negócio encontrado.
+      </div>
+
+      <!-- Template para Mostrar os Cards -->
+      <ng-template #showCards>
+        <div
+          *ngFor="let item of getPaginatedBusinesses()"
+          class="business-card"
+          [routerLink]="['/businesses', item.business.business_id]"
+          tabindex="0"
+          role="link"
+        >
+          <!-- Wrapper da Imagem -->
+          <div class="business-card-image-wrapper">
+            <img
+              [src]="
+                item.business.main_photo_url ??
+                'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
+              "
+              alt="Imagem do negócio {{
+                item.business.business_name || 'Nome não disponível'
+              }}"
+              class="business-card-image"
+              loading="lazy"
+            />
+          </div>
+
+          <!-- Wrapper do Conteúdo de Texto -->
+          <div class="business-card-content">
+            <!-- Cabeçalho do Card (Título e Avaliação) -->
+            <div class="business-card-header">
+              <h2 class="business-card-title">
+                {{ item.business.business_name || "Nome não disponível" }}
+              </h2>
+              <div
+                class="business-card-rating"
+                aria-label="Avaliação do negócio"
+              >
+                <div
+                  class="stars"
+                  [title]="'Avaliação: ' + item.rating.average_rating + ' de 5'"
                 >
-                  <div
-                    class="star"
-                    [ngStyle]="getStarStyle(item.rating.average_rating, index)"
-                  ></div>
-                </ng-container>
+                  <ng-container
+                    *ngFor="let star of [0, 1, 2, 3, 4]; let index = index"
+                  >
+                    <div
+                      class="star"
+                      [ngStyle]="
+                        getStarStyle(item.rating.average_rating, index)
+                      "
+                    ></div>
+                  </ng-container>
+                </div>
+                <span class="business-card-rating-count"
+                  >({{ item.rating.total_reviews }})</span
+                >
               </div>
-            </span>
-            <span class="business-card-rating-count">
-              ({{ item.rating.total_reviews }})
-            </span>
+            </div>
+
+            <!-- Descrição do Negócio -->
+            <p class="business-card-description">
+              {{ item.business.description ?? "Sem descrição disponível." }}
+            </p>
+
+            <!-- Lista de Serviços (utiliza o app-service-card) -->
+            <div
+              class="business-card-services"
+              *ngIf="item.services && item.services.length > 0; else noServices"
+              (click)="$event.stopPropagation()"
+            >
+              <app-service-card
+                *ngFor="let service of item.services | slice : 0 : 3"
+                [service]="service"
+              ></app-service-card>
+            </div>
+            <ng-template #noServices>
+              <p class="status-message--services">Sem serviços disponíveis.</p>
+            </ng-template>
           </div>
         </div>
-
-        <div class="business-card-description">
-          <p>{{ item.business.description ?? "Sem descrição disponível." }}</p>
-        </div>
-      </div>
-
-      <div
-        class="business-card-services"
-        *ngIf="item.services && item.services.length > 0; else noServices"
-      >
-        <app-service-card
-          *ngFor="let service of item.services | slice : 0 : 3"
-          [service]="service"
-        ></app-service-card>
-      </div>
-
-      <ng-template #noServices>
-        <p>Sem serviços disponíveis.</p>
       </ng-template>
-    </div>
+    </ng-template>
   </div>
-</ng-template>
 
-<div class="pagination">
-  <a
-    *ngFor="let page of getPages()"
-    (click)="goToPage(page)"
-    [class.active]="page === currentPage"
-    class="pagination-link"
+  <!-- =================================== -->
+  <!--           SEÇÃO DE PAGINAÇÃO         -->
+  <!-- =================================== -->
+  <div
+    class="pagination"
+    *ngIf="businessCards && businessCards.length > itemsPerPage"
   >
-    {{ page }}
-  </a>
-  <a
-    (click)="nextPage()"
-    [class.disabled]="
-      currentPage === Math.ceil(businessCards.length / itemsPerPage)
-    "
-    class="pagination-link"
-  >
-    →
-  </a>
+    <a
+      (click)="previousPage()"
+      [class.disabled]="currentPage === 1"
+      class="pagination-link"
+      aria-label="Página anterior"
+      >←</a
+    >
+    <a
+      *ngFor="let page of getPages()"
+      (click)="goToPage(page)"
+      [class.active]="page === currentPage"
+      class="pagination-link"
+      [attr.aria-label]="'Ir para a página ' + page"
+      >{{ page }}</a
+    >
+    <a
+      (click)="nextPage()"
+      [class.disabled]="
+        currentPage === Math.ceil(businessCards.length / itemsPerPage)
+      "
+      class="pagination-link"
+      aria-label="Próxima página"
+      >→</a
+    >
+  </div>
 </div>

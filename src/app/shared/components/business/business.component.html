@@ -1,11 +1,11 @@
-<div class="business-container" *ngIf="business; else loadingTemplate">
-  <div class="bussiness-left">
-    <!-- Image Carousel -->
+<!-- business.component.html -->
 
+<div class="business-container" *ngIf="business; else loadingTemplate">
+  <!-- ======================== COLUNA DA ESQUERDA ======================== -->
+  <div class="business-left">
+    <!-- Carrossel de Imagens -->
     <div class="business-slider">
-      <button class="slider-button prev" (click)="scrollSlider(-1)">
-        &#8249;
-      </button>
+      <button class="slider-button prev" (click)="scrollSlider(-1)">‹</button>
       <div class="slider-wrapper" #slider>
         <img
           *ngFor="let photo of businessPhotos"
@@ -13,25 +13,26 @@
           [alt]="photo.description || 'Business Photo'"
         />
       </div>
-      <button class="slider-button next" (click)="scrollSlider(1)">
-        &#8250;
-      </button>
+      <button class="slider-button next" (click)="scrollSlider(1)">›</button>
     </div>
 
-    <!-- Business Details -->
+    <!-- Detalhes do Negócio -->
     <div class="business-details">
       <div class="business-info-wrapper">
-        <img [src]="business.main_photo_url" alt="Business Photo" />
+        <img
+          [src]="business.main_photo_url"
+          alt="Business Photo"
+          class="business-logo"
+        />
         <div class="business-info">
           <h1>{{ business.business_name }}</h1>
-          <p>
+          <p class="business-type">{{ business.business_type }}</p>
+          <p class="business-address">
+            <img src="assets/icons/locationPin.svg" alt="Location" />
             {{ business.business_address }}
-            <img src="assets/icons/locationPin.svg" alt="" />
           </p>
-          <p>{{ business.business_type }}</p>
         </div>
       </div>
-
       <div class="business-rating">
         <div class="stars">
           <ng-container *ngFor="let star of [0, 1, 2, 3, 4]; let index = index">
@@ -41,16 +42,16 @@
             ></div>
           </ng-container>
         </div>
-        <span class="reviews">({{ rating.total_reviews || 0 }} )</span>
+        <span class="reviews-count">({{ rating.total_reviews || 0 }})</span>
       </div>
     </div>
 
-    <!-- List of Services -->
+    <!-- Lista de Serviços -->
     <div class="business-services">
       <div class="business-services-header">
         <h2>Serviços</h2>
         <div class="input-wrapper">
-          <input type="text" placeholder="Search for service" />
+          <input type="text" placeholder="Pesquisar serviço..." />
           <img
             src="assets/icons/search.svg"
             alt="Search Icon"
@@ -59,129 +60,98 @@
         </div>
       </div>
       <hr />
+      <!-- Container para aplicar o espaçamento entre os serviços -->
+      <div class="service-list">
+        <div class="service" *ngFor="let service of services">
+          <app-service-card [service]="service"></app-service-card>
+        </div>
+      </div>
+    </div>
 
-      <div class="service" *ngFor="let service of services">
-        <app-service-card [service]="service"></app-service-card>
+    <!-- Avaliações -->
+    <div class="business-reviews">
+      <div class="business-reviews-header">
+        <h2 class="business-reviews-title">
+          Avaliações ({{ reviewsResponse.total_reviews || 0 }})
+        </h2>
+        <div class="reviews-filter">
+          <label for="sortReviews">Ordenar por:</label>
+          <select id="sortReviews" (change)="sortReviews($event)">
+            <option value="highest">Maior Avaliação</option>
+            <option value="lowest">Menor Avaliação</option>
+            <option value="newest">Mais Recente</option>
+            <option value="oldest">Mais Antigo</option>
+          </select>
+        </div>
       </div>
 
-      <div class="business-reviews">
-        <div class="business-reviews-header">
-          <h2 class="business-reviews-title">Avaliações ({{ reviewsResponse.total_reviews || 0 }})</h2>
-          <div class="reviews-filter">
-            <label for="sortReviews">Ordenar por:</label>
-            <select id="sortReviews" (change)="sortReviews($event)">
-              <option value="highest">Maior Avaliação</option>
-              <option value="lowest">Menor Avaliação</option>
-              <option value="newest">Mais Recente</option>
-              <option value="oldest">Mais Antigo</option>
-            </select>
+      <div
+        class="reviews-container"
+        *ngIf="reviewsResponse.reviews.length > 0; else noReviewsTemplate"
+      >
+        <div *ngFor="let review of reviewsResponse.reviews" class="review-card">
+          <div class="review-user-photo">
+            <ng-container *ngIf="review?.User?.fotoUrl; else defaultIconReview">
+              <img
+                [src]="review?.User?.fotoUrl"
+                [alt]="review?.User?.username || 'User'"
+                (error)="review.User.fotoUrl = null"
+              />
+            </ng-container>
+            <ng-template #defaultIconReview>
+              <div class="foto-placeholder">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clip-rule="evenodd"
+                    fill-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </ng-template>
           </div>
-        </div>
-
-        <div
-          class="reviews-container"
-          *ngIf="reviewsResponse.reviews.length > 0; else noReviewsTemplate"
-        >
-        <hr>
-
-          <div *ngFor="let review of reviewsResponse.reviews" class="review">
+          <div class="review-content">
             <div class="review-header">
-              <ng-container *ngIf="review?.User?.fotoUrl; else defaultIcon">
-                <img
-                  [src]="review?.User?.fotoUrl"
-                  [alt]="review?.User?.username || 'User'"
-                  (error)="review.User.fotoUrl = null"
-                />
-              </ng-container>
-
-              <ng-template #defaultIcon>
-                <div class="foto-Placeholder">
-                  <svg
-                    viewBox="0 0 20 20"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    fill="#000000"
+              <div class="review-title-service">
+                <p class="username">{{ review.User.username }}</p>
+                <span class="service-reviewed"
+                  >avaliou {{ review.Service.service_name }}</span
+                >
+              </div>
+              <div class="review-stars-wrapper">
+                <p class="review-rating">({{ review.review_rating }})</p>
+                <div class="stars small">
+                  <ng-container
+                    *ngFor="let star of [0, 1, 2, 3, 4]; let index = index"
                   >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <g id="SVGRepo_iconCarrier">
-                      <title>profile_round [#1342]</title>
-                      <desc>Created with Sketch.</desc>
-                      <defs></defs>
-                      <g
-                        id="Page-1"
-                        stroke="none"
-                        stroke-width="1"
-                        fill="none"
-                        fill-rule="evenodd"
-                      >
-                        <g
-                          id="Dribbble-Light-Preview"
-                          transform="translate(-140.000000, -2159.000000)"
-                          fill="#000000"
-                        >
-                          <g
-                            id="icons"
-                            transform="translate(56.000000, 160.000000)"
-                          >
-                            <path
-                              d="M100.562548,2016.99998 L87.4381713,2016.99998 C86.7317804,2016.99998 86.2101535,2016.30298 86.4765813,2015.66198 C87.7127655,2012.69798 90.6169306,2010.99998 93.9998492,2010.99998 C97.3837885,2010.99998 100.287954,2012.69798 101.524138,2015.66198 C101.790566,2016.30298 101.268939,2016.99998 100.562548,2016.99998 M89.9166645,2004.99998 C89.9166645,2002.79398 91.7489936,2000.99998 93.9998492,2000.99998 C96.2517256,2000.99998 98.0830339,2002.79398 98.0830339,2004.99998 C98.0830339,2007.20598 96.2517256,2008.99998 93.9998492,2008.99998 C91.7489936,2008.99998 89.9166645,2007.20598 89.9166645,2004.99998 M103.955674,2016.63598 C103.213556,2013.27698 100.892265,2010.79798 97.837022,2009.67298 C99.4560048,2008.39598 100.400241,2006.33098 100.053171,2004.06998 C99.6509769,2001.44698 97.4235996,1999.34798 94.7348224,1999.04198 C91.0232075,1998.61898 87.8750721,2001.44898 87.8750721,2004.99998 C87.8750721,2006.88998 88.7692896,2008.57398 90.1636971,2009.67298 C87.1074334,2010.79798 84.7871636,2013.27698 84.044024,2016.63598 C83.7745338,2017.85698 84.7789973,2018.99998 86.0539717,2018.99998 L101.945727,2018.99998 C103.221722,2018.99998 104.226185,2017.85698 103.955674,2016.63598"
-                              id="profile_round-[#1342]"
-                              fill="currentColor"
-                            ></path>
-                          </g>
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
+                    <div
+                      class="star"
+                      [ngStyle]="getStarStyle(review.review_rating, index)"
+                    ></div>
+                  </ng-container>
                 </div>
-              </ng-template>
+              </div>
             </div>
-            
-            <div class="review-content-wrapper">
-              <div class="review-header">
-                <div class="review-header-item">
-                  <h2>
-                    {{ review.User.username }} |
-                    {{ review.Service.service_name }}
-                  </h2>
-                </div>
-                <div class="review-header-item">
-                  <p class="review-rating">{{ review.review_rating }}</p>
-                  <div class="stars">
-                    <ng-container
-                      *ngFor="let star of [0, 1, 2, 3, 4]; let index = index"
-                    >
-                      <div
-                        class="star"
-                        [ngStyle]="getStarStyle(review.review_rating, index)"
-                      ></div>
-                    </ng-container>
-                  </div>
-                </div>
-              </div>
-              <div class="review-body">
-                <h3>{{ review.review_title }}</h3>
-                <p>{{ review.review_body }}</p>
-                <span> {{ review.createdAt | date : "dd/MM/yyyy" }}</span>
-              </div>
+            <div class="review-body">
+              <h3>{{ review.review_title }}</h3>
+              <p>{{ review.review_body }}</p>
+              <span class="review-date">
+                {{ review.createdAt | date : "dd/MM/yyyy" }}</span
+              >
             </div>
           </div>
         </div>
-        <ng-template #noReviewsTemplate>
-          <p>No reviews available.</p>
-        </ng-template>
       </div>
+      <ng-template #noReviewsTemplate>
+        <p class="no-content-message">
+          Ainda não existem avaliações para este negócio.
+        </p>
+      </ng-template>
     </div>
   </div>
 
-  <div class="bussiness-right">
-    <!-- Location Map -->
+  <!-- ======================== COLUNA DA DIREITA (ASIDE) ======================== -->
+  <aside class="business-right">
     <div class="business-location">
       <iframe
         *ngIf="mapUrl"
@@ -195,109 +165,73 @@
       ></iframe>
     </div>
 
-    <div class="bussiness-info-right">
-      <div class="business-aboutus">
-        <h2>Sobre nos</h2>
-        <div class="professional">
-          <p>{{ business.description }}</p>
-        </div>
+    <div class="business-info-right">
+      <div class="info-card">
+        <h2>Sobre Nós</h2>
+        <p>{{ business.description }}</p>
       </div>
-      <!-- List of Professionals -->
-      <div class="business-professionals">
-        <h2>Staffers</h2>
-        <div class="business-professinals-wrapper">
+
+      <div class="info-card">
+        <h2>Equipa</h2>
+        <div class="business-professionals-wrapper">
           <div class="professional" *ngFor="let professional of professionals">
-            <ng-container *ngIf="professional?.User?.fotoUrl; else defaultIcon">
+            <ng-container
+              *ngIf="professional?.User?.fotoUrl; else defaultIconProfessional"
+            >
               <img
                 [src]="professional?.User?.fotoUrl"
                 [alt]="professional?.User?.username || 'Professional'"
                 (error)="professional.User.fotoUrl = null"
               />
             </ng-container>
-
-            <ng-template #defaultIcon>
-              <div class="foto-Placeholder">
-                <svg
-                  viewBox="0 0 20 20"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  fill="#000000"
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <g id="SVGRepo_iconCarrier">
-                    <title>profile_round [#1342]</title>
-                    <desc>Created with Sketch.</desc>
-                    <defs></defs>
-                    <g
-                      id="Page-1"
-                      stroke="none"
-                      stroke-width="1"
-                      fill="none"
-                      fill-rule="evenodd"
-                    >
-                      <g
-                        id="Dribbble-Light-Preview"
-                        transform="translate(-140.000000, -2159.000000)"
-                        fill="#000000"
-                      >
-                        <g
-                          id="icons"
-                          transform="translate(56.000000, 160.000000)"
-                        >
-                          <path
-                            d="M100.562548,2016.99998 L87.4381713,2016.99998 C86.7317804,2016.99998 86.2101535,2016.30298 86.4765813,2015.66198 C87.7127655,2012.69798 90.6169306,2010.99998 93.9998492,2010.99998 C97.3837885,2010.99998 100.287954,2012.69798 101.524138,2015.66198 C101.790566,2016.30298 101.268939,2016.99998 100.562548,2016.99998 M89.9166645,2004.99998 C89.9166645,2002.79398 91.7489936,2000.99998 93.9998492,2000.99998 C96.2517256,2000.99998 98.0830339,2002.79398 98.0830339,2004.99998 C98.0830339,2007.20598 96.2517256,2008.99998 93.9998492,2008.99998 C91.7489936,2008.99998 89.9166645,2007.20598 89.9166645,2004.99998 M103.955674,2016.63598 C103.213556,2013.27698 100.892265,2010.79798 97.837022,2009.67298 C99.4560048,2008.39598 100.400241,2006.33098 100.053171,2004.06998 C99.6509769,2001.44698 97.4235996,1999.34798 94.7348224,1999.04198 C91.0232075,1998.61898 87.8750721,2001.44898 87.8750721,2004.99998 C87.8750721,2006.88998 88.7692896,2008.57398 90.1636971,2009.67298 C87.1074334,2010.79798 84.7871636,2013.27698 84.044024,2016.63598 C83.7745338,2017.85698 84.7789973,2018.99998 86.0539717,2018.99998 L101.945727,2018.99998 C103.221722,2018.99998 104.226185,2017.85698 103.955674,2016.63598"
-                            id="profile_round-[#1342]"
-                            fill="currentColor"
-                          ></path>
-                        </g>
-                      </g>
-                    </g>
-                  </g>
+            <ng-template #defaultIconProfessional>
+              <div class="foto-placeholder small">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clip-rule="evenodd"
+                    fill-rule="evenodd"
+                  ></path>
                 </svg>
               </div>
             </ng-template>
-
-            <p>{{ professional?.User?.username }}</p>
+            <!-- [title] mostra o nome completo no hover, caso seja cortado -->
+            <p class="professional-name" [title]="professional?.User?.username">
+              {{ professional?.User?.username }}
+            </p>
           </div>
         </div>
       </div>
 
-      <div class="business-hour">
-        <h2>Horarios</h2>
-        <div class="professional">
-          <p><strong>Abre:</strong> {{ business.opening_hour }}</p>
-          <p><strong>Fecha:</strong> {{ business.closing_hour }}</p>
-        </div>
+      <div class="info-card">
+        <h2>Horário</h2>
+        <p><strong>Abre:</strong> {{ business.opening_hour }}</p>
+        <p><strong>Fecha:</strong> {{ business.closing_hour }}</p>
       </div>
 
-      <!-- Business Contacts -->
-      <div class="business-contact">
-        <h2>Contact Us</h2>
-        <div>
+      <div class="info-card">
+        <h2>Contactos</h2>
+        <div class="contact-list">
           <p *ngIf="business?.business_email">
-            <strong
-              ><img src="assets/icons/mail.svg" alt="mail" />Email:</strong
-            >
-            {{ business.business_email }}
+            <img src="assets/icons/mail.svg" alt="mail" />
+            <a [href]="'mailto:' + business.business_email">{{
+              business.business_email
+            }}</a>
           </p>
           <p *ngIf="business?.business_phone">
-            <strong
-              ><img src="assets/icons/phone.svg" alt="phone" />Telefone:</strong
-            >
-            {{ business.business_phone }}
+            <img src="assets/icons/phone.svg" alt="phone" />
+            <a [href]="'tel:' + business.business_phone">{{
+              business.business_phone
+            }}</a>
           </p>
         </div>
       </div>
     </div>
-  </div>
+  </aside>
 </div>
 
 <ng-template #loadingTemplate>
-  <p>Loading...</p>
+  <div class="loading-container">
+    <p>A carregar detalhes do negócio...</p>
+  </div>
 </ng-template>
