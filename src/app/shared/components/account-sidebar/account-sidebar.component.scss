@@ -1,7 +1,4 @@
 @import '../../../../styles/variables.scss';
-
-/* --- Estilos Base e Mobile-First --- */
-
 .sidebar-backdrop {
   position: fixed;
   top: 0;
@@ -14,7 +11,7 @@
 
 .sidebar {
   width: 280px;
-  height: 100dvh; 
+  height: 100dvh;
   background-color: $generic-white;
   border-right: 1px solid #e0e0e0;
   display: flex;
@@ -22,7 +19,6 @@
   font-family: $font-primary;
   color: $Roxo-Escuro;
   box-sizing: border-box;
-
   position: fixed;
   top: 0;
   left: 0;
@@ -48,7 +44,7 @@
   line-height: 1;
 }
 
-/* --- Estilos Internos (User Info, Nav, Logout) --- */
+/* --- Estilos Internos --- */
 .user-info {
   padding: 40px 20px 25px;
   text-align: center;
@@ -58,12 +54,32 @@
     width: 80px;
     height: 80px;
     margin: 0 auto 15px;
-    .user-avatar {
+
+    // Estilos comuns para a imagem E para o placeholder (Princípio DRY)
+    .user-avatar,
+    .foto-placeholder {
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      object-fit: cover;
       border: 3px solid $Roxo-light;
+      box-sizing: border-box;
+    }
+
+    .user-avatar {
+      object-fit: cover;
+    }
+
+    .foto-placeholder {
+      background-color: $Roxo-light;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      svg {
+        width: 60%;
+        height: 60%;
+        color: $Roxo-Pastel;
+      }
     }
   }
 
@@ -127,16 +143,16 @@
 /* --- Media Query para Telas Maiores (Desktop) --- */
 @media (min-width: 992px) {
   .sidebar-backdrop, .sidebar-close-button {
-    display: none; 
+    display: none;
   }
 
   .sidebar {
     position: sticky;
     top: 0;
-    z-index: -1;
-    transform: translateX(0); 
-    transition: none; 
+    z-index: auto; /* CORRIGIDO para permitir cliques no desktop */
+    transform: translateX(0);
+    transition: none;
     box-shadow: none;
-    height: 100vh; 
+    height: 100vh;
   }
 }

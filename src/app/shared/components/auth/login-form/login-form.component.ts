@@ -45,7 +45,7 @@ export class LoginFormComponent implements OnInit {
         localStorage.removeItem('redirectAfterLogin');
         await this.router.navigate([redirect]);
       } else {
-        await this.router.navigate(['/dashboard']);
+        await this.router.navigate(['/']);
       }
       
     } catch (err: any) {

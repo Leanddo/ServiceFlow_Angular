@@ -1,27 +1,75 @@
-# ServiceFlowAngular
+# ServiceFlow Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.12.
+Este projeto é a aplicacão web do ServiceFlow, uma plataforma para gestão de serviços, negócios e agendamentos online.
 
-## Development server
+## Funcionalidades
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Cadastro e login de usuários (incluindo autenticação por Google e OTP)
+- Cadastro e gestão de negócios (barbearias, salões, clínicas, etc.)
+- Gestão de profissionais e permissões por negócio
+- Cadastro e edição de serviços oferecidos
+- Upload e gestão de fotos do negócio e dos serviços
+- Sistema de avaliações e reviews
+- Dashboard para profissionais e donos de negócio
+- Agendamento online de serviços
+- Responsivo e otimizado para mobile
 
-## Code scaffolding
+## Tecnologias Utilizadas
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- [Angular](https://angular.io/) 18+
+- RxJS
+- Angular Router
+- Angular Forms (Template e Reactive)
+- SCSS
+- Consumo de API RESTful
 
-## Build
+## Como rodar o projeto
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Pré-requisitos
 
-## Running unit tests
+- Node.js (v18 ou superior)
+- Angular CLI (`npm install -g @angular/cli`)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Instalação
 
-## Running end-to-end tests
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/Leanddo/ServiceFlow_Angular.git
+   cd ServiceFlow_Angular
+   ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-## Further help
+3. Configure as variáveis de ambiente se necessário (ex: `src/environments/environment.ts`).
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Rodando o servidor de desenvolvimento
+
+```bash
+ng serve
+```
+
+Acesse [http://localhost:4200](http://localhost:4200) no navegador.
+
+### Build para produção
+
+```bash
+ng build
+```
+
+
+## Estrutura de Pastas
+
+```
+src/
+  app/
+    pages/           # Páginas principais (home, dashboard, auth, etc.)
+    shared/          # Componentes compartilhados (navbar, footer, forms, etc.)
+    services/        # Serviços Angular para API e lógica de negócio
+    model/           # Interfaces e tipos TypeScript
+    guards/          # Guards de rota (auth, owner, etc.)
+    config/          # Configurações de endpoints e variáveis globais
+  assets/            # Imagens, ícones e arquivos estáticos
+```

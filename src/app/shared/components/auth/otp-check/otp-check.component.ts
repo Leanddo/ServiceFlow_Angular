@@ -76,7 +76,7 @@ export class OtpCheckComponent {
           localStorage.removeItem('redirectAfterLogin');
           this.router.navigate([redirect]);
         } else {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/']);
         }
       },
       error: (err) => {

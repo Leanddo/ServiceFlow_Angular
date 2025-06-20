@@ -1,5 +1,6 @@
-<div class="sidebar-backdrop" (click)="closeSidebar.emit()" *ngIf="isOpen"></div>
+<!-- sidebar.component.html -->
 
+<div class="sidebar-backdrop" (click)="closeSidebar.emit()" *ngIf="isOpen"></div>
 
 <aside class="sidebar-container" [class.is-open]="isOpen">
   <button class="sidebar-close-button" (click)="closeSidebar.emit()" aria-label="Fechar menu">
@@ -10,6 +11,7 @@
     <img src="ServiceFlow_Logo.png" alt="Logo da Empresa" class="logo" />
     <h1 class="brand-name">Painel</h1>
   </header>
+
   <section class="main-controls">
     <div class="business-selector-wrapper">
       <label for="business-selector" class="selector-label">Negócio Ativo</label>
@@ -36,6 +38,7 @@
       </div>
     </div>
   </section>
+
   <nav class="main-nav">
     <ul *ngIf="selectedBusiness">
       <li *ngFor="let item of visibleNavItems">
@@ -46,8 +49,9 @@
       </li>
     </ul>
   </nav>
+
   <footer class="sidebar-footer">
-    <a class="nav-link logout-btn" title="Sair">
+    <a class="nav-link logout-btn" title="Sair" (click)="logout.emit()">
       <img src="assets/icons/arrow-right.svg" alt="Sair" class="nav-icon" />
       <span class="nav-label">Sair</span>
     </a>

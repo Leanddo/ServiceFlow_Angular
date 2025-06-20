@@ -28,11 +28,16 @@ interface NavItem {
 export class SideNavDashboardComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;
   @Output() closeSidebar = new EventEmitter<void>();
+  @Output() logout = new EventEmitter<void>();
 
   private allNavItems: NavItem[] = [
     { path: 'business', label: 'Negócio', icon: 'assets/icons/mala.svg' },
     { path: 'services', label: 'Serviços', icon: 'assets/icons/tool.svg' },
-    { path: 'professionals', label: 'Profissionais', icon: 'assets/icons/profile.svg' },
+    {
+      path: 'professionals',
+      label: 'Profissionais',
+      icon: 'assets/icons/profile.svg',
+    },
     { path: 'queues', label: 'Filas', icon: 'assets/icons/list.svg' },
   ];
   private destroy$ = new Subject<void>();
@@ -57,10 +62,10 @@ export class SideNavDashboardComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-  
+
   // ... resto das suas funções (loadBusinessesAndSetupRouting, etc.)
   // O código aqui não precisa ser alterado para a funcionalidade do botão.
-  
+
   private loadBusinessesAndSetupRouting(): void {
     this.isLoadingBusinesses = true;
     this.businessService

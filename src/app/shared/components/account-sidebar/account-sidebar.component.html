@@ -1,3 +1,5 @@
+<!-- src/app/components/account-sidebar/account-sidebar.component.html -->
+
 <div
   class="sidebar-backdrop"
   (click)="closeSidebar.emit()"
@@ -15,11 +17,26 @@
 
   <div class="user-info">
     <div class="avatar-container">
+      <!-- SE userAvatarUrl existir, mostra a imagem -->
       <img
+        *ngIf="userAvatarUrl; else defaultAvatar"
         [src]="userAvatarUrl"
         [alt]="userName || 'Avatar do Usuário'"
         class="user-avatar"
       />
+
+      <!-- SENÃO, mostra este template de placeholder com SVG -->
+      <ng-template #defaultAvatar>
+        <div class="foto-placeholder">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path
+              fill-rule="evenodd"
+              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </div>
+      </ng-template>
     </div>
     <h3 class="user-name">{{ userName || "Usuário" }}</h3>
   </div>
@@ -39,17 +56,7 @@
   </nav>
 
   <button class="logout-button" (click)="onLogout()">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
       <polyline points="16 17 21 12 16 7"></polyline>
       <line x1="21" y1="12" x2="9" y2="12"></line>

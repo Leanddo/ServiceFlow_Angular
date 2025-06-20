@@ -34,9 +34,6 @@ export class AccountSidebarComponent {
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
-    if (!this.userAvatarUrl) {
-      this.userAvatarUrl = 'assets/icons/default-avatar.svg';
-    }
 
     const seenRoutes = new Set<string>();
     this.uniqueSidebarItems = this.sidebarItems.filter((item) => {
