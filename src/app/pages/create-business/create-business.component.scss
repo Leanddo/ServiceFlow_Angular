@@ -25,7 +25,7 @@
     background-size: cover;
     background-position: center;
     text-align: center;
-    color: $generic-white; 
+    color: $generic-white;
 
   }
 
@@ -44,6 +44,7 @@
       font-weight: 600;
       margin-bottom: 30px;
       color: black; // Or your primary text color
+
       span {
         font-size: 2.5rem;
         color: $Roxo-Royal;
@@ -52,6 +53,7 @@
 
     .cb-content {
       width: 100%;
+
       // Styles for form elements (buttons, inputs) can be global or defined here/in child components
       // Example for a common button style within this section:
       .form-action-btn {
@@ -70,6 +72,7 @@
         &:hover:not(:disabled) {
           background: darken($Roxo-Royal, 10%);
         }
+
         &:disabled {
           background-color: $Roxo-light;
           cursor: not-allowed;
@@ -79,12 +82,14 @@
       // Basic input styling (can be more global)
       .form-group {
         margin-bottom: 1rem;
+
         label {
           display: block;
           margin-bottom: 0.5rem;
           font-weight: 500;
           color: $Roxo-Medio;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="tel"],
@@ -97,12 +102,14 @@
           border-radius: 6px;
           box-sizing: border-box;
           font-size: 1rem;
+
           &:focus {
             border-color: $Roxo-Royal;
             outline: none;
             box-shadow: 0 0 0 2px rgba($Roxo-Royal, 0.2);
           }
         }
+
         textarea {
           min-height: 80px;
           resize: vertical;
@@ -112,7 +119,6 @@
   }
 }
 
-// Responsive adjustments
 @media (max-width: 992px) {
   .create-business-page {
     flex-direction: column;
@@ -120,13 +126,91 @@
     .create-business-left,
     .create-business-right {
       width: 100%;
+      padding: 1.5rem;
+      margin: 0;
     }
+
     .create-business-left {
-      min-height: 300px; // Give some height when stacked
-      margin-bottom: 20px;
+      min-height: 280px;
+      margin-bottom: 1.5rem;
+      border-radius: 16px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+
     }
+
     .create-business-right {
-      padding: 2rem 5%;
+      padding: 1.5rem 5%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .create-business-page {
+    .create-business-left {
+      min-height: 220px;
+      margin-bottom: 1rem;
+    }
+
+    .create-business-right {
+      padding: 1.5rem 1rem;
+
+      .cb-logo {
+        font-size: 2.2rem;
+
+        span {
+          font-size: 2.2rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .create-business-page {
+
+    .create-business-left,
+    .create-business-right {
+      padding: 1rem 0.8rem;
+    }
+
+    .create-business-left {
+      min-height: 180px;
+      margin-bottom: 0.8rem;
+      border-radius: 12px;
+    }
+
+    .create-business-right {
+      .cb-logo {
+        font-size: 1.8rem;
+
+        span {
+          font-size: 1.8rem;
+        }
+      }
+
+      .cb-content {
+        .form-action-btn {
+          padding: 0.7rem;
+          font-size: 0.95rem;
+        }
+
+        .form-group {
+          label {
+            font-size: 0.9rem;
+          }
+
+          input[type="text"],
+          input[type="email"],
+          input[type="tel"],
+          input[type="time"],
+          textarea,
+          select {
+            padding: 0.6rem;
+            font-size: 0.9rem;
+          }
+        }
+      }
     }
   }
 }
