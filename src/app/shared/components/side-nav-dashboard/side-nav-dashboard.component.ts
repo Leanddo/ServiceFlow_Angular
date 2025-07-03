@@ -183,7 +183,7 @@ export class SideNavDashboardComponent implements OnInit, OnDestroy {
   private filterNavItemsByRole(role: string): void {
     if (role === 'Owner' || role === 'Manager') {
       this.visibleNavItems = this.allNavItems;
-    } else if (role === 'Employee') {
+    } else if (role === 'Employee'|| role === 'Assistant' || role === 'Other') {
       this.visibleNavItems = this.allNavItems.filter(
         (item) => item.path === 'queues'
       );

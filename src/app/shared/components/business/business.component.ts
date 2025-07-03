@@ -52,6 +52,10 @@ export class BusinessComponent {
     }
   }
 
+  get professionalsWithName() {
+    return this.professionals?.filter(p => p?.User?.username) || [];
+  }
+
   // Carrega os detalhes do negócio
   loadBusinessDetails(businessId: number): void {
     this.loading = true; // Indica que os dados estão sendo carregados

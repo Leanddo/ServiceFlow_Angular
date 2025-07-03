@@ -174,7 +174,7 @@
       <div class="info-card">
         <h2>Equipa</h2>
         <div class="business-professionals-wrapper">
-          <div class="professional" *ngFor="let professional of professionals">
+          <div class="professional" *ngFor="let professional of professionalsWithName">
             <ng-container
               *ngIf="professional?.User?.fotoUrl; else defaultIconProfessional"
             >

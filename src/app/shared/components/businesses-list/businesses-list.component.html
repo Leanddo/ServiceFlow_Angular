@@ -110,6 +110,7 @@
               (click)="$event.stopPropagation()"
             >
               <app-service-card
+                [routerLink]="['/businesses', item.business.business_id]"
                 *ngFor="let service of item.services | slice : 0 : 3"
                 [service]="service"
               ></app-service-card>
